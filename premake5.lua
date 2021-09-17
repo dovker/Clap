@@ -33,7 +33,7 @@ workspace "Clap"
     IncludeDir["json"] =        "%{wks.location}/Clap/thirdparty/json/include"
 
     group "Dependencies"
-        include "Clap/thirdparty/SDL2/SDL2.lua"
+        include "Clap/thirdparty/SDL2"
         include "Clap/thirdparty/soloud/build"
         include "Clap/thirdparty/Glad"
         include "Clap/thirdparty/imgui"
