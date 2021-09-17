@@ -1,0 +1,15 @@
+[submodule "Clap/thirdparty/glm"]
+	path = Clap/thirdparty/glm
+	url = https://github.com/g-truc/glm
+[submodule "Clap/thirdparty/yaml-cpp"]
+	path = Clap/thirdparty/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp
+[submodule "Clap/thirdparty/soloud"]
+	path = Clap/thirdparty/soloud
+	url = https://github.com/dovker/soloud
+[submodule "Clap/thirdparty/SDL2"]
+	path = Clap/thirdparty/SDL2
+	url = https://github.com/SpookyScaryDev/SDL2
+[submodule "Clap/thirdparty/imgui"]
+	path = Clap/thirdparty/imgui
+	url = https://github.com/dovker/imgui

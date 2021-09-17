@@ -37,3 +37,10 @@ Clap/.DS_Store
 Clap/src/UI/.DS_Store
 Build/.DS_Store
 .DS_Store
+*.xcworkspacedata
+*.pyc
+*.plist
+*.xcuserstate
+Clap/Makefile
+Makefile
+TestGround/Makefile
