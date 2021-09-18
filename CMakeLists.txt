@@ -20,7 +20,7 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/libzip)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp)
 
 set(CLAP_INCLUDE_DIRS
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL2/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui   
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/glm
@@ -32,6 +32,15 @@ set(CLAP_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/asio/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/json/include)
+
+set(CLAP_LINK_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zlib
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/libzip
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp)
+
+set(CLAP_WORKSPACE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(Clap)
 add_subdirectory(TestGround)

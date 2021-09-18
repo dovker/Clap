@@ -4,42 +4,42 @@
 
 namespace Clap
 {
-    void Log::Log(std::string const& message)
+    void Logger::Log(std::string const& message)
     {
         std::cout<<message<<std::endl;
         //TODO: Do file output later
     }
 
-    void Log::LogArgs(std::istringstream& iss)
+    void Logger::LogArgs(std::stringstream& iss)
     {
         Log(iss.str());
     }
 
-    const std::string Log::GetLogString(Strength strength)
+    std::string Logger::GetLogString(Strength strength)
     {
         switch (strength)
         {
         case Strength::Trace:
-            return "[T]"
+            return "[T]";
         case Strength::Info:
-            return "[I]"
+            return "[I]";
         case Strength::Warn:
-            return "[W]"
+            return "[W]";
         case Strength::Error:
-            return "[E]"
+            return "[E]";
         case Strength::Critical:
-            return "[C]"
+            return "[C]";
         default:
             return "";
         }
     }
 
-    const std::string Log::GetCurrentTime()
+    std::string Logger::GetCurrentTime()
     {
-        time_t now = time(0);
+        std::time_t now = time(0);
         tm *ltm = localtime(&now);
 
-        stringstream s;
+        std::stringstream s;
         s << '[' << 5+ltm->tm_hour << ":" << 30+ltm->tm_min << ":" << ltm->tm_sec << ']' << std::endl;
     }
 }

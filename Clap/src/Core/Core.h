@@ -52,6 +52,8 @@
 //Forwards a function as a lambda
 #define CLAP_FORWARD_FUNCTION(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
 
+#include "pch.h"
+
 namespace Clap
 {
 	//Scoped Pointer

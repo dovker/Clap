@@ -1,16 +1,16 @@
-#include "pch.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
-
-#include <glad/glad.h>
+#include <SDL.h>
+//#include <SDL_opengl.h>
+#include "glad/glad.h"
 
 #include <glm/glm.hpp>
+
+#include "Clap.h"
 
 int main()
 {
     uint32_t WindowFlags = SDL_WINDOW_OPENGL;
     SDL_Window *Window = SDL_CreateWindow("OpenGL Test", 0, 0, 1280, 720, WindowFlags);
-    CLAP_ASSERT(Window, "Window not created!!");
+    //CLAP_ASSERT(Window, "Window not created!!");
     SDL_GLContext Context = SDL_GL_CreateContext(Window);
     
     bool Running = true;
@@ -39,7 +39,8 @@ int main()
                     }
                     break;
                 default:
-                    CLAP_TRACE("Key Pressed: ", Event.key.keysym.sym, "!");
+                    //CLAP_TRACE("Key Pressed: ", Event.key.keysym.sym, "!");
+                    std::cout<<"Key Pressed: "<<Event.key.keysym.sym<<std::endl;
                     break;
                 }
             }
@@ -49,9 +50,9 @@ int main()
             }
         }
 
-        glViewport(0, 0, 1280, 720);
-        glClearColor(1.f, 0.f, 1.f, 0.f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        // glViewport(0, 0, 1280, 720);
+        // glClearColor(1.f, 0.f, 1.f, 0.f);
+        // glClear(GL_COLOR_BUFFER_BIT);
 
         SDL_GL_SwapWindow(Window);
     }

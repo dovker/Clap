@@ -16,20 +16,15 @@ file(GLOB_RECURSE CLAP_SRC_FILES "src/*.cpp"
 
 add_library(Clap STATIC ${CLAP_SRC_FILES})
 
-add_precompiled_header(Clap srd/pch.h SOURCE_CXX src/pch.cpp FORCEINCLUDE)
+add_precompiled_header(Clap src/pch.h SOURCE_CXX src/pch.cpp FORCEINCLUDE)
 
-target_include_directories(Clap PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} 
+target_include_directories(Clap PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src 
                                 PUBLIC ${CLAP_INCLUDE_DIRS})
 
 add_compile_definitions(_CRT_SCURE_NO_WARNINGS)
 
-target_link_directories(Clap PRIVATE thirdparty/SDL2
-                             PRIVATE thirdparty/Glad
-                             PRIVATE thirdparty/imgui
-                             PRIVATE thirdparty/zlib
-                             PRIVATE thirdparty/libzip
-                             PRIVATE thirdparty/yaml-cpp)
+target_link_directories(Clap PRIVATE ${CLAP_LINK_DIRS})
 
-target_link_libraries(Clap PUBLIC SDL2main SDL2-static ImGui Glad zlib libzip YAML_CPP)
+target_link_libraries(Clap PUBLIC SDL2main SDL2-static ImGui Glad zlib libzip yaml-cpp)
 
 
