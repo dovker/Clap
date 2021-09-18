@@ -10,6 +10,6 @@
 [submodule "Clap/thirdparty/imgui"]
 	path = Clap/thirdparty/imgui
 	url = https://github.com/dovker/imgui
-[submodule "Clap/thirdparty/SDL2"]
-	path = Clap/thirdparty/SDL2
-	url = https://github.com/dovker/SDL2
+[submodule "Clap/thirdparty/SDL"]
+	path = Clap/thirdparty/SDL
+	url = https://github.com/libsdl-org/SDL.git
