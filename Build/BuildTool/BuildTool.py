@@ -10,7 +10,7 @@ from threading import Thread
 
 Configurations = ["debug", "release", "distribution"]
 Applications = ["TestGround"]
-PremakeConfigs = ["gmake2", "vs2019", "xcode4"]
+PremakeConfigs = ["gmake2", "vs2019", "xcode4", "cmake"]
 
 AppComboID = generate_uuid()
 WindowID = generate_uuid()

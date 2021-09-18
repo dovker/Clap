@@ -15,6 +15,8 @@ workspace "Clap"
         "MultiProcessorCompile"
     }
 
+    require "/Build/premake5/extensions/cmake"
+
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
     IncludeDir = {}
@@ -40,7 +42,7 @@ workspace "Clap"
         include "Clap/thirdparty/zlib"
         include "Clap/thirdparty/libzip"
         include "Clap/thirdparty/yaml-cpp"
-        filter "system:windows" 
+        filter "system:windows"
             include "Clap/thirdparty/SDL2/SDL2main.lua"
     group ""
 
