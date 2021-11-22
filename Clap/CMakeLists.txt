@@ -22,9 +22,11 @@ target_include_directories(Clap PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
                                 PUBLIC ${CLAP_INCLUDE_DIRS})
 
 add_compile_definitions(_CRT_SCURE_NO_WARNINGS)
+add_compile_definitions(CLAP_USE_OPENGL CLAP_USE_SDL2 CLAP_DEBUG)
+# IF YOU CAN SUPPORT OPENGL4.5, DEFINE MC_OPENGL_4_5
 
 target_link_directories(Clap PRIVATE ${CLAP_LINK_DIRS})
 
-target_link_libraries(Clap PUBLIC SDL2main SDL2-static ImGui Glad zlib libzip yaml-cpp)
+target_link_libraries(Clap PUBLIC SDL2main SDL2-static ImGui Glad zlib zip yaml-cpp)
 
 

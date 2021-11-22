@@ -17,6 +17,6 @@ add_compile_definitions(_CRT_SCURE_NO_WARNINGS)
 
 target_link_directories(TestGround PRIVATE ${CLAP_LINK_DIRS})
 
-target_link_libraries(TestGround PUBLIC SDL2main SDL2-static ImGui Glad yaml-cpp)
+target_link_libraries(TestGround PUBLIC Clap SDL2main SDL2-static ImGui yaml-cpp)
 
 

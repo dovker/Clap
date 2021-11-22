@@ -40,7 +40,7 @@ namespace Clap
         {
             std::stringstream iss;
 
-            iss<<GetLogString(strength)<<GetCurrentTime()<<": ";
+            iss<<GetLogString(strength)<<GetCurrentTime()<<"| ";
 
             LogArgs(iss, std::forward<Args>(args)...);
         }

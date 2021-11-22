@@ -1,5 +1,4 @@
 #include <SDL.h>
-//#include <SDL_opengl.h>
 #include "glad/glad.h"
 
 #include <glm/glm.hpp>
@@ -10,7 +9,7 @@ int main()
 {
     uint32_t WindowFlags = SDL_WINDOW_OPENGL;
     SDL_Window *Window = SDL_CreateWindow("OpenGL Test", 0, 0, 1280, 720, WindowFlags);
-    //CLAP_ASSERT(Window, "Window not created!!");
+    CLAP_ASSERT(Window, "Window not created!!");
     SDL_GLContext Context = SDL_GL_CreateContext(Window);
     
     bool Running = true;
@@ -39,7 +38,7 @@ int main()
                     }
                     break;
                 default:
-                    //CLAP_TRACE("Key Pressed: ", Event.key.keysym.sym, "!");
+                    CLAP_TRACE("Key Pressed: ", Event.key.keysym.sym, "!");
                     std::cout<<"Key Pressed: "<<Event.key.keysym.sym<<std::endl;
                     break;
                 }

@@ -56,7 +56,6 @@
 
 namespace Clap
 {
-	//Scoped Pointer
     template<typename T>
     using Scope = std::unique_ptr<T>;
     template<typename T, typename ... Args>
@@ -65,8 +64,6 @@ namespace Clap
         return std::make_unique<T>(std::forward<Args>(args)...);
     }
 
-	//This engine will be using std::shared_ptr for reference counting.
-	//Garbage collected pointer
     template<typename T>
     using Ref = std::shared_ptr<T>;
     template<typename T, typename ... Args>

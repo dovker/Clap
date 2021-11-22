@@ -40,6 +40,8 @@ namespace Clap
         tm *ltm = localtime(&now);
 
         std::stringstream s;
-        s << '[' << 5+ltm->tm_hour << ":" << 30+ltm->tm_min << ":" << ltm->tm_sec << ']' << std::endl;
+        s << '[' << ltm->tm_hour << ':' << ltm->tm_min << ':' << ltm->tm_sec << ']';
+
+        return s.str();
     }
 }
