@@ -12,7 +12,7 @@ namespace Clap
         ~OpenGLUniformBuffer();
 
         virtual void SetData(const void* data, uint32_t size, uint32_t offset) override;
-        virtual uint32_t GetBinding() { return m_Binding; };
+        virtual uint32_t GetBinding() override { return m_Binding; };
         
     private:
         uint32_t m_ID, m_Binding;

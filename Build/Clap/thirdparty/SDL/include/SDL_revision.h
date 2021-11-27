@@ -1,4 +1,4 @@
-#define SDL_REVISION "https://github.com/dovker/Clap.git@d622fce290e1fc21bac21b657cdbf1960a8dc70a"
+#define SDL_REVISION "https://github.com/dovker/Clap.git@f759aebaa8b1a49650639ee934a2f5b7b1782c97"
 #define SDL_REVISION_NUMBER 0
 
 #ifndef SDL_REVISION

@@ -5,11 +5,11 @@
 
 namespace Clap
 {
-    static GLenum GraphicsDataTypeToOpenGLBaseType(GraphicsDataType type);
-    static GLenum ToOpenGLInternalFormat(TextureFormat type);
-    static GLenum ToOpenGLDataFormat(TextureFormat type);
-    static GLenum ToOpenGLDataType(TextureFormat type);
-    static GLenum ShaderTypeToOpenGLBaseType(ShaderType type);
-    static GLenum FilterTypeToOpenGLBaseType(FilterType type);
-    static GLenum WrapTypeToOpenGLBaseType(WrapType type);
+    GLenum GraphicsDataTypeToOpenGLBaseType(GraphicsDataType type);
+    GLenum ToOpenGLInternalFormat(TextureFormat type);
+    GLenum ToOpenGLDataFormat(TextureFormat type);
+    GLenum ToOpenGLDataType(TextureFormat type);
+    GLenum ShaderTypeToOpenGLBaseType(ShaderType type);
+    GLenum FilterTypeToOpenGLBaseType(FilterType type);
+    GLenum WrapTypeToOpenGLBaseType(WrapType type);
 }
