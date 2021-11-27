@@ -2,38 +2,40 @@
 
 namespace Clap
 {
-    class Window
-    {
-    public:
+    struct WindowSpecification
+	{
+		std::string Title;
+		unsigned int Width;
+		unsigned int Height;
+
+		WindowProperties(const std::string& title = "Clap Engine",
+			unsigned int width = 1280,
+			unsigned int height = 720)
+			: Title(title), Width(width), Height(height)
+		{
+		}
+	};
+
+	class  Window
+	{
+	public:
+		virtual ~Window() {}
+
+		virtual void OnUpdate() = 0;
+
+		virtual unsigned int GetWidth() const = 0;
+		virtual unsigned int GetHeight() const = 0;
+		virtual float GetTime() = 0;
+
+		// Window attributes
+		virtual void SetVSync(bool enabled) = 0;
+        virtual void SetFullscreen(bool enabled) = 0;
+        virtual void SetCursorLock(bool enabled) = 0;
+        virtual void SetTitle(const std::string& name) = 0;
         
-    private:
+		virtual bool IsVSync() const = 0;
+		virtual void* GetWindowPtr() = 0;
 
-    };
+		static Window* Create(const WindowSpecification& props = WindowProperties());
+	};
 }
-
-/*
-typedef struct McWindow
-{
-    const char *title;
-    u32 width, height;
-    b8 fullscreen, running;
-
-    void *window_handle;
-    void *gl_context;
-
-} McWindow;
-
-void window_create(McWindow *window, const char* title, u32 width, u32 height);
-void window_update(McWindow *window);
-void window_change_title(McWindow *window, const char* title);
-u32  window_get_time();
-void window_toggle_vsync(b8 toggle);
-void window_toggle_fulscreen(McWindow *window, b8 toggle);
-void window_destroy(McWindow *window);
-
-void _poll_events(McWindow *window);
-void _create_graphics_context(McWindow *window);
-void _destroy_graphics_context(McWindow *window);
-void _set_graphics_swap_interval(b8 toggle);
-void _swap_graphics_buffers(McWindow *window);
-void _force_modern_api();
