@@ -5,18 +5,18 @@ namespace Clap
     struct WindowSpecification
 	{
 		std::string Title;
-		unsigned int Width;
-		unsigned int Height;
+		uint32_t Width;
+		uint32_t Height;
 
-		WindowProperties(const std::string& title = "Clap Engine",
-			unsigned int width = 1280,
-			unsigned int height = 720)
+		WindowSpecification(const std::string& title = "Clap Engine",
+			uint32_t width = 1280,
+			uint32_t height = 720)
 			: Title(title), Width(width), Height(height)
 		{
 		}
 	};
 
-	class  Window
+	class Window
 	{
 	public:
 		virtual ~Window() {}
@@ -32,10 +32,13 @@ namespace Clap
         virtual void SetFullscreen(bool enabled) = 0;
         virtual void SetCursorLock(bool enabled) = 0;
         virtual void SetTitle(const std::string& name) = 0;
+		virtual void SetCursorVisible(bool enabled) = 0;
+
+		virtual void PollEvents() = 0;
         
 		virtual bool IsVSync() const = 0;
 		virtual void* GetWindowPtr() = 0;
 
-		static Window* Create(const WindowSpecification& props = WindowProperties());
+		static Window* Create(const WindowSpecification& props = WindowSpecification());
 	};
 }
