@@ -103,7 +103,7 @@ namespace Clap
 			{
 				_helper_shader_func(line, ss, type);
 			}
-			CLAP_ASSERT(fStream.bad(), "SHADER IFSTREAM ERROR: Error Reading the file");
+			CLAP_ASSERT(!fStream.bad(), "SHADER IFSTREAM ERROR: Error Reading the file");
 		}
 		else
 		{

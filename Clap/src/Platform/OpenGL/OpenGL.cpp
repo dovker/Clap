@@ -98,7 +98,7 @@ namespace Clap
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
-    static GLenum GraphicsDataTypeToOpenGLBaseType(GraphicsDataType type)
+    GLenum GraphicsDataTypeToOpenGLBaseType(GraphicsDataType type)
     {
         switch (type)
         {

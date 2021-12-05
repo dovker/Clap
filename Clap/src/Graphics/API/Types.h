@@ -28,9 +28,9 @@ namespace Clap
 
     enum class ShaderType
     {
-        NONE = 0,
-        FRAGMENT,
+        NONE = -1,
         VERTEX,
+        FRAGMENT,
         GEOMETRY,
         COMPUTE
     };
