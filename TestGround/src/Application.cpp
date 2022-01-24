@@ -53,28 +53,29 @@ int main()
     Ref<UniformBuffer> cameraBuffer = UniformBuffer::Create(sizeof(CameraBuffer), 0);
     Ref<UniformBuffer> modelBuffer = UniformBuffer::Create(sizeof(ModelData), 1);
     shader->SetUniformBufferBinding(cameraBuffer, "Camera");
-    shader->SetUniformBufferBinding(cameraBuffer, "ModelData");
+    shader->SetUniformBufferBinding(modelBuffer, "ModelData");
 
     cameraBuffer->SetData(&cam, sizeof(cam), 0);
     modelBuffer->SetData(&model, sizeof(model), 0);
+    
 
     float vertices[] =
     {
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-         0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-         0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+         0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+         0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
     };
     uint32_t indices[] = 
     {
         0, 1, 2
     };
 
-    Ref<VertexBuffer> vertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
-    vertexBuffer->SetLayout(BufferLayout({ BufferElement(GraphicsDataType::FLOAT3, "Position"), BufferElement(GraphicsDataType::FLOAT3, "Normals")}));
-    Ref<IndexBuffer> indexBuffer = IndexBuffer::Create(indices, 3);
-    Ref<VertexArray> vertexArray = VertexArray::Create();
-    vertexArray->AddVertexBuffer(vertexBuffer);
-    vertexArray->SetIndexBuffer(indexBuffer);
+    Ref<Mesh> triangle = Mesh::Create(vertices, sizeof(vertices), indices, 3, true);
+    CLAP_TRACE("AMOGUS");
+    Ref<Mesh> cube = ObjParser::Parse("../../TestGround/res/umbrella.obj", false);
+    CLAP_TRACE("AMOGUS");
+
+    float rotation = 0.0f;
 
     while(running)
     {
@@ -87,7 +88,6 @@ int main()
                     running = false;
                 break;
                 case EventType::KeyPressed:
-                    CLAP_TRACE(e.Data.KeyEvent.KeyCode);
                 break;
                 default: break;
             }
@@ -106,10 +106,18 @@ int main()
             cam.ViewProjection = projectionMat * viewMat;
             cameraBuffer->SetData(&cam, sizeof(cam), 0);
         }
+        if(Input::IsKeyPressed(KEY_A))
+        {
+            rotation += 1.0f;
+            model.Transform = glm::rotate(glm::mat4(1.0f), glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
+            model.Transform = glm::rotate(model.Transform, glm::radians(rotation/2), glm::vec3(2.0f, 0.0f, 0.0f));
+            modelBuffer->SetData(&model, sizeof(model), 0);
+        }
         Graphics::SetClearColor({0.3f, 0.53f, 0.5f, 1.0f});
         Graphics::Clear();
         shader->Bind();
-        Graphics::DrawIndexed(vertexArray);
+        //triangle->Draw();
+        cube->Draw();
         //TODO: Test immediate events and input polling
         //TODO: Test graphics by writing a deferred renderer
 

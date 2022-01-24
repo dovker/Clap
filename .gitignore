@@ -58,3 +58,4 @@ TestGround/Makefile
 **/compile_commands.json
 **/.cmake/
 **/.vscode/
+Build/compile_commands.json.tmp11097

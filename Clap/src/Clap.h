@@ -15,5 +15,9 @@
 #include "Graphics/API/UniformBuffer.h"
 #include "Graphics/API/VertexArray.h"
 
+#include "Graphics/Mesh.h"
+
+#include "Files/ObjParser.h"
+
 #include "Input/Input.h"
 #include "Input/Keycodes.h"
