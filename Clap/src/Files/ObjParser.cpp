@@ -7,7 +7,7 @@ namespace Clap
         glm::vec3 Position;
         glm::vec2 TexCoords;
         glm::vec3 Normals;
-        glm::vec4 Tangents;
+        glm::vec3 Tangents;
     };
 
     Ref<Mesh> ObjParser::Parse(const std::string& filename, bool precalculateTangents) //Keeps space for tangents regardless. If you want to import in some obscure manner, write a parser yourself, I am too lazy at this instance.
@@ -24,6 +24,7 @@ namespace Clap
 
         std::string tmp; //Temporary string
 
+        std::vector<glm::vec3> positions;
         std::vector<glm::vec2> texCoords;
         std::vector<glm::vec3> normals;
 
@@ -56,9 +57,7 @@ namespace Clap
                     {
                         float x, y, z;
                         line >> x >> y >> z;
-                        MeshVertex v;
-                        v.Position = { x, y, z };
-                        vertices.push_back(v);
+                        positions.push_back({ x, y, z });
                     } break;
                 }
             break;
@@ -96,7 +95,7 @@ namespace Clap
                     CLAP_ASSERT(hasTexCoords, "Model has no texture coordinates. Cannot generate tangents");
                     for(int i = 0; i < 3; i++)
                     {
-                        calcVerts[i] = vertices[currentFace[i].vertex].Position;
+                        calcVerts[i] = positions[currentFace[i].vertex];
                         calcUVs[i] = texCoords[currentFace[i].texCoord];
                     }
 
@@ -119,40 +118,44 @@ namespace Clap
                 }
                 if(generateNormal)
                 {
-                    glm::vec3 A = vertices[currentFace[1].vertex].Position - vertices[currentFace[0].vertex].Position;
-                    glm::vec3 B = vertices[currentFace[2].vertex].Position - vertices[currentFace[0].vertex].Position;
+                    glm::vec3 A = positions[currentFace[1].vertex] - positions[currentFace[0].vertex];
+                    glm::vec3 B = positions[currentFace[2].vertex] - positions[currentFace[0].vertex];
                     precalcNormal = glm::cross(A, B);
                 }
                 for(int i = 0; i < 3; i++)
                 {
-                    indices.push_back(currentFace[i].vertex);
+                    indices.push_back(indices.size());
+                    MeshVertex v;
+
+                    v.Position = positions[currentFace[i].vertex];
 
                     if(hasTexCoords)
-                        vertices[currentFace[i].vertex].TexCoords = texCoords[currentFace[i].texCoord];
+                        v.TexCoords = texCoords[currentFace[i].texCoord];
 
                     if(generateNormal)
                     {
-                        vertices[currentFace[i].vertex].Normals = glm::normalize(vertices[currentFace[i].vertex].Normals + precalcNormal);
+                        v.Normals = precalcNormal;
                     }
                     else
                     {
-                        vertices[currentFace[i].vertex].Normals = normals[currentFace[i].normal];
+                        v.Normals = normals[currentFace[i].normal];
                     }
 
                     if(precalculateTangents)
                     {
-                        glm::vec3 normal = vertices[currentFace[i].vertex].Normals;
+                        glm::vec3 normal = normals[currentFace[i].normal];
                         glm::vec3 orthogonalizedTangent = glm::normalize(tangent - normal * glm::dot(normal, tangent));
-                        glm::vec4 oldTangent = vertices[currentFace[i].vertex].Tangents;
-                        glm::vec3 newTangent = glm::normalize(glm::vec3(oldTangent.x, oldTangent.y, oldTangent.z) + orthogonalizedTangent); //TODO: CHECK MATHS
-                        float w = (glm::dot(glm::cross(normal, tangent), bitangent) < 0.0f) ? -1.0f : 1.0f;
-                        vertices[currentFace[i].vertex].Tangents = glm::vec4(newTangent, w);
+
+                        //float w = (glm::dot(glm::cross(normal, tangent), bitangent) < 0.0f) ? -1.0f : 1.0f;
+
+                        v.Tangents = orthogonalizedTangent;
                     }
+                    vertices.push_back(v);
                 }
             break;
             }
         }
-        return Mesh::Create((float*)vertices.data(), vertices.size() * sizeof(MeshVertex), indices.data(), indices.size(), true);
+        return Mesh::Create(std::vector<float>((float*)vertices.data(), (float*)vertices.data() + vertices.size() * 11), indices, true);
     }
     Ref<Mesh> ObjParser::ParseString(const std::string& string)
     {

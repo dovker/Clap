@@ -93,9 +93,6 @@ namespace Clap
             m_GenerateMipmaps(m_Specification.AnisotropicFilter);
         }
 
-        #ifndef CLAP_OPENGL_4_5
-            glBindTexture(GL_TEXTURE_2D, 0);
-        #endif
     }
 
 
@@ -134,18 +131,27 @@ namespace Clap
 		m_Width = width;
 		m_Height = height;
 
+        TextureFormat format;
+
 		if (channels == 4)
 		{
-			m_Specification.Format = TextureFormat::RGBA8;
+			format = TextureFormat::RGBA8;
 		}
 		else if (channels == 3)
 		{
-			m_Specification.Format = TextureFormat::RGB8;
+			format = TextureFormat::RGB8;
 		}
         else if (channels == 1)
         {
-            m_Specification.Format = TextureFormat::R8;
+            format = TextureFormat::R8;
         }
+
+        if(m_Specification.Format == TextureFormat::NONE)
+        {
+            m_Specification = TextureSpecification(format);
+        }
+        else
+            m_Specification.Format = format;
 
         #ifdef CLAP_OPENGL_4_5
             glCreateTextures(GL_TEXTURE_2D, 1, &m_ID);
