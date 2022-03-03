@@ -19,5 +19,7 @@
 
 #include "Files/ObjParser.h"
 
+#include "Math/Math.h"
+
 #include "Input/Input.h"
 #include "Input/Keycodes.h"

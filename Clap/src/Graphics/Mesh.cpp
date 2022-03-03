@@ -71,6 +71,14 @@ namespace Clap
     {
         Graphics::DrawIndexed(m_VertexArray);
     }
+    void Mesh::SetInstanceData(const Ref<VertexBuffer>& vertexBuffer)
+    {
+        m_VertexArray->AttachInstanceBuffer(vertexBuffer);
+    }
+    void Mesh::DrawInstanced(uint32_t count) const
+    {
+        Graphics::DrawIndexedInstanced(m_VertexArray, count);
+    }
 
     Ref<Mesh> Mesh::Create(const std::vector<float>& vertices, const std::vector<uint32_t>& indices, bool tangents)
     {

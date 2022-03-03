@@ -27,6 +27,7 @@ namespace Clap
         static void ToggleBackfaceCulling(bool toggle);
 
         static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0);
+        static void DrawIndexedInstanced(const Ref<VertexArray>& vertexArray, uint32_t instanceCount = 1, uint32_t indexCount = 0);
     };
 
 }

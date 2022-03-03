@@ -98,6 +98,13 @@ namespace Clap
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
+    void Graphics::DrawIndexedInstanced(const Ref<VertexArray>& vertexArray, uint32_t instanceCount, uint32_t indexCount)
+    {
+        uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
+        glDrawElementsInstanced(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0, instanceCount);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
     GLenum GraphicsDataTypeToOpenGLBaseType(GraphicsDataType type)
     {
         switch (type)

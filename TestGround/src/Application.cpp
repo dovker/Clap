@@ -42,7 +42,11 @@ int main()
         projectionMat * viewMat
     };
 
-    glm::mat4 modelMat = glm::mat4(1.0f);
+    Transform transform(glm::vec3(0.0, -0.5, 0.0), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.01f, 0.01f, 0.01f));
+    Transform transform1(glm::vec3(0.0, -0.5, 0.0), glm::vec3(103.0f, 0.0f, 0.0f), glm::vec3(0.01f, 0.01f, 0.01f));
+    Transform transform2(glm::vec3(0.0, -0.5, 0.0), glm::vec3(0.0f, 13.0f, 0.0f), glm::vec3(0.01f, 0.01f, 0.01f));
+    Transform transform3(glm::vec3(0.0, -0.5, 0.0), glm::vec3(0.0f, 0.0f, 13.0f), glm::vec3(0.01f, 0.01f, 0.01f));
+    glm::mat4 modelMat = transform.GetTransform();
     ModelData model = {
         modelMat
     };
@@ -67,6 +71,15 @@ int main()
         0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
         -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
     };
+    std::vector<glm::mat4> instances =
+    {
+        transform.GetTransform(),
+        transform1.GetTransform(),
+        transform2.GetTransform(),
+        transform3.GetTransform()
+    };
+    Ref<VertexBuffer> instanceBuffer = VertexBuffer::Create((float*)instances.data(), instances.size() * sizeof(glm::mat4));
+    instanceBuffer->SetLayout({ {GraphicsDataType::FLOAT4, "Transform[0]"}, {GraphicsDataType::FLOAT4, "Transform[1]"}, {GraphicsDataType::FLOAT4, "Transform[2]"}, {GraphicsDataType::FLOAT4, "Transform[3]"} });
     std::vector<uint32_t> indices = 
     {
         0, 1, 2,
@@ -74,13 +87,17 @@ int main()
     };
 
     Ref<Mesh> triangle = Mesh::Create(vertices, indices, true);
-    CLAP_TRACE("AMOGUS");
     Ref<Mesh> cube = ObjParser::Parse("../../TestGround/res/spruce.obj", true);
-    Ref<Texture2D> albedo = Texture2D::Create("../../TestGround/res/textures/spruce_texturing_elka_BaseColor.png");
-    Ref<Texture2D> normal = Texture2D::Create("../../TestGround/res/textures/spruce_texturing_elka_Normal.png");
-    CLAP_TRACE("AMOGUS");
+    cube->SetInstanceData(instanceBuffer);
 
-    float rotation = 0.0f;
+    Ref<Texture2D> albedo = Texture2D::Create("../../TestGround/res/textures/spruce_texturing_elka_BaseColor.png");
+    TextureSpecification spec = albedo->GetSpecification();
+    spec.MagFilter = FilterType::LINEAR;
+    spec.MinFilter = FilterType::NEAREST;
+    spec.GenerateMipmaps = true;
+    albedo->SetSpecification(spec);
+
+    Ref<Texture2D> normal = Texture2D::Create("../../TestGround/res/textures/spruce_texturing_elka_Normal.png");
 
     while(running)
     {
@@ -113,11 +130,16 @@ int main()
         }
         if(Input::IsKeyPressed(KEY_A))
         {
-            rotation += 1.0f;
-            model.Transform = glm::rotate(glm::mat4(1.0f), glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
-            model.Transform = glm::rotate(model.Transform, glm::radians(rotation/2), glm::vec3(2.0f, 0.0f, 0.0f));
-            model.Transform = glm::scale(model.Transform, glm::vec3(0.01f, 0.01f, 0.01f));
-            modelBuffer->SetData(&model, sizeof(model), 0);
+            transform.Rotation.y += glm::radians(1.0f);
+            transform1.Rotation.y += glm::radians(1.0f);
+            transform2.Rotation.y += glm::radians(1.0f);
+            transform3.Rotation.y += glm::radians(1.0f);
+            
+            instances[0] = transform.GetTransform();
+            instances[1] = transform1.GetTransform();
+            instances[2] = transform2.GetTransform();
+            instances[3] = transform3.GetTransform();
+            instanceBuffer->SetData((float*)instances.data(), instances.size() * sizeof(glm::mat4));
         }
         Graphics::SetClearColor({0.3f, 0.53f, 0.5f, 1.0f});
         Graphics::Clear();
@@ -134,7 +156,7 @@ int main()
 
         //triangle->Draw();
         
-        cube->Draw();
+        cube->DrawInstanced(4);
         //TODO: Test immediate events and input polling
         //TODO: Test graphics by writing a deferred renderer
 

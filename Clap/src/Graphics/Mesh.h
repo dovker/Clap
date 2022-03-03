@@ -19,7 +19,9 @@ namespace Clap
         //void CalculateTangents();
         //Flip Faces, so on
         void FreeData();
+        void SetInstanceData(const Ref<VertexBuffer>& vertexBuffer);
         void Draw() const; //Raw draw call
+        void DrawInstanced(uint32_t count) const; //Raw draw call
 
         static Ref<Mesh> Create(const std::vector<float>& vertices, const std::vector<uint32_t>&, bool tangents = false);
         static Ref<Mesh> Create(float* vertices, uint32_t bufferSize, uint32_t* indices, uint32_t indexCount, bool tangents = false);
