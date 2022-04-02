@@ -6,6 +6,7 @@
 #include "Graphics/API/Types.h"
 
 #include "OpenGLShader.h"
+#include "OpenGL.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -148,6 +149,10 @@ namespace Clap
 			glDeleteShader(gs);
 
 		return id;
+
+		#ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
 	}
     void OpenGLShader::Recompile()
     {
@@ -164,8 +169,17 @@ namespace Clap
 	}
 	void OpenGLShader::SetUniformBufferBinding(Ref<UniformBuffer> buffer, const std::string& name)
 	{
+		#ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
 		uint32_t buffer_index = glGetUniformBlockIndex(m_ID, name.c_str());   
+		#ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
 		glUniformBlockBinding(m_ID, buffer_index, buffer->GetBinding());
+		#ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
 	}
 
 	void OpenGLShader::Bind()
@@ -187,7 +201,17 @@ namespace Clap
 	}
 	void OpenGLShader::SetIntPtr(const std::string& name, int count, int* value)
 	{
-		glUniform1iv(glGetUniformLocation(m_ID, name.c_str()), count, value);
+		#ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
+		GLint location = glGetUniformLocation(m_ID, name.c_str());
+		#ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
+		glUniform1iv(location, count, value);
+		#ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
 	}
 	void OpenGLShader::SetFloat(const std::string& name, float value)
 	{

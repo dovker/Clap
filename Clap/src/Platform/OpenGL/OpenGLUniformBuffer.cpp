@@ -22,6 +22,10 @@ namespace Clap
         #endif
 
         glBindBufferBase(GL_UNIFORM_BUFFER, binding, m_ID);
+
+        #ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
     }
     OpenGLUniformBuffer::~OpenGLUniformBuffer()
     {
@@ -35,6 +39,10 @@ namespace Clap
             glBindBuffer(GL_UNIFORM_BUFFER, m_ID);
             glBufferSubData(GL_UNIFORM_BUFFER, offset, size, data);
             glBindBuffer(GL_UNIFORM_BUFFER, 0);
+        #endif
+
+        #ifdef CLAP_DEBUG
+        CheckGPUError();
         #endif
     }
 }

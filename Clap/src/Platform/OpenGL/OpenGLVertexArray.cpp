@@ -51,6 +51,9 @@ namespace Clap
         }
         
         m_VertexBuffers.push_back(vertexBuffer);
+        #ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
     }
 
     void OpenGLVertexArray::AttachInstanceBuffer(const Ref<VertexBuffer>& vertexBuffer)
@@ -78,6 +81,9 @@ namespace Clap
         }//TODO: Finish
         
         m_VertexBuffers.push_back(vertexBuffer);
+        #ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
     }
 
     void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
@@ -86,5 +92,8 @@ namespace Clap
         indexBuffer->Bind();
 
         m_IndexBuffer = indexBuffer;
+        #ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
     }
 }

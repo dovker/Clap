@@ -16,6 +16,7 @@
 #include "Graphics/API/VertexArray.h"
 
 #include "Graphics/Mesh.h"
+#include "Graphics/Batch.h"
 
 #include "Files/ObjParser.h"
 
@@ -23,3 +24,13 @@
 
 #include "Input/Input.h"
 #include "Input/Keycodes.h"
+
+#include "ECS/Entity.h"
+#include "ECS/Component.h"
+#include "ECS/World.h"
+
+
+//#ifdef CLAP_USE_OPENGL
+// #include "Platform/OpenGL/OpenGL.h"
+// #define CheckGPUError() OpenGLCheckError(__FILE__, __LINE__)
+//#endif

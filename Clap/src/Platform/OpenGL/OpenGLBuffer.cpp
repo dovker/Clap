@@ -16,6 +16,9 @@ namespace Clap
 
         glBindBuffer(GL_ARRAY_BUFFER, m_ID);
         glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+        #ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
     }
 
     OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size)
@@ -28,6 +31,10 @@ namespace Clap
 
         glBindBuffer(GL_ARRAY_BUFFER, m_ID);
         glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+
+        #ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
     }
     OpenGLVertexBuffer::~OpenGLVertexBuffer()
     {
@@ -45,6 +52,10 @@ namespace Clap
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_ID);
         glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+
+        #ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
     }
 
     OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count)
@@ -58,6 +69,10 @@ namespace Clap
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
+
+        #ifdef CLAP_DEBUG
+        CheckGPUError();
+        #endif
     }
     OpenGLIndexBuffer::~OpenGLIndexBuffer()
     {
