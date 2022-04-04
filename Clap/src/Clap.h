@@ -28,9 +28,3 @@
 #include "ECS/Entity.h"
 #include "ECS/Component.h"
 #include "ECS/World.h"
-
-
-//#ifdef CLAP_USE_OPENGL
-// #include "Platform/OpenGL/OpenGL.h"
-// #define CheckGPUError() OpenGLCheckError(__FILE__, __LINE__)
-//#endif

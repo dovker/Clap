@@ -158,9 +158,9 @@ namespace Clap {
         m_Context->SwapBuffers();
 	}
 
-	inline float SDLWindow::GetTime()
+	inline double SDLWindow::GetTime()
 	{
-		return (float)SDL_GetTicks();
+		return (double)SDL_GetPerformanceCounter();
 	}
 
 	bool SDLWindow::IsVSync() const

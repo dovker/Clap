@@ -40,9 +40,9 @@
 
 #ifdef CLAP_ENABLE_ASSERTS
     #ifdef CLAP_PLATFORM_WINDOWS
-        #define CLAP_ASSERT(x, ...) { if(!(x)) { CLAP_ERROR("Assertion Failed: ", __VA_ARGS__); __debugbreak(); } }
+        #define CLAP_ASSERT(x, ...) { if(!(x)) { CLAP_ERROR("Assertion Failed: ", __FILE__, __LINE__, __VA_ARGS__); __debugbreak(); } }
     #else
-        #define CLAP_ASSERT(x, ...) { if(!(x)) { CLAP_ERROR("Assertion Failed: ", __VA_ARGS__); } }
+        #define CLAP_ASSERT(x, ...) { if(!(x)) { CLAP_ERROR("Assertion Failed: ", __FILE__, __LINE__, __VA_ARGS__); } }
     #endif
 #else
 #define CLAP_ASSERT(x, ...)

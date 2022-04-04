@@ -43,16 +43,19 @@ namespace Clap
         #ifdef CLAP_OPENGL_4_5
            glCreateTextures(GL_TEXTURE_2D, 1, &m_ID);
            glTextureStorage2D(m_ID, 1, ToOpenGLInternalFormat(m_Specification.Format), m_Width, m_Height);
+
            m_SetInternalSpecification();
         #else
             glGenTextures(1, &m_ID);
             glEnable(GL_TEXTURE_2D);
             glBindTexture(GL_TEXTURE_2D, m_ID);
+            CheckGPUError();
             
             m_SetInternalSpecification();
             
             glTexImage2D(GL_TEXTURE_2D, 0, ToOpenGLInternalFormat(m_Specification.Format), m_Width, m_Height, 0, 
                     ToOpenGLDataFormat(m_Specification.Format), ToOpenGLDataType(m_Specification.Format), nullptr);
+            CheckGPUError();
                         
             glBindTexture(GL_TEXTURE_2D, 0);  
         #endif      
@@ -82,10 +85,14 @@ namespace Clap
         #else
             glBindTexture(GL_TEXTURE_2D, m_ID);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, FilterTypeToOpenGLBaseType(m_Specification.MinFilter));
+            CheckGPUError();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, FilterTypeToOpenGLBaseType(m_Specification.MagFilter));
+            CheckGPUError();
 
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, WrapTypeToOpenGLBaseType(m_Specification.Wrap));
+            CheckGPUError();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, WrapTypeToOpenGLBaseType(m_Specification.Wrap));
+            CheckGPUError();
         #endif
 
         if(generateNewMipmaps && m_Specification.GenerateMipmaps)
@@ -105,7 +112,9 @@ namespace Clap
         #else
             glGenerateMipmap(GL_TEXTURE_2D);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            CheckGPUError();
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, anisotropy ? 0.0f : -1.0f);
+            CheckGPUError();
         #endif
 
         if(GLAD_GL_EXT_texture_filter_anisotropic)
@@ -118,6 +127,7 @@ namespace Clap
                 glTextureParameterf(m_ID, GL_TEXTURE_MAX_ANISOTROPY_EXT, value);
             #else
                 glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, value);
+                CheckGPUError();
             #endif
         }
         else
@@ -156,20 +166,21 @@ namespace Clap
         #ifdef CLAP_OPENGL_4_5
             glCreateTextures(GL_TEXTURE_2D, 1, &m_ID);
             glTextureStorage2D(m_ID, 1, ToOpenGLInternalFormat(m_Specification.Format), m_Width, m_Height);
-
+            
             m_SetInternalSpecification();
 
             glTextureSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, 
                         ToOpenGLDataFormat(m_Specification.Format), ToOpenGLDataType(m_Specification.Format), data);
         #else
             glGenTextures(1, &m_ID);
-            glEnable(GL_TEXTURE_2D);
             glBindTexture(GL_TEXTURE_2D, m_ID);
+            CheckGPUError();
             
             m_SetInternalSpecification();
             
             glTexImage2D(GL_TEXTURE_2D, 0, ToOpenGLInternalFormat(m_Specification.Format), m_Width, m_Height, 0, 
                         ToOpenGLDataFormat(m_Specification.Format), ToOpenGLDataType(m_Specification.Format), data);
+            CheckGPUError();
             
             glBindTexture(GL_TEXTURE_2D, 0);
         #endif
@@ -241,6 +252,7 @@ namespace Clap
             glTexImage2D(GL_TEXTURE_2D, 0, ToOpenGLInternalFormat(m_Specification.Format), 
                         m_Width, m_Height, 0, ToOpenGLDataFormat(m_Specification.Format), 
                         ToOpenGLDataType(m_Specification.Format), data);
+            CheckGPUError();
             glBindTexture(GL_TEXTURE_2D, 0);
         #endif
 	}
@@ -252,6 +264,7 @@ namespace Clap
         #else
             glActiveTexture(GL_TEXTURE0 + slot);
             glBindTexture(GL_TEXTURE_2D, m_ID);
+            CheckGPUError();
         #endif
 	}
 }

@@ -48,7 +48,7 @@ namespace Clap
 
     void Graphics::Init()
     {
-        #if defined(CLAP_DEBUG) && defined(MC_OPENGL_4_5)
+        #if defined(CLAP_DEBUG) && defined(CLAP_OPENGL_4_5)
             glEnable(GL_DEBUG_OUTPUT);
             glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
             glDebugMessageCallback(OpenGLMessageCallback, NULL);
@@ -57,9 +57,11 @@ namespace Clap
         #endif
 
         glEnable(GL_DEPTH_TEST);
-
+        CheckGPUError();
         glEnable(GL_BLEND);
+        CheckGPUError();
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        CheckGPUError();
     }
 
     void Graphics::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
@@ -117,20 +119,18 @@ namespace Clap
     {
         uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
-        glBindTexture(GL_TEXTURE_2D, 0);
-        #ifdef CLAP_DEBUG
         CheckGPUError();
-        #endif
+        glBindTexture(GL_TEXTURE_2D, 0);
+        CheckGPUError();
     }
 
     void Graphics::DrawIndexedInstanced(const Ref<VertexArray>& vertexArray, uint32_t instanceCount, uint32_t indexCount)
     {
         uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
         glDrawElementsInstanced(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0, instanceCount);
-        glBindTexture(GL_TEXTURE_2D, 0);
-        #ifdef CLAP_DEBUG
         CheckGPUError();
-        #endif
+        glBindTexture(GL_TEXTURE_2D, 0);
+        CheckGPUError();
     }
 
     GLenum GraphicsDataTypeToOpenGLBaseType(GraphicsDataType type)

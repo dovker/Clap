@@ -8,7 +8,7 @@ namespace Clap
     const uint32_t MAX_QUADS = 10000;
     const uint32_t MAX_INDICES = MAX_QUADS * 6;
     const uint32_t MAX_VERTICES = MAX_QUADS * 4;
-    const uint32_t MAX_TEXTURES = 32;
+    const uint32_t MAX_TEXTURES = 16;
 
     struct CameraBuffer
     {

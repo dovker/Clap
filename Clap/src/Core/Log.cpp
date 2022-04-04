@@ -6,7 +6,7 @@ namespace Clap
 {
     void Logger::Log(std::string const& message)
     {
-        std::cout<<message<<std::endl;
+        std::cout<<message<<'\n';
         //TODO: Do file output later
     }
 

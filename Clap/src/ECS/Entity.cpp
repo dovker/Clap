@@ -6,7 +6,7 @@ namespace Clap
 {
     EntityManager::EntityManager()
     {
-        for (Entity entity = 0; entity < MAX_ENTITIES; ++entity)
+        for (Entity entity = 1; entity < MAX_ENTITIES; ++entity)
         {
             m_FreeEntities.push_back(entity);
             m_Masks[entity] = 0;
@@ -53,7 +53,7 @@ namespace Clap
     {
         CLAP_ASSERT(mask != 0, "ERROR, Mask cannot be 0");
         std::vector<Entity> group;
-        for(Entity i = 0; i < m_Count; i++)
+        for(Entity i = 1; i < m_Count; i++)
         {
             if((m_Masks[i] & mask) == mask)
             {

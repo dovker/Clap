@@ -3,8 +3,10 @@
 
 using Entity = uint32_t;
 const Entity MAX_ENTITIES = 10000;
+const Entity NULL_ENTITY = 0;
 
 using EntityMask = uint64_t;
+
 
 namespace Clap
 {
@@ -26,6 +28,6 @@ namespace Clap
 
         std::array<EntityMask, MAX_ENTITIES> m_Masks;
 
-        uint32_t m_Count;
+        uint32_t m_Count = 1;
     };
 }

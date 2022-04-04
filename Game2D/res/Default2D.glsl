@@ -41,9 +41,14 @@ in VertexOutput
     float TexIndex; 
 } Input;
 
+layout(std140) uniform Camera
+{
+	mat4 ViewProjection;
+};
+
 layout(location = 0) out vec4 FragColor;
 
-uniform sampler2D uTextures[32];
+uniform sampler2D uTextures[16];
 
 void main()
 {

@@ -17,7 +17,7 @@ namespace Clap {
 
 		inline unsigned int GetWidth() const override { return m_Data.Width; }
 		inline unsigned int GetHeight() const override { return m_Data.Height; }
-		inline float GetTime() override;
+		inline double GetTime() override;
 
 		virtual void SetVSync(bool enabled)             override;
         virtual void SetFullscreen(bool enabled)        override;

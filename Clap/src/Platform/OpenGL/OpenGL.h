@@ -15,4 +15,9 @@ namespace Clap
     GLenum FilterTypeToOpenGLBaseType(FilterType type);
     GLenum WrapTypeToOpenGLBaseType(WrapType type);
 }
-#define CheckGPUError() OpenGLCheckError(__FILE__, __LINE__) 
+
+#if defined(CLAP_DEBUG) && !defined(CLAP_OPENGL_4_5) && defined(CLAP_DEBUG_GRAPHICS)
+    #define CheckGPUError()  OpenGLCheckError(__FILE__, __LINE__) 
+#else
+    #define CheckGPUError()
+#endif

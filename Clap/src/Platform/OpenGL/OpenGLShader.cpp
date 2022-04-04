@@ -29,7 +29,6 @@ namespace Clap
 		const char* src = source.c_str();
 		glShaderSource(id, 1, &src, nullptr);
 		glCompileShader(id);
-
 		int result;
 
 		glGetShaderiv(id, GL_COMPILE_STATUS, &result);
@@ -125,21 +124,25 @@ namespace Clap
 		{
 			vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
 			glAttachShader(id, vs);
+			CheckGPUError();
 		}
 		if(fragmentShader.length() > 0)
 		{
 			fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 			glAttachShader(id, fs);
+			CheckGPUError();
 		}
 		if(geometryShader.length() > 0)
 		{
 			gs = CompileShader(GL_GEOMETRY_SHADER, geometryShader);
 			glAttachShader(id, gs);
+			CheckGPUError();
 		}
 
-		glAttachShader(id, fs);
 		glLinkProgram(id);
+		CheckGPUError();
 		glValidateProgram(id);
+		CheckGPUError();
 
 		if(vs)
 			glDeleteShader(vs);
@@ -148,11 +151,8 @@ namespace Clap
 		if(gs)
 			glDeleteShader(gs);
 
+		CheckGPUError();
 		return id;
-
-		#ifdef CLAP_DEBUG
-        CheckGPUError();
-        #endif
 	}
     void OpenGLShader::Recompile()
     {
@@ -169,17 +169,10 @@ namespace Clap
 	}
 	void OpenGLShader::SetUniformBufferBinding(Ref<UniformBuffer> buffer, const std::string& name)
 	{
-		#ifdef CLAP_DEBUG
+		uint32_t buffer_index = glGetUniformBlockIndex(m_ID, name.c_str());   //ERROR: GL_INVALID_VALUE
         CheckGPUError();
-        #endif
-		uint32_t buffer_index = glGetUniformBlockIndex(m_ID, name.c_str());   
-		#ifdef CLAP_DEBUG
-        CheckGPUError();
-        #endif
 		glUniformBlockBinding(m_ID, buffer_index, buffer->GetBinding());
-		#ifdef CLAP_DEBUG
         CheckGPUError();
-        #endif
 	}
 
 	void OpenGLShader::Bind()
@@ -201,17 +194,8 @@ namespace Clap
 	}
 	void OpenGLShader::SetIntPtr(const std::string& name, int count, int* value)
 	{
-		#ifdef CLAP_DEBUG
-        CheckGPUError();
-        #endif
 		GLint location = glGetUniformLocation(m_ID, name.c_str());
-		#ifdef CLAP_DEBUG
-        CheckGPUError();
-        #endif
 		glUniform1iv(location, count, value);
-		#ifdef CLAP_DEBUG
-        CheckGPUError();
-        #endif
 	}
 	void OpenGLShader::SetFloat(const std::string& name, float value)
 	{

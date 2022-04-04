@@ -73,6 +73,20 @@ namespace Clap
             return BIT(m_ComponentManager->GetComponentType<T>());
         }
 
+        template<typename T1, typename T2, typename... Types>
+        EntityMask Mask()
+        {
+            EntityMask mask = 0;
+            mask = BIT(m_ComponentManager->GetComponentType<T1>()) | Mask<T2, Types...>();
+            return mask;
+        }
+
+        template<typename... Types>
+        std::vector<Entity> GetGroup()
+        {
+            return m_EntityManager->GetGroup(Mask<Types...>());
+        }
+
         std::vector<Entity> GetGroup(EntityMask mask)
         {
             return m_EntityManager->GetGroup(mask);
