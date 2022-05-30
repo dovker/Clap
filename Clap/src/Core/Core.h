@@ -3,6 +3,9 @@
 
 // Platform detection using predefined macros
 #ifdef _WIN32
+	#ifdef _MSC_VER
+	#define _CRT_SECURE_NO_WARNINGS
+	#endif
 	/* Windows x64/x86 */
 	#ifdef _WIN64
 		/* Windows x64  */

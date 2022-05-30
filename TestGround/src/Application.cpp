@@ -3,6 +3,7 @@
 #include "Clap.h"
 
 using namespace Clap;
+namespace fs = std::filesystem;
 
 bool running = true;
 
@@ -50,7 +51,7 @@ int main()
 
     Graphics::Init();
 
-    Ref<Shader> shader = Shader::Create("../../TestGround/res/ShaderMain.glsl"); 
+    Ref<Shader> shader = Shader::Create("../../../TestGround/res/ShaderMain.glsl"); 
     Ref<UniformBuffer> cameraBuffer = UniformBuffer::Create(sizeof(CameraBuffer), 0);
     Ref<UniformBuffer> modelBuffer = UniformBuffer::Create(sizeof(ModelData), 1);
     shader->SetUniformBufferBinding(cameraBuffer, "Camera");
@@ -60,16 +61,16 @@ int main()
     cameraBuffer->SetData(&cam, sizeof(cam), 0);
     modelBuffer->SetData(&model, sizeof(model), 0);
 
-    Ref<Mesh> cube = ObjParser::Parse("../../TestGround/res/spruce.obj", true);
+    Ref<Mesh> cube = ObjParser::Parse("../../../TestGround/res/spruce.obj", true);
 
-    Ref<Texture2D> albedo = Texture2D::Create("../../TestGround/res/textures/spruce_texturing_elka_BaseColor.png");
+    Ref<Texture2D> albedo = Texture2D::Create("../../../TestGround/res/textures/spruce_texturing_elka_BaseColor.png");
     TextureSpecification spec = albedo->GetSpecification();
     spec.MagFilter = FilterType::LINEAR;
     spec.MinFilter = FilterType::NEAREST;
     spec.GenerateMipmaps = true;
     albedo->SetSpecification(spec);
 
-    Ref<Texture2D> normal = Texture2D::Create("../../TestGround/res/textures/spruce_texturing_elka_Normal.png");
+    Ref<Texture2D> normal = Texture2D::Create("../../../TestGround/res/textures/spruce_texturing_elka_Normal.png");
 
     while(running)
     {

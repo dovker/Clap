@@ -6,6 +6,10 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # does not produce the json file
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "") # works
+
+
 # architecture
 if ( CMAKE_SIZEOF_VOID_P EQUAL 8 )
 set(ARCH_DIR "x64")
@@ -14,6 +18,8 @@ set(ARCH_DIR "x86")
 endif()
 
 set(SDL_SENSORS OFF CACHE BOOL "Enabling SDL Sensors")
+set(ZLIB_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zlib)
+set(ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zlib)
 
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL)
@@ -43,9 +49,9 @@ set_target_properties (SDL2main PROPERTIES
 set_target_properties (zlib PROPERTIES
     FOLDER Dependencies
 )
-set_target_properties (zip PROPERTIES
-    FOLDER Dependencies
-)
+# set_target_properties (zip PROPERTIES
+#     FOLDER Dependencies
+# )
 set_target_properties (yaml-cpp PROPERTIES
     FOLDER Dependencies
 )
@@ -61,7 +67,7 @@ set(CLAP_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/stb_image/include
     #${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/soloud/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zlib
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/libzip
+    # ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/libzip/lib
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/entt/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/asio/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp/include
@@ -71,7 +77,7 @@ set(CLAP_LINK_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zlib
-                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/libzip
+                #    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/libzip
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp)
 
 set(CLAP_WORKSPACE_DIR ${CMAKE_CURRENT_SOURCE_DIR})

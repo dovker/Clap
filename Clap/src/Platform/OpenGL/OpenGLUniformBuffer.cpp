@@ -21,9 +21,8 @@ namespace Clap
             CheckGPUError();
             glBindBuffer(GL_UNIFORM_BUFFER, 0);
             CheckGPUError();
-
-            glBindBufferBase(GL_UNIFORM_BUFFER, binding, m_ID);
         #endif
+        glBindBufferBase(GL_UNIFORM_BUFFER, binding, m_ID);
         CheckGPUError();
     }
     OpenGLUniformBuffer::~OpenGLUniformBuffer()

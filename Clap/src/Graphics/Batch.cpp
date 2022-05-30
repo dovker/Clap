@@ -75,7 +75,7 @@ namespace Clap
         delete[] indices;
 
         
-        s_Data.DefaultShader = Shader::Create("../../Game2D/res/Default2D.glsl");
+        s_Data.DefaultShader = Shader::Create("../../../Game2D/res/Default2D.glsl");
         s_Data.DefaultShader->SetUniformBufferBinding(s_Data.CameraUniformBuffer, "Camera");
         s_Data.CurrentShader = s_Data.DefaultShader;
         
@@ -257,12 +257,12 @@ namespace Clap
             }
             textureIndex = (float)s_Data.CurrentTexIndex;
             s_Data.TextureSlots[s_Data.CurrentTexIndex] = texture;
-            s_Data.CurrentTexIndex++;
+			s_Data.CurrentTexIndex++;
         }
         
         s_Data.QuadPointer->Position = pos;
         s_Data.QuadPointer->Color = color;
-        s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.w);
+		s_Data.QuadPointer->TexCoords = glm::vec2(uv.x, uv.w);
         s_Data.QuadPointer->TexIndex = textureIndex;
         s_Data.QuadPointer++;
 

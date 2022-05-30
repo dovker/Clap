@@ -18,7 +18,7 @@ namespace Clap
         static void Log(const std::string& text);
 
         //-- Helper functions
-        static std::string GetCurrentTime(); //Returns in format [hh::mm::ss]
+        static std::string GetCurrentTimeString(); //Returns in format [hh::mm::ss]
 
         //Converts log type to a string
         //Example: GetLogString(Strength::Trace); -> return: "[T]"
@@ -40,7 +40,7 @@ namespace Clap
         {
             std::stringstream iss;
 
-            iss<<GetLogString(strength)<<GetCurrentTime()<<"| ";
+            iss<<GetLogString(strength)<<GetCurrentTimeString()<<"| ";
 
             LogArgs(iss, std::forward<Args>(args)...);
         }

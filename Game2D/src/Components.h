@@ -14,12 +14,21 @@ namespace Game2D
     struct CameraControllerComponent
     {
         Entity Target = NULL_ENTITY;
+        float FollowVelocity = 0.1f;
         glm::vec2 Offset;
     };
     struct PlayerControllerComponent
     {
-        glm::vec2 Acceleration;
-        glm::vec2 Velocity;
+        glm::vec3 Acceleration;
+    };
+    struct PhysicsBodyComponent
+    {
+        glm::vec3 Acceleration = {0.0f, 0.0f, 0.0f};
+        glm::vec3 Velocity = {0.0f, 0.0f, 0.0f};
+        glm::vec3 Force = {0.0f, 0.0f, 0.0f};
+        glm::vec3 Gravity = {0.0f, 0.0f, 0.0f};
+        float Mass = 1.0f;
+        float Drag = 0.1f;
     };
     struct SpriteComponent
     {
