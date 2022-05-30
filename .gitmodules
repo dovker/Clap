@@ -16,3 +16,6 @@
 [submodule "Clap/thirdparty/gravity"]
 	path = Clap/thirdparty/gravity
 	url = https://github.com/marcobambini/gravity.git
+[submodule "Clap/thirdparty/sol2"]
+	path = Clap/thirdparty/sol2
+	url = https://github.com/ThePhD/sol2.git
