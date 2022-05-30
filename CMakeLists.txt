@@ -28,6 +28,7 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zlib)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/libzip)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/gravity)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp)
 
 #Folder Structure
@@ -68,17 +69,18 @@ set(CLAP_INCLUDE_DIRS
     #${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/soloud/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zlib
     # ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/libzip/lib
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/entt/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/asio/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/json/include)
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/json/include
+    ${GRAVITY_INCLUDE_DIR})
 
 set(CLAP_LINK_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zlib
                 #    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/libzip
-                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp)
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/gravity)
 
 set(CLAP_WORKSPACE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 

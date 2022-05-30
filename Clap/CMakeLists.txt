@@ -32,6 +32,6 @@ add_compile_definitions(CLAP_USE_OPENGL CLAP_OPENGL_4_5 CLAP_USE_SDL2 CLAP_DEBUG
 
 target_link_directories(Clap PRIVATE ${CLAP_LINK_DIRS})
 
-target_link_libraries(Clap PUBLIC SDL2main SDL2-static ImGui Glad zlib yaml-cpp)
+target_link_libraries(Clap PUBLIC SDL2main SDL2-static ImGui Glad zlib gravityapi_s yaml-cpp)
 
 

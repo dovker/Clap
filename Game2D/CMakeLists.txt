@@ -17,6 +17,6 @@ add_compile_definitions(_CRT_SCURE_NO_WARNINGS)
 
 target_link_directories(Game2D PRIVATE ${CLAP_LINK_DIRS})
 
-target_link_libraries(Game2D PUBLIC Clap SDL2main SDL2-static ImGui yaml-cpp)
+target_link_libraries(Game2D PUBLIC Clap SDL2main SDL2-static ImGui gravityapi_s yaml-cpp)
 
 
