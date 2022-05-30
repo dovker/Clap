@@ -163,6 +163,11 @@ namespace Clap {
 		return (double)SDL_GetPerformanceCounter();
 	}
 
+    inline double SDLWindow::GetFrequency()
+	{
+		return (double)SDL_GetPerformanceFrequency();
+	}
+
 	bool SDLWindow::IsVSync() const
 	{
 		return m_Data.VSync;

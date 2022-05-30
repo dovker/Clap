@@ -18,6 +18,7 @@ namespace Clap {
 		inline unsigned int GetWidth() const override { return m_Data.Width; }
 		inline unsigned int GetHeight() const override { return m_Data.Height; }
 		inline double GetTime() override;
+		inline double GetFrequency() override;
 
 		virtual void SetVSync(bool enabled)             override;
         virtual void SetFullscreen(bool enabled)        override;

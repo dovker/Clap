@@ -26,6 +26,8 @@ namespace Clap
         static void ToggleBlending(bool toggle);
         static void ToggleBackfaceCulling(bool toggle);
 
+        static void BindTexture(uint32_t textureID, uint32_t slot);
+
         static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0);
         static void DrawIndexedInstanced(const Ref<VertexArray>& vertexArray, uint32_t instanceCount = 1, uint32_t indexCount = 0);
     };

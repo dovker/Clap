@@ -28,10 +28,10 @@ namespace Game2D
 
         Window* window = Window::Create();
 
-        Transform cameraTransform(glm::vec3(-200.0, -200.0, 0.0), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+        Transform cameraTransform(glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
         Transform transform(glm::vec3(0.0f, 0.0f, 0.01f), glm::vec3(0.0f, 0.0f, 0.0f),  glm::vec3(1.0f, 1.0f, 1.0f));
 
-        glm::mat4 cameraProjection = glm::ortho(-1280.0f * 0.5f, 1280.0f * 0.5f, 720.0f * 0.5f, -720.0f * 0.5f, 100.0f, -100.0f);
+        glm::mat4 cameraProjection = glm::ortho(-640.0f * 0.5f, 640.0f * 0.5f, 360.0f * 0.5f, -360.0f * 0.5f, 100.0f, -100.0f);
 
         Ref<Texture2D> albedo = Texture2D::Create("../../../Game2D/res/textures/awesomeface.png");
 
@@ -40,7 +40,8 @@ namespace Game2D
         GameWorld->RegisterComponent<SpriteComponent>();
         GameWorld->RegisterComponent<CameraComponent>();
         GameWorld->RegisterComponent<CameraControllerComponent>();
-        GameWorld->RegisterComponent<PhysicsBodyComponent>();
+        GameWorld->RegisterComponent<RPGPhysicsBodyComponent>();
+        GameWorld->RegisterComponent<PlayerControllerComponent>();
 
 
         Entity camera = GameWorld->CreateEntity();
@@ -49,23 +50,29 @@ namespace Game2D
         Entity sprite = GameWorld->CreateEntity();
         GameWorld->AddComponent<TransformComponent>(sprite, transform);
         GameWorld->AddComponent<SpriteComponent>(sprite, {albedo});
-        GameWorld->AddComponent<PhysicsBodyComponent>(sprite, PhysicsBodyComponent());
-        GameWorld->GetComponent<PhysicsBodyComponent>(sprite).Force = {-90.0f, 0.0f, 0.0f};
+        GameWorld->AddComponent<PlayerControllerComponent>(sprite, {glm::vec3(20.0f, 20.0f, 0.0f)});
+        GameWorld->AddComponent<RPGPhysicsBodyComponent>(sprite, RPGPhysicsBodyComponent());
+        //GameWorld->GetComponent<PhysicsBodyComponent>(sprite).Force = {-90.0f, 0.0f, 0.0f};
 
 
-        GameWorld->AddComponent<CameraControllerComponent>(camera, {NULL_ENTITY, 0.01f, glm::vec2(0.0f)});
+
+
+        GameWorld->AddComponent<CameraControllerComponent>(NULL_ENTITY, {sprite, 0.01f, glm::vec2(0.0f)});
 
         s_Systems.push_back(std::make_shared<RenderSystem>(GameWorld));
         s_Systems.push_back(std::make_shared<CameraSystem>(GameWorld));
-        s_Systems.push_back(std::make_shared<PhysicsSystem>(GameWorld));
+        s_Systems.push_back(std::make_shared<RPGPhysicsSystem>(GameWorld));
+        s_Systems.push_back(std::make_shared<PlayerControllerSystem>(GameWorld));
 
         for(auto& sys : s_Systems)
         {
             sys->OnInit();
         }
 
-        double CurrentTime = window->GetTime();
-        double PreviousTime = 0.0;
+        const double FRAME_TIME = 1 / 60.0;
+
+        double CurrentTime = 0.0;
+        double PreviousTime = window->GetTime();
         double DeltaTime;
 
         while(running)
@@ -73,7 +80,7 @@ namespace Game2D
             PreviousTime = CurrentTime;
             CurrentTime = window->GetTime();
 
-            DeltaTime = (double)((CurrentTime - PreviousTime)*1000 / window->GetTime() ); //SDL WAY
+            DeltaTime = (double)((CurrentTime - PreviousTime) / window->GetFrequency() ); //SDL WAY
 
             while(!EventSystem::IsEmpty())
             {

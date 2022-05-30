@@ -69,6 +69,12 @@ namespace Clap
         glViewport(x, y, width, height);
     }
 
+    void Graphics::BindTexture(uint32_t textureID, uint32_t slot)
+    {
+        glActiveTexture(GL_TEXTURE0 + slot);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+    }
+
     void Graphics::SetClearColor(const glm::vec4& color)
     {
         glClearColor(color.r, color.g, color.b, color.a);

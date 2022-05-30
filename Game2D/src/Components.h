@@ -19,7 +19,11 @@ namespace Game2D
     };
     struct PlayerControllerComponent
     {
-        glm::vec3 Acceleration;
+        glm::vec3 Speed;
+    };
+    struct RPGPhysicsBodyComponent
+    {
+        glm::vec3 Velocity = {0.0f, 0.0f, 0.0f};
     };
     struct PhysicsBodyComponent
     {
@@ -30,14 +34,14 @@ namespace Game2D
         float Mass = 1.0f;
         float Drag = 0.1f;
     };
-    struct SpriteComponent
+    struct SpriteComponent //DEFINE A SPRITE TYPE AND CONVERT IT INTO A COMPONENT
     {
         Ref<Texture2D> Texture;
         bool ScaleToTexture = true;
 
         glm::vec2 Pivot = {0.0f, 0.0f};
         bool FlippedX = false;
-        bool FlippedY = false;
+        bool FlippedY = false; //TODO: ADD TILE THING
         SpriteComponent() {};
         SpriteComponent(Ref<Texture2D> tex) : Texture(tex) {};
     };
