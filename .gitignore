@@ -43,7 +43,7 @@ Build/.DS_Store
 Clap/Makefile
 Makefile
 TestGround/Makefile
-
+Game2D
 
 **/cmake-build-debug
 **/CMakeCache.txt

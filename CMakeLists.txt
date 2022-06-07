@@ -87,4 +87,3 @@ set(CLAP_WORKSPACE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(Clap)
 add_subdirectory(TestGround)
-add_subdirectory(Game2D)

@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
+add_subdirectory(../ Clap)
+
 project(Game2D LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
