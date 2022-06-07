@@ -7,8 +7,8 @@ namespace Game2D
     class PostProcess //ADD INITIALIZER LIST FOR BINDING ALL COLOR CHANNELS
     {
     public:
-        PostProcess(Ref<Framebuffer> framebuffer, Ref<Shader> shader, Ref<UniformBuffer> uniformBuffer, bool useDepth = false)
-            : m_Framebuffer(framebuffer), m_Shader(shader), m_UniformBuffer(uniformBuffer), m_UseDepth(useDepth)
+        PostProcess(glm::vec2 viewport, Ref<Framebuffer> framebuffer, Ref<Shader> shader, Ref<UniformBuffer> uniformBuffer, bool useDepth = false)
+            : m_ViewportSize(viewport), m_Framebuffer(framebuffer), m_Shader(shader), m_UniformBuffer(uniformBuffer), m_UseDepth(useDepth)
         {
             m_QuadVA = VertexArray::Create();
             float vertices[4 * 5] = {
@@ -44,6 +44,7 @@ namespace Game2D
             m_Framebuffer->Bind();
             Graphics::SetClearColor({0.0f, 0.0f, 0.0f, 0.0f});
             Graphics::Clear();
+            Graphics::SetViewport(0, 0, m_Framebuffer->GetSize().x, m_Framebuffer->GetSize().y);
         }
         void End()
         {
@@ -66,7 +67,7 @@ namespace Game2D
                 m_Shader->SetInt("gDepth", i);
                 Graphics::BindTexture(m_Framebuffer->GetDepthAttachmentRendererID(), i);
             }
-
+            Graphics::SetViewport(0, 0, m_ViewportSize.x, m_ViewportSize.y);
             m_QuadVA->Bind();
             Graphics::SetClearColor({0.3f, 0.4f, 0.45f, 1.0f});
             Graphics::Clear();
@@ -77,9 +78,9 @@ namespace Game2D
             m_Shader->Unbind();
         }
 
-        static Ref<PostProcess> Create(Ref<Framebuffer> framebuffer, Ref<Shader> shader, Ref<UniformBuffer> uniformBuffer)
+        static Ref<PostProcess> Create(glm::vec2 viewport, Ref<Framebuffer> framebuffer, Ref<Shader> shader, Ref<UniformBuffer> uniformBuffer)
         {
-            return CreateRef<PostProcess>(framebuffer, shader, uniformBuffer);
+            return CreateRef<PostProcess>(viewport, framebuffer, shader, uniformBuffer);
         }
 
     private:
@@ -87,6 +88,7 @@ namespace Game2D
         Ref<UniformBuffer> m_UniformBuffer;
         Ref<Framebuffer> m_Framebuffer;
         Ref<VertexArray> m_QuadVA;
+        glm::vec2 m_ViewportSize;
 
         bool m_UseDepth;
     };

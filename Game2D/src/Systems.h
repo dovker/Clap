@@ -23,7 +23,9 @@ namespace Game2D
                 if(cameraController.Target != NULL_ENTITY)
                 {
                     Transform target = m_World->GetComponent<TransformComponent>(cameraController.Target);
-                    transform.Position = glm::mix(transform.Position, target.Position + glm::vec3(cameraController.Offset, 0.0f), cameraController.FollowVelocity);
+                    auto texture = m_World->GetComponent<SpriteComponent>(cameraController.Target).Texture;
+                    glm::vec3 offset = glm::vec3(cameraController.Offset.x * texture->GetWidth(), cameraController.Offset.y * texture->GetWidth(), 0.0f);
+                    transform.Position = glm::mix(transform.Position, target.Position + offset, cameraController.FollowVelocity);
                 }
             }
         }

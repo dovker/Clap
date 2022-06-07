@@ -16,6 +16,10 @@ namespace Clap
             : Position(pos), Rotation(rot), Scale(scale)
         {}
 
+        Transform(const Transform& transform)
+            : Position(transform.Position), Rotation(transform.Rotation), Scale(transform.Scale)
+        {}
+
         glm::mat4 GetTransform() const;
         Transform& operator +=(const Transform& t2);
 

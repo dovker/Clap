@@ -1,5 +1,6 @@
 #pragma once
 #include "Clap.h"
+#include "Tiles.h"
 
 using namespace Clap;
 
@@ -51,5 +52,19 @@ namespace Game2D
         glm::vec2 Offset;
         bool BasedOnSprite;
     };
+    struct TileMapComponent
+    {
+        Ref<TileMap> Map;
+        Ref<Texture2D> Texture;
+        glm::vec2 TileSize;
+        
+        TileMapComponent()
+        {}
+
+        TileMapComponent(Ref<TileMap> tilemap, Ref<Texture2D> texture, glm::vec2 size)
+            : Map(tilemap), Texture(texture), TileSize(size)
+        {}
+    };
+    
 
 }
