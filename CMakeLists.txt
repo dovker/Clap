@@ -86,4 +86,4 @@ set(CLAP_LINK_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL
 set(CLAP_WORKSPACE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(Clap)
-add_subdirectory(TestGround)
+add_subdirectory(examples/TestGround)
