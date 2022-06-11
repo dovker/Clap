@@ -13,3 +13,6 @@
 [submodule "Clap/thirdparty/SDL"]
 	path = Clap/thirdparty/SDL
 	url = https://github.com/libsdl-org/SDL.git
+[submodule "Clap/thirdparty/bgfx"]
+	path = Clap/thirdparty/bgfx
+	url = https://github.com/bkaradzic/bgfx.cmake

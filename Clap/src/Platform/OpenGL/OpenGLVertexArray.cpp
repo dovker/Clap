@@ -82,7 +82,7 @@ namespace Clap
             glVertexAttribDivisor(index, 1);
             CheckGPUError();
             index++;
-        }//TODO: Finish
+        }
         
         m_VertexBuffers.push_back(vertexBuffer);
     }

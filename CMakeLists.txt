@@ -25,6 +25,7 @@ set(ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zlib)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL)
 #add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/soloud/contrib)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/bgfx)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zlib)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/libzip)
@@ -63,6 +64,9 @@ set_target_properties (ImGui PROPERTIES
 set(CLAP_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/bgfx/bgfx/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/bgfx/bimg/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/bgfx/bx/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui   
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/glm
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/stb_image/include
@@ -77,6 +81,7 @@ set(CLAP_INCLUDE_DIRS
 
 set(CLAP_LINK_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/bgfx
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zlib
                 #    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/libzip
@@ -87,3 +92,4 @@ set(CLAP_WORKSPACE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(Clap)
 add_subdirectory(examples/TestGround)
+add_subdirectory(bgfxTest)

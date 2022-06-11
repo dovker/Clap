@@ -28,7 +28,7 @@ namespace Clap
     Mesh::Mesh(float* vertices, size_t bufferSize, uint32_t* indices, uint32_t indexCount, bool tangents)
         : m_Count(indexCount), m_Tangents(tangents)
     {
-        m_Vertices = std::vector(vertices, vertices + bufferSize); //TODO: FIX THIS
+        m_Vertices = std::vector(vertices, vertices + bufferSize);
         m_Indices = std::vector(indices, indices + indexCount * sizeof(uint32_t));
         m_GenerateVertexArray();
     }

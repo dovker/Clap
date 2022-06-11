@@ -129,7 +129,7 @@
 #define KEY_F22 113
 #define KEY_F23 114
 #define KEY_F24 115
-#define KEY_EXECUTE 116
+#define KEY_EXEC 116
 #define KEY_HELP 117
 #define KEY_MENU 118
 #define KEY_SELECT 119

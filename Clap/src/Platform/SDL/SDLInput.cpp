@@ -41,5 +41,4 @@ namespace Clap
         SDL_GetMouseState(&x, &y);
         return (float)y;
     }
-    //TODO: MAKE THIS MORE EFFICIENT
 }
