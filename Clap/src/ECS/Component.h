@@ -92,6 +92,11 @@ namespace Clap
         template<typename T>
         void AddComponent(Entity entity, T component)
         {
+            const char* typeName = typeid(T).name();
+
+            if(m_ComponentTypes.find(typeName) == m_ComponentTypes.end())
+                RegisterComponent<T>();
+            
             GetComponentArray<T>()->InsertData(entity, component);
         }
 

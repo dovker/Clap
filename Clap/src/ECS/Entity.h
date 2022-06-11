@@ -2,7 +2,7 @@
 #include "pch.h"
 
 using Entity = uint32_t;
-const Entity MAX_ENTITIES = 10000;
+const Entity MAX_ENTITIES = 1000000;
 const Entity NULL_ENTITY = 0;
 
 using EntityMask = uint64_t;

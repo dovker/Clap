@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "Core/Core.h"
 #include "Core/Log.h"
+#include "System.h"
 
 
 namespace Clap
@@ -91,6 +92,60 @@ namespace Clap
         {
             return m_EntityManager->GetGroup(mask);
         }
+        
+        void AddSystem(Ref<System> system)
+        {
+            m_Systems.push_back(system);
+        }
+
+        void OnInit()
+        {
+            for(auto& sys : m_Systems)
+            {
+                sys->OnInit();
+            }
+        }
+
+        void OnRender()
+        {
+            for(auto& sys : m_Systems)
+            {
+                sys->OnRender();
+            }
+        }
+
+        void OnUpdate(double deltaTime)
+        {
+            for(auto& sys : m_Systems)
+            {
+                sys->OnUpdate(deltaTime);
+            }
+        }
+
+        void OnEvent(Event& e)
+        {
+            for(auto& sys : m_Systems)
+            {
+                sys->OnEvent(e);
+            }
+        }
+
+        void OnImmediateEvent(Event& e)
+        {
+            for(auto& sys : m_Systems)
+            {
+                sys->OnImmediateEvent(e);
+            }
+        }
+
+        void OnDestroy()
+        {
+            for(auto& sys : m_Systems)
+            {
+                sys->OnDestroy();
+            }
+        }
+
 
         static Ref<World> Create()
         {
@@ -100,5 +155,7 @@ namespace Clap
     private:
         Ref<ComponentManager> m_ComponentManager;
         Ref<EntityManager> m_EntityManager;
+
+        std::vector<Ref<System>> m_Systems;
     };
 }
