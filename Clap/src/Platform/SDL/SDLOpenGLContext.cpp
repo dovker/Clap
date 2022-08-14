@@ -14,6 +14,15 @@ namespace Clap {
     SDLOpenGLContext::SDLOpenGLContext(Window* window)
     {
         m_Window = window->GetWindowPtr();
+        #ifdef CLAP_USE_OPENGL_4_5
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+        #else
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+        #endif
+
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         // Create a OpenGL context on SDL2
         m_Context = SDL_GL_CreateContext((SDL_Window*)m_Window);
 

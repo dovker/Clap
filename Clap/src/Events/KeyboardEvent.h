@@ -7,4 +7,8 @@ namespace Clap
         int KeyCode;
         int RepeatCount;
     };
+    struct KeyTypedEvent
+    {
+        char Key;
+    };
 }

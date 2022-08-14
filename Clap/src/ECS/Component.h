@@ -14,7 +14,6 @@ namespace Clap
         virtual void EntityDestroyed(Entity entity) = 0;
     };
 
-
     template<typename T>
     class ComponentArray : public IComponentArray
     {

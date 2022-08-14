@@ -30,17 +30,40 @@ namespace Clap
         return 0;
     }
 
+    enum class Attribute
+    {
+        POSITION,
+        NORMAL,
+        TANGENT,
+        BITANGENT,
+        COLOR0,
+        COLOR1,
+        COLOR2,
+        COLOR3,
+        INDICES,
+        WEIGHT,
+        TEXCOORD0,
+        TEXCOORD1,
+        TEXCOORD2,
+        TEXCOORD3,
+        TEXCOORD4,
+        TEXCOORD5,
+        TEXCOORD6,
+        TEXCOORD7,
+        COUNT,
+    };
+
     struct BufferElement
     {
         BufferElement() = default;
         
-        std::string Name;
+        Attribute Name;
         GraphicsDataType Type;
         uint32_t Size;
         uint32_t Offset;
         bool Normalized;
         
-        BufferElement(GraphicsDataType type, const std::string name, bool normalized = false)
+        BufferElement(GraphicsDataType type, Attribute name, bool normalized = false)
             : Name(name), Type(type), Size(GraphicsDataTypeSize(type)), Offset(0), Normalized(normalized)
         {}
 

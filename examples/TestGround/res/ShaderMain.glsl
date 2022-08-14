@@ -13,7 +13,7 @@ out VertexOutput
 	mat3 TBN;
 } Output;
 
-layout(std140) uniform Camera
+layout(std140) uniform GameCamera
 {
 	mat4 ViewProjection;
 };

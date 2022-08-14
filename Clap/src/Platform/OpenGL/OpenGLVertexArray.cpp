@@ -95,6 +95,8 @@ namespace Clap
         CheckGPUError();
 
         m_IndexBuffer = indexBuffer;
+
+        glBindVertexArray(0);
         CheckGPUError();
     }
 }

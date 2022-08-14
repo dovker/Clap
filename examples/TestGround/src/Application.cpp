@@ -32,6 +32,14 @@ int main()
     EventSystem::AttatchCallback(&OnEvent);
 
     Window* window = Window::Create();
+    Ref<UI> ui = UI::Create(window);
+    ui->Init();
+    Ref<Element> elem = Element::Create(AABB({50.0f, 25.0f}, {100.0f, 50.0f}, {0.0f, 0.0f}));
+    Ref<Element> elem2 = Element::Create(AABB({500.0f, 25.0f}, {100.0f, 100.0f}, {0.5f, 0.5f}));
+    Ref<Element> elem3 = Element::Create(AABB({50.0f, 50.0f}, {50.0f, 50.0f}, {0.5f, 0.5f}));
+    ui->AttachElement(elem);
+    ui->AttachElement(elem2);
+    elem2->AddChild(elem3);
 
     glm::vec3 up = { 0.0f, 1.0f, 0.0f };
     glm::vec3 camPos = { 0.1f, 3.1f, 3.2f };
@@ -52,16 +60,18 @@ int main()
     Graphics::Init();
 
     Ref<Shader> shader = Shader::Create("../../../TestGround/res/ShaderMain.glsl"); 
-    Ref<UniformBuffer> cameraBuffer = UniformBuffer::Create(sizeof(CameraBuffer), 0);
-    Ref<UniformBuffer> modelBuffer = UniformBuffer::Create(sizeof(ModelData), 1);
-    shader->SetUniformBufferBinding(cameraBuffer, "Camera");
+    Ref<UniformBuffer> cameraBuffer = UniformBuffer::Create(sizeof(CameraBuffer), 1);
+    Ref<UniformBuffer> modelBuffer = UniformBuffer::Create(sizeof(ModelData), 2);
+    shader->SetUniformBufferBinding(cameraBuffer, "GameCamera");
     shader->SetUniformBufferBinding(modelBuffer, "ModelData");
     
 
     cameraBuffer->SetData(&cam, sizeof(cam), 0);
     modelBuffer->SetData(&model, sizeof(model), 0);
+            Batch::Init();
 
     Ref<Mesh> cube = ObjParser::Parse("../../../TestGround/res/spruce.obj", true);
+
 
     Ref<Texture2D> albedo = Texture2D::Create("../../../TestGround/res/textures/spruce_texturing_elka_BaseColor.png");
     TextureSpecification spec = albedo->GetSpecification();
@@ -77,6 +87,9 @@ int main()
         while(!EventSystem::IsEmpty())
         {
             Event e = EventSystem::GetEvent();
+            ui->OnEvent(e);
+            if(e.Handled) continue;
+
             switch(e.Type)
             {
                 case EventType::WindowClose:
@@ -123,10 +136,15 @@ int main()
         //triangle->Draw();
         
         cube->Draw();
+
+        shader->Unbind();
+
         //TODO: Test graphics by writing a deferred renderer
+
+        ui->OnRender();
 
         window->OnUpdate();
     }
-
+    Batch::Shutdown();
     return 0;
 }

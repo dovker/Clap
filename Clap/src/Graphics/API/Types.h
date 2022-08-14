@@ -31,7 +31,6 @@ namespace Clap
         NONE = -1,
         VERTEX,
         FRAGMENT,
-        GEOMETRY,
         COMPUTE
     };
 

@@ -11,9 +11,11 @@ namespace Clap
         m_VertexArray = VertexArray::Create();
 
         if(m_Tangents)
-            vertexBuffer->SetLayout({ {GraphicsDataType::FLOAT3, "Position"}, {GraphicsDataType::FLOAT2, "TexCoords"}, {GraphicsDataType::FLOAT3, "Normals"}, {GraphicsDataType::FLOAT3, "Tangents"}});
+            vertexBuffer->SetLayout({ {GraphicsDataType::FLOAT3, Attribute::POSITION}, {GraphicsDataType::FLOAT2, Attribute::TEXCOORD0}, 
+                                      {GraphicsDataType::FLOAT3, Attribute::NORMAL}, {GraphicsDataType::FLOAT3, Attribute::TANGENT}});
         else
-            vertexBuffer->SetLayout({ {GraphicsDataType::FLOAT3, "Position"}, {GraphicsDataType::FLOAT2, "TexCoords"}, {GraphicsDataType::FLOAT3, "Normals"}});
+            vertexBuffer->SetLayout({ {GraphicsDataType::FLOAT3, Attribute::POSITION}, {GraphicsDataType::FLOAT2, Attribute::TEXCOORD0}, 
+                                      {GraphicsDataType::FLOAT3, Attribute::NORMAL}});
 
         m_VertexArray->AddVertexBuffer(vertexBuffer);
         m_VertexArray->SetIndexBuffer(indexBuffer);

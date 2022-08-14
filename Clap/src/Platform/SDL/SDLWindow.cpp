@@ -11,6 +11,7 @@
 
 #include "SDLWindow.h"
 #include "SDLOpenGLContext.h"
+#include "SDLbgfxContext.h"
 
 namespace Clap {
 
@@ -29,13 +30,14 @@ namespace Clap {
             CLAP_ERROR("SDL2 video subsystem couldn't be initialized. Error: ", SDL_GetError());
             exit(1);
         }
-        uint32_t GraphicsFlag;
+        uint32_t GraphicsFlag = 0;
         #if defined(CLAP_USE_OPENGL)
             GraphicsFlag = SDL_WINDOW_OPENGL;
             #if defined(CLAP_PLATFORM_MACOS) 
             SDLOpenGLContext::ForceModernOpenGL();
             #endif
         #endif
+
 
         auto flags = SDL_WINDOW_SHOWN | GraphicsFlag;
 
@@ -47,6 +49,8 @@ namespace Clap {
 
         #ifdef CLAP_USE_OPENGL
             m_Context = new SDLOpenGLContext(this);
+        #elif CLAP_USE_BGFX
+            m_Context = new SDLbgfxContext(this);
         #endif
 
         SetVSync(true);
@@ -76,8 +80,13 @@ namespace Clap {
                     switch(event.window.type)
                     {
                         case SDL_WINDOWEVENT_RESIZED:
+                            m_Data.Width = event.window.data1;
+                            m_Data.Height = event.window.data2;
+
                             e.Type = EventType::WindowResize;
                             e.Data.WindowResizeEvent = { event.window.data1, event.window.data2 };
+
+                            //TODO: Graphics::SetViewport(0, 0, m_Data.Width, m_Data.Height);
                         break;
                         case SDL_WINDOWEVENT_CLOSE:
                             e.Type = EventType::WindowClose;
@@ -120,6 +129,11 @@ namespace Clap {
                     e.Type = EventType::KeyReleased;
                     e.Data.KeyEvent = { event.key.keysym.scancode, event.key.repeat };
                 break;
+
+                case SDL_TEXTINPUT:
+                    e.Type = EventType::KeyTyped;
+                    e.Data.KeyTypedEvent = { event.text.text[0] };
+                break;
             }
             EventSystem::RegisterEvent(e);
         }
@@ -150,6 +164,16 @@ namespace Clap {
     void SDLWindow::SetTitle(const std::string& name)
     {
         SDL_SetWindowTitle(m_Window, name.c_str());
+    }
+
+    void SDLWindow::StartTextInput() 
+    {
+        SDL_StartTextInput();
+    }
+
+    void SDLWindow::StopTextInput()  
+    {
+        SDL_StopTextInput();
     }
 
 	void SDLWindow::OnUpdate()

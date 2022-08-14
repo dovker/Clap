@@ -26,6 +26,9 @@ namespace Clap {
         virtual void SetCursorVisible(bool enabled)     override;
         virtual void SetTitle(const std::string& name)  override;
 
+		virtual void StartTextInput() override;
+		virtual void StopTextInput()  override;
+
         virtual void PollEvents() override;
 
 		bool IsVSync() const override;

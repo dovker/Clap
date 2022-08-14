@@ -28,3 +28,6 @@
 #include "ECS/Entity.h"
 #include "ECS/Component.h"
 #include "ECS/World.h"
+
+#include "UI/UI.h"
+#include "UI/Element.h"

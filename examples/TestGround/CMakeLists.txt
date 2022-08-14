@@ -10,10 +10,12 @@ file(GLOB_RECURSE TG_SRC_FILES "src/*.cpp"
 
 add_executable(TestGround ${TG_SRC_FILES})
 
-target_include_directories(TestGround PUBLIC ${CLAP_WORKSPACE_DIR}/Clap/src
-                                      PUBLIC ${CLAP_INCLUDE_DIRS})
+add_compile_definitions(CLAP_USE_OPENGL CLAP_USE_OPENGL_4_5 CLAP_USE_SDL2 _CRT_SCURE_NO_WARNINGS)
 
-add_compile_definitions(_CRT_SCURE_NO_WARNINGS)
+add_subdirectory(../../ Clap)
+
+target_include_directories(TestGround SYSTEM PUBLIC ${CLAP_WORKSPACE_DIR}/Clap/src
+                                      SYSTEM PUBLIC ${CLAP_INCLUDE_DIRS})
 
 target_link_directories(TestGround PRIVATE ${CLAP_LINK_DIRS})
 

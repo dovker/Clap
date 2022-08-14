@@ -35,6 +35,9 @@ namespace Clap
         virtual void SetTitle(const std::string& name) = 0;
 		virtual void SetCursorVisible(bool enabled) = 0;
 
+		virtual void StartTextInput() = 0;
+		virtual void StopTextInput() = 0;
+
 		virtual void PollEvents() = 0;
         
 		virtual bool IsVSync() const = 0;

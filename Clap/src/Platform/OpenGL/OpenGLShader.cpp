@@ -49,9 +49,6 @@ namespace Clap
 			case GL_FRAGMENT_SHADER:
 				shaderTypeName = "fragment";
 				break;
-			case GL_GEOMETRY_SHADER:
-				shaderTypeName = "geometry";
-				break;
 			}
 
 			CLAP_ERROR("Failed to compile ", shaderTypeName, " Shader");
@@ -72,8 +69,6 @@ namespace Clap
 				type = ShaderType::VERTEX;
 			else if (line.find("fragment") != std::string::npos)
 				type = ShaderType::FRAGMENT;
-			else if (line.find("geometry") != std::string::npos)
-				type = ShaderType::GEOMETRY;
 		}
 		else
 		{
@@ -115,10 +110,9 @@ namespace Clap
 
 		const std::string vertexShader   = ss[0].str();
 		const std::string fragmentShader = ss[1].str();
-		const std::string geometryShader = ss[2].str();
 		
 		uint32_t id = glCreateProgram();
-		uint32_t vs = 0, fs = 0, gs = 0;
+		uint32_t vs = 0, fs = 0;
 
 		if(vertexShader.length() > 0)
 		{
@@ -132,12 +126,6 @@ namespace Clap
 			glAttachShader(id, fs);
 			CheckGPUError();
 		}
-		if(geometryShader.length() > 0)
-		{
-			gs = CompileShader(GL_GEOMETRY_SHADER, geometryShader);
-			glAttachShader(id, gs);
-			CheckGPUError();
-		}
 
 		glLinkProgram(id);
 		CheckGPUError();
@@ -148,8 +136,6 @@ namespace Clap
 			glDeleteShader(vs);
 		if(fs)
 			glDeleteShader(fs);
-		if(gs)
-			glDeleteShader(gs);
 
 		CheckGPUError();
 		return id;

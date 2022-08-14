@@ -10,6 +10,8 @@ namespace Clap
     {
         #ifdef CLAP_USE_OPENGL
             return CreateRef<OpenGLTexture2D>(path);
+        #elif CLAP_USE_BGFX
+            return nullptr;
         #else
             CLAP_ASSERT(false, "No graphics API set!");
             return nullptr;
@@ -19,6 +21,8 @@ namespace Clap
     {
         #ifdef CLAP_USE_OPENGL
             return CreateRef<OpenGLTexture2D>(width, height, specification);
+        #elif CLAP_USE_BGFX
+            return nullptr;
         #else
             CLAP_ASSERT(false, "No graphics API set!");
             return nullptr;
@@ -28,6 +32,8 @@ namespace Clap
     {
         #ifdef CLAP_USE_OPENGL
             return CreateRef<OpenGLTexture2D>(buffer);
+        #elif CLAP_USE_BGFX
+            return nullptr;
         #else
             CLAP_ASSERT(false, "No graphics API set!");
             return nullptr;

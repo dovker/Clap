@@ -1,3 +1,5 @@
+#ifdef CLAP_USE_OPENGL
+
 #include "pch.h"
 
 #include "OpenGL.h"
@@ -123,6 +125,7 @@ namespace Clap
 
     void Graphics::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
     {
+        vertexArray->Bind();
         uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
         CheckGPUError();
@@ -132,6 +135,7 @@ namespace Clap
 
     void Graphics::DrawIndexedInstanced(const Ref<VertexArray>& vertexArray, uint32_t instanceCount, uint32_t indexCount)
     {
+        vertexArray->Bind();
         uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
         glDrawElementsInstanced(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0, instanceCount);
         CheckGPUError();
@@ -218,7 +222,6 @@ namespace Clap
         {
             case ShaderType::FRAGMENT:         return GL_FRAGMENT_SHADER;
             case ShaderType::VERTEX:           return GL_VERTEX_SHADER;
-            case ShaderType::GEOMETRY:         return GL_GEOMETRY_SHADER;
             case ShaderType::COMPUTE:          return GL_COMPUTE_SHADER;
             default: break;
         }
@@ -254,3 +257,5 @@ namespace Clap
         return 0;
     }
 }
+
+#endif
