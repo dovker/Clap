@@ -1,9 +1,27 @@
 # Clap
+Clap Game Framework
 
-A simple C++ Game development framework, made with simplicity in mind. It is not intended to be a game engine, rather an alternative to MonoGame in C++
+**Clap Framework** is a game framework marketed towards game developers that choose to develop games at a low-level with C++. It's main goal is to be as simple, flexible and clean as possible, while having great performance.
 
-Goals:
- - Graphics and audio abstraction
- - A powerful event system
- - UDP and TCP Networking
- - Cross-platform
+# Plan
+
+Currently this framework is being developed to reach an Alpha ( Usable ) state, that would be feature complete enough to develop a 2D game and provide enough tools for one to comfortably write an advanced 3D renderer on top of it.
+
+# Current Features
+* OpenGL and SDL abstractions
+* Custom ECS system
+* Custom Event system and Event pools
+* Sprite Batching
+
+# Features currently being developed
+* Flexible UI system
+* Text rendering
+* Bindings to a scripting language
+
+# Future features
+* Project structuring and packaging
+* BGFX support (for cross-platform rendering)
+* 3D Rendering functionalities
+* Asset management and File system
+* Multithreading
+* 3D Audio
