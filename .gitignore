@@ -44,6 +44,7 @@ Clap/Makefile
 Makefile
 TestGround/Makefile
 Game2D
+dotfx
 
 **/cmake-build-debug
 **/CMakeCache.txt

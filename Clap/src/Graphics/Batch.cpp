@@ -221,7 +221,7 @@ namespace Clap
 
         glm::mat4 newTransform;
         if(scaleByTexture)
-            newTransform = glm::scale(transform, {(float)texture->GetWidth(), (float)texture->GetHeight(), 1.0f});
+            newTransform = glm::scale(transform, {(float)texture->GetWidth() * glm::abs(uv.x-uv.z), (float)texture->GetHeight() * glm::abs(uv.y-uv.w), 1.0f});
 
         glm::vec2 uvs[4] = 
         {
@@ -245,7 +245,7 @@ namespace Clap
 
     void Batch::Submit(const glm::mat4& transform, Ref<Texture2D>& texture, const glm::vec2& from, const glm::vec2& to, const glm::vec4& color, bool scaleByTexture)
     {
-        Submit(transform, texture, color, scaleByTexture, {from.x / texture->GetWidth(), 1.0f - from.y / texture->GetHeight(), to.x / texture->GetWidth(), 1.0f - to.y / texture->GetHeight()});
+        Submit(transform, texture, color, scaleByTexture, {from.x / texture->GetWidth(), 1.0f - to.y / texture->GetHeight(), to.x / texture->GetWidth(), 1.0f - from.y / texture->GetHeight()});
     }
 
     void Batch::Submit(const glm::vec3& pos, const glm::vec2& size, Ref<Texture2D>& texture, const glm::vec2& from, const glm::vec2& to, const glm::vec4& color)

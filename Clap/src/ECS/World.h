@@ -47,6 +47,14 @@ namespace Clap
         }
 
         template<typename T>
+        bool HasComponent(Entity entity)
+        {
+            auto mask = Mask<T>();
+                
+            return (m_EntityManager->GetMask(entity) & mask) == mask;
+        }
+
+        template<typename T>
         void RemoveComponent(Entity entity)
         {
             m_ComponentManager->RemoveComponent<T>(entity);
