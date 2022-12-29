@@ -2,6 +2,7 @@
 
 #include "Data/ByteBuffer.h"
 #include "Core/Core.h"
+#include "Graphics/API/Utils.h"
 
 #include "OpenGLTexture.h"
 #include "stb_image.h"
@@ -223,26 +224,9 @@ namespace Clap
         }
     }
 
-    size_t FormatToSize(TextureFormat type)
-    {
-        switch (type)
-        {
-            case TextureFormat::RGBA8:           return 4;
-            case TextureFormat::RGB8:            return 3;
-            case TextureFormat::R8:              return 1;
-            case TextureFormat::RGBA16F:         return 4 * 4;
-            case TextureFormat::RGB16F:          return 3 * 4;
-            case TextureFormat::DEPTH24STENCIL8: return 4;
-            default: break;
-        }
-
-        CLAP_ASSERT(false, "Unknown TextureFormat!");
-        return 0;
-    }
-
 	void OpenGLTexture2D::SetData(void* data, uint32_t size)
 	{
-		uint32_t bpp = FormatToSize(m_Specification.Format);
+		uint32_t bpp = TextureFormatToSize(m_Specification.Format);
 		CLAP_ASSERT(size == m_Width * m_Height * bpp, "Data must be entire texture!");
 
         #ifdef CLAP_OPENGL_4_5

@@ -21,6 +21,9 @@ namespace Clap
         virtual glm::vec2 GetSize() const override { return {m_Specification.Width, m_Specification.Height}; }
 
         virtual uint32_t GetColorAttachmentRendererID(uint32_t attachment = 0)  const override { return m_ColorAttachments[attachment]; }
+        virtual void* GetPixels(int x, int y, int width, int height, uint32_t attachment) const override;
+        virtual int GetPixelInt(int x, int y, uint32_t attachment)  const override;
+        virtual uint32_t GetPixelUInt(int x, int y, uint32_t attachment) const override;
         
         virtual uint32_t GetDepthAttachmentRendererID()  const override { return m_DepthAttachment; }
         

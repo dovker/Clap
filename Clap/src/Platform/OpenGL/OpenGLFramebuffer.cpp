@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Graphics/API/Shader.h"
+#include "Graphics/API/Utils.h"
 #include "OpenGLFramebuffer.h"
 #include "OpenGL.h"
 
@@ -179,5 +180,51 @@ namespace Clap
         
         Invalidate();
     }
+
+    void* OpenGLFramebuffer::GetPixels(int x, int y, int width, int height, uint32_t attachment) const
+    {
+        CLAP_ASSERT(attachment < m_ColorAttachments.size(), "Color attachment is not created");
+
+        TextureFormat format = m_ColorAttachmentSpecifications[attachment].Format;
+
+        glReadBuffer(GL_COLOR_ATTACHMENT0 + attachment);
+
+        void* pixels = malloc(TextureFormatToSize(format) * width * height);
+
+        glReadPixels(x, y, width, height, ToOpenGLDataFormat(format), ToOpenGLDataType(format), pixels);
+
+        return pixels;
+    }
+
+    int OpenGLFramebuffer::GetPixelInt(int x, int y, uint32_t attachment) const
+    {
+        CLAP_ASSERT(attachment < m_ColorAttachments.size(), "Color attachment is not created");
+        CLAP_ASSERT(m_ColorAttachmentSpecifications[attachment].Format == TextureFormat::INT32, "Color attachment is not of type INT32");
+
+        TextureFormat format = m_ColorAttachmentSpecifications[attachment].Format;
+
+        glReadBuffer(GL_COLOR_ATTACHMENT0 + attachment);
+
+        int pixel;
+
+        glReadPixels(x, y, 1, 1, ToOpenGLDataFormat(format), ToOpenGLDataType(format), &pixel);
+
+        return pixel;
+    }
     
+    uint32_t OpenGLFramebuffer::GetPixelUInt(int x, int y, uint32_t attachment) const
+    {
+        CLAP_ASSERT(attachment < m_ColorAttachments.size(), "Color attachment is not created");
+        CLAP_ASSERT(m_ColorAttachmentSpecifications[attachment].Format == TextureFormat::UINT32, "Color attachment is not of type UINT32");
+
+        TextureFormat format = m_ColorAttachmentSpecifications[attachment].Format;
+
+        glReadBuffer(GL_COLOR_ATTACHMENT0 + attachment);
+
+        uint32_t pixel;
+
+        glReadPixels(x, y, 1, 1, ToOpenGLDataFormat(format), ToOpenGLDataType(format), &pixel);
+
+        return pixel;
+    }
 }

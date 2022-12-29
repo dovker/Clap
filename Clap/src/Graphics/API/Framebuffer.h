@@ -38,6 +38,9 @@ namespace Clap
         virtual glm::vec2 GetSize() const = 0;
 
         virtual uint32_t GetColorAttachmentRendererID(uint32_t attachment = 0) const = 0;
+        virtual void* GetPixels(int x, int y, int width, int height, uint32_t attachment) const = 0;
+        virtual int GetPixelInt(int x, int y, uint32_t attachment) const = 0;
+        virtual uint32_t GetPixelUInt(int x, int y, uint32_t attachment) const = 0;
         
         virtual uint32_t GetDepthAttachmentRendererID() const = 0;
         //TODO: Stencil support

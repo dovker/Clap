@@ -15,9 +15,14 @@ namespace Clap
         // Depth/stencil
         DEPTH24STENCIL8,
 
+        // Integer
+        INT32,
+        UINT32,
+
         // Defaults
         Depth = DEPTH24STENCIL8
     };
+
     enum class BlendingMode
     {
         NONE = 0,
