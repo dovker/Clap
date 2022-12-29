@@ -14,14 +14,13 @@ Currently this framework is being developed to reach an Alpha ( Usable ) state, 
 * Sprite Batching
 
 # Features currently being developed
-* Flexible UI system
 * Text rendering
 * Bindings to a scripting language
-
-# Future features
-* Project structuring and packaging
-* BGFX support (for cross-platform rendering)
-* 3D Rendering functionalities
 * Asset management and File system
+* Project structuring and packaging
 * Multithreading
 * 3D Audio
+
+# Future features
+* BGFX support (for cross-platform rendering)
+* 3D Rendering functionalities
