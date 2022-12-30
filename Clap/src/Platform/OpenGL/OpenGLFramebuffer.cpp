@@ -181,7 +181,7 @@ namespace Clap
         Invalidate();
     }
 
-    void* OpenGLFramebuffer::GetPixels(int x, int y, int width, int height, uint32_t attachment) const
+    void* OpenGLFramebuffer::GetPixels(uint32_t attachment, int x, int y, int width, int height) const
     {
         CLAP_ASSERT(attachment < m_ColorAttachments.size(), "Color attachment is not created");
 
@@ -196,7 +196,7 @@ namespace Clap
         return pixels;
     }
 
-    int OpenGLFramebuffer::GetPixelInt(int x, int y, uint32_t attachment) const
+    int OpenGLFramebuffer::GetPixelInt(uint32_t attachment, int x, int y) const
     {
         CLAP_ASSERT(attachment < m_ColorAttachments.size(), "Color attachment is not created");
         CLAP_ASSERT(m_ColorAttachmentSpecifications[attachment].Format == TextureFormat::INT32, "Color attachment is not of type INT32");
@@ -212,7 +212,7 @@ namespace Clap
         return pixel;
     }
     
-    uint32_t OpenGLFramebuffer::GetPixelUInt(int x, int y, uint32_t attachment) const
+    uint32_t OpenGLFramebuffer::GetPixelUInt(uint32_t attachment, int x, int y) const
     {
         CLAP_ASSERT(attachment < m_ColorAttachments.size(), "Color attachment is not created");
         CLAP_ASSERT(m_ColorAttachmentSpecifications[attachment].Format == TextureFormat::UINT32, "Color attachment is not of type UINT32");
@@ -226,5 +226,21 @@ namespace Clap
         glReadPixels(x, y, 1, 1, ToOpenGLDataFormat(format), ToOpenGLDataType(format), &pixel);
 
         return pixel;
+    }
+
+    void OpenGLFramebuffer::ClearColorAttachment(uint32_t attachment, void* value) const
+    {
+        CLAP_ASSERT(attachment < m_ColorAttachments.size(), "Color attachment is not created");
+
+        TextureFormat format = m_ColorAttachmentSpecifications[attachment].Format;
+
+        #ifdef CLAP_OPENGL_4_5
+		    glClearTexImage(m_ColorAttachments[attachment], 0, ToOpenGLDataFormat(format), ToOpenGLDataType(format), value);
+        #else
+            CLAP_WARN("Using ClearColorAttachment() in OpenGL 3.3 is not tested and may result in lower performance and / or glitches due to binding");
+            std::vector<GLubyte> emptyData(m_Specification.Width * m_Specification.Height * TextureFormatToSize(format), 0);
+            glBindTexture(GL_TEXTURE_2D, m_ColorAttachments[attachment]);
+            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_Specification.Width, m_Specification.Height, ToOpenGLDataFormat(format), ToOpenGLDataType(format), &emptyData[0]);
+        #endif
     }
 }

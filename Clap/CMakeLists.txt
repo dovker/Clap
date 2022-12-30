@@ -33,6 +33,6 @@ add_compile_definitions(CLAP_DEBUG) #Add automatic checking for Opengl later
 target_link_directories(Clap PRIVATE ${CLAP_LINK_DIRS})
 # TODO: MAKE IT SO THE USER DECIDES GRAPHICS LIBRARY
 
-target_link_libraries(Clap PUBLIC SDL2main SDL2-static bgfx ImGui Glad lua-lib yaml-cpp)
+target_link_libraries(Clap PUBLIC SDL2main SDL2-static OpenAL ImGui Glad lua-lib yaml-cpp zip)
 
 

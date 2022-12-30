@@ -10,9 +10,9 @@
 [submodule "Clap/thirdparty/SDL"]
 	path = Clap/thirdparty/SDL
 	url = https://github.com/libsdl-org/SDL.git
-[submodule "Clap/thirdparty/bgfx"]
-	path = Clap/thirdparty/bgfx
-	url = https://github.com/bkaradzic/bgfx.cmake
 [submodule "Clap/thirdparty/openal-soft"]
 	path = Clap/thirdparty/openal-soft
 	url = https://github.com/kcat/openal-soft
+[submodule "Clap/thirdparty/zip"]
+	path = Clap/thirdparty/zip
+	url = https://github.com/kuba--/zip

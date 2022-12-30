@@ -20,7 +20,6 @@ Currently this framework is being developed to reach an Alpha ( Usable ) state, 
 
 # Future features
 * Project structuring and packaging
-* BGFX support (for cross-platform rendering)
 * 3D Rendering functionalities
 * Asset management and File system
 * Multithreading

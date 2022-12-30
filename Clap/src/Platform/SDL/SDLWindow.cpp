@@ -11,7 +11,6 @@
 
 #include "SDLWindow.h"
 #include "SDLOpenGLContext.h"
-#include "SDLbgfxContext.h"
 
 namespace Clap {
 
@@ -49,8 +48,6 @@ namespace Clap {
 
         #ifdef CLAP_USE_OPENGL
             m_Context = new SDLOpenGLContext(this);
-        #elif CLAP_USE_BGFX
-            m_Context = new SDLbgfxContext(this);
         #endif
 
         SetVSync(true);

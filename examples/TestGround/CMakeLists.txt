@@ -19,6 +19,6 @@ target_include_directories(TestGround SYSTEM PUBLIC ${CLAP_WORKSPACE_DIR}/Clap/s
 
 target_link_directories(TestGround PRIVATE ${CLAP_LINK_DIRS})
 
-target_link_libraries(TestGround PUBLIC Clap SDL2main bgfx SDL2-static ImGui yaml-cpp)
+target_link_libraries(TestGround PUBLIC Clap SDL2main SDL2-static ImGui yaml-cpp)
 
 
