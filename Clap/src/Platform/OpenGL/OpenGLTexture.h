@@ -38,6 +38,7 @@ namespace Clap
         uint32_t m_Width, m_Height;
         TextureSpecification m_Specification;
         uint32_t m_ID;
+        void m_LoadTextureFromMemory(const Ref<ByteBuffer>& buffer);
         void m_LoadTexture(unsigned char* data, int width, int height, int channels);
         void m_SetInternalSpecification(bool generateNewMipmaps = true);
         void m_GenerateMipmaps(bool anisotropy);

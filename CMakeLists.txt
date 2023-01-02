@@ -75,7 +75,7 @@ set(CLAP_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui   
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/glm
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/stb_image/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/stb/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/asio/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/json/include
@@ -90,7 +90,7 @@ set(CLAP_LINK_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/lua
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip)
-
+                   
 set(CLAP_WORKSPACE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(Clap)

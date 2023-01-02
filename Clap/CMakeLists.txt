@@ -9,8 +9,8 @@ include(thirdparty/cmake_precompiled_header/PrecompiledHeader.cmake)
 
 file(GLOB_RECURSE CLAP_SRC_FILES "src/*.cpp" 
                                  "src/*.h" 
-                                 "thirdparty/stb_image/*.cpp"
-                                 "thirdparty/stb_image/*.h" 
+                                 "thirdparty/stb/*.cpp"
+                                 "thirdparty/stb/*.h" 
                                  "thirdparty/glm/*.hpp"
                                  "thirdparty/glm/*.inl")
 

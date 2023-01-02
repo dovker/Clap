@@ -42,7 +42,7 @@ namespace Clap
             m_ComponentManager->AddComponent<T>(entity, component);
 
             auto mask = m_EntityManager->GetMask(entity);
-            mask = mask | BIT(m_ComponentManager->GetComponentType<T>());
+            mask = mask | CLAP_BIT(m_ComponentManager->GetComponentType<T>());
             m_EntityManager->SetMask(entity, mask);
         }
 
@@ -60,7 +60,7 @@ namespace Clap
             m_ComponentManager->RemoveComponent<T>(entity);
 
             auto mask = m_EntityManager->GetMask(entity);
-            mask = mask & -BIT(m_ComponentManager->GetComponentType<T>());
+            mask = mask & -CLAP_BIT(m_ComponentManager->GetComponentType<T>());
             m_EntityManager->SetMask(entity, mask);
         }
 
@@ -79,14 +79,14 @@ namespace Clap
         template<typename T>
         EntityMask Mask()
         {
-            return BIT(m_ComponentManager->GetComponentType<T>());
+            return CLAP_BIT(m_ComponentManager->GetComponentType<T>());
         }
 
         template<typename T1, typename T2, typename... Types>
         EntityMask Mask()
         {
             EntityMask mask = 0;
-            mask = BIT(m_ComponentManager->GetComponentType<T1>()) | Mask<T2, Types...>();
+            mask = CLAP_BIT(m_ComponentManager->GetComponentType<T1>()) | Mask<T2, Types...>();
             return mask;
         }
 

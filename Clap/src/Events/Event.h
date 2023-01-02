@@ -6,7 +6,6 @@
 #include "MouseEvent.h"
 #include "WindowEvent.h"
 
-#define BIT(x) (1 << x)
 
 namespace Clap
 {

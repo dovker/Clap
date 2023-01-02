@@ -12,29 +12,28 @@
 
 namespace Clap
 {
-    OpenGLTexture2D::OpenGLTexture2D(const Ref<ByteBuffer>& buffer)
-	{
-		int width, height, channels;
+    void OpenGLTexture2D::m_LoadTextureFromMemory(const Ref<ByteBuffer>& buffer)
+    {
+        int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
 
 		unsigned char* data = stbi_load_from_memory(buffer->GetData().data(), buffer->GetData().size(), &width, &height, &channels, 0);
 	
 		CLAP_ASSERT(data, "Failed to load image! " + m_Path + " stb_image: " + stbi_failure_reason());
 
-		m_LoadTexture(data, width, height, channels);
+        m_LoadTexture(data, width, height, channels);
+    }
+
+    OpenGLTexture2D::OpenGLTexture2D(const Ref<ByteBuffer>& buffer)
+	{
+		m_LoadTextureFromMemory(buffer);
 	}
 
     OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
 		: m_Path(path)
 	{
-		int width, height, channels;
-		stbi_set_flip_vertically_on_load(1);
-
-		unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
-	
-		CLAP_ASSERT(data, "Failed to load image! " + m_Path + " stb_image: " + stbi_failure_reason());
-
-		m_LoadTexture(data, width, height, channels);
+		Ref<ByteBuffer> buffer = ByteBuffer::Create(path);
+        m_LoadTextureFromMemory(buffer);
 	}
 
 	

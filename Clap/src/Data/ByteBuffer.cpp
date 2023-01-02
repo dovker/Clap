@@ -18,7 +18,7 @@ namespace Clap
 
     ByteBuffer::ByteBuffer(const std::string& filepath)
     {
-        std::ifstream ifs(filepath, std::ios::binary);
+        std::ifstream ifs(filepath, std::ios::in | std::ios::binary);
 
         ifs.unsetf(std::ios::skipws);
 
@@ -27,7 +27,7 @@ namespace Clap
         ifs.seekg(0, std::ios::end);
         fileSize = ifs.tellg();
         ifs.seekg(0, std::ios::beg);
-        CLAP_ASSERT(ifs.bad() || fileSize < 0, "Error reading file to a byte buffer");
+        CLAP_ASSERT(!ifs.bad() || fileSize < 0, "Error reading file to a byte buffer");
 
         // reserve capacity
         m_Data.clear();

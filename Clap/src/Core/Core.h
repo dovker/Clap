@@ -75,3 +75,5 @@ namespace Clap
         return std::make_shared<T>(std::forward<Args>(args)...);
     }
 }
+
+#define CLAP_BIT(x) (1 << x)

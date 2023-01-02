@@ -155,10 +155,12 @@ namespace Clap
 	}
 	void OpenGLShader::SetUniformBufferBinding(Ref<UniformBuffer> buffer, const std::string& name)
 	{
-		uint32_t buffer_index = glGetUniformBlockIndex(m_ID, name.c_str());   //ERROR: GL_INVALID_VALUE
-        CheckGPUError();
-		glUniformBlockBinding(m_ID, buffer_index, buffer->GetBinding());
-        CheckGPUError();
+		#ifndef CLAP_OPENGL_4_5
+			uint32_t buffer_index = glGetUniformBlockIndex(m_ID, name.c_str());   //ERROR: GL_INVALID_VALUE
+			CheckGPUError();
+			glUniformBlockBinding(m_ID, buffer_index, buffer->GetBinding());
+			CheckGPUError();
+		#endif
 	}
 
 	void OpenGLShader::Bind()
