@@ -15,8 +15,13 @@ Currently this framework is being developed to reach an Alpha ( Usable ) state, 
 
 # Features currently being developed
 * Text rendering
-* Bindings to a scripting language
+* ImGui support
 * Asset management and File system
 * Project structuring and packaging
-* BGFX support (for cross-platform rendering)
+* Audio Support
+
+
+# Future Features
 * 3D Rendering functionalities
+* Bindings to a scripting language
+* Multithreading
