@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Core.h"
+#include "Data/ByteBuffer.h"
 #include "API.h"
 
 namespace Clap
@@ -39,7 +40,7 @@ namespace Clap
 
         virtual uint32_t GetColorAttachmentRendererID(uint32_t attachment = 0) const = 0;
 
-        virtual void* GetPixels(uint32_t attachment, int x, int y, int width, int height) const = 0;
+        virtual Ref<ByteBuffer> GetPixels(uint32_t attachment, int x, int y, int width, int height) const = 0;
         virtual int GetPixelInt(uint32_t attachment, int x, int y) const = 0;
         virtual uint32_t GetPixelUInt(uint32_t attachment, int x, int y) const = 0;
 

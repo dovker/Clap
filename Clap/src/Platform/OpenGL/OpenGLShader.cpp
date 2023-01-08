@@ -22,6 +22,11 @@ namespace Clap
 	{
 		m_ID = Compile();
 	}
+	OpenGLShader::OpenGLShader(const Ref<ByteBuffer>& buffer)
+	{
+		std::string source(buffer->GetData().begin(), buffer->GetData().end());
+		m_ID = Compile(source);
+	}
 
 	uint32_t OpenGLShader::CompileShader(unsigned int type, const std::string& source)
 	{
@@ -83,7 +88,7 @@ namespace Clap
 		std::stringstream sStream;
 		std::ifstream fStream(m_Path);
 
-		if(text == "")
+		if(text.empty())
 			isFile = true;
 		else
 			sStream << text;
@@ -140,15 +145,19 @@ namespace Clap
 		CheckGPUError();
 		return id;
 	}
-    void OpenGLShader::Recompile()
+    void OpenGLShader::Reload()
     {
-        m_ID = Compile();
+		if(!m_Path.empty())
+        	m_ID = Compile();
+		else	
+			CLAP_ASSERT(false, "Cannot reload a shader, that has no path set");
     }
-	void OpenGLShader::RecompileSource(const std::string& source)
+	void OpenGLShader::Reload(const Ref<ByteBuffer>& buffer)
     {
+		std::string source(buffer->GetData().begin(), buffer->GetData().end());
 		m_ID = Compile(source);
     }
-	void OpenGLShader::Recompile(const std::string& filepath)
+	void OpenGLShader::Reload(const std::string& filepath)
 	{
 		m_Path = filepath;
 		m_ID = Compile();

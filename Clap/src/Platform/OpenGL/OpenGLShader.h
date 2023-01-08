@@ -13,6 +13,7 @@ namespace Clap
     {
     public:
         OpenGLShader(const std::string& filepath);
+        OpenGLShader(const Ref<ByteBuffer>& buffer);
 
         virtual ~OpenGLShader() {}
         
@@ -22,9 +23,9 @@ namespace Clap
         virtual const std::string& GetPath() override { return m_Path; }
 
         virtual void SetUniformBufferBinding(Ref<UniformBuffer> buffer, const std::string& name) override;
-        virtual void Recompile() override;
-        virtual void RecompileSource(const std::string& source) override;
-        virtual void Recompile(const std::string& filepath) override;
+        virtual void Reload() override;
+        virtual void Reload(const std::string& source) override;
+        virtual void Reload(const Ref<ByteBuffer>& buffer) override;
         
         virtual void SetBool(const std::string& name, bool value) override;
         virtual void SetInt(const std::string& name, int value) override;

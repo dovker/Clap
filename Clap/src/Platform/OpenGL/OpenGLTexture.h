@@ -21,9 +21,10 @@ namespace Clap
         virtual TextureSpecification GetSpecification() override { return m_Specification; }
 
         virtual void SetData(void* data, uint32_t size) override;
+        virtual void SetData(Ref<ByteBuffer> data) override;
         virtual void SetSpecification(TextureSpecification specification) override;
 
-        virtual void Reload(const std::string& path) override;
+        virtual void Reload(const Ref<ByteBuffer>& buffer) override;
         virtual void Reload() override;
 
         virtual void Bind(uint32_t slot = 0) const override;

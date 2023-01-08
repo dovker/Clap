@@ -4,6 +4,7 @@
 
 #include "UniformBuffer.h"
 #include "Core/Core.h"
+#include "Data/ByteBuffer.h"
 
 namespace Clap
 {
@@ -18,9 +19,9 @@ namespace Clap
         virtual void SetUniformBufferBinding(Ref<UniformBuffer> buffer, const std::string& name) = 0;
         
         virtual const std::string& GetPath() = 0;
-        virtual void Recompile() = 0;
-        virtual void Recompile(const std::string& filepath) = 0;
-        virtual void RecompileSource(const std::string& source) = 0;
+        virtual void Reload() = 0;
+        virtual void Reload(const std::string& filepath) = 0;
+        virtual void Reload(const Ref<ByteBuffer>& buffer) = 0;
         
         virtual void SetBool(const std::string& name, bool value)               = 0;
         virtual void SetInt(const std::string& name, int value)                 = 0;
@@ -34,6 +35,7 @@ namespace Clap
         virtual void SetVec2(const std::string& name, const glm::vec2& value)   = 0;
 
         static Ref<Shader> Create(const std::string& filepath);
+        static Ref<Shader> Create(const Ref<ByteBuffer>& buffer);
 
         //static AssetType GetAssetType() { return AssetType::Shader; }
         //static Ref<Shader> Create(const TextFile& file);

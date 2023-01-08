@@ -188,34 +188,16 @@ namespace Clap
 		stbi_image_free(data);
 	}
 
-    void OpenGLTexture2D::Reload(const std::string& path)
+    void OpenGLTexture2D::Reload(const Ref<ByteBuffer>& buffer)
     {
-        m_Path = path;
-        int width, height, channels;
-		stbi_set_flip_vertically_on_load(1);
-
-		unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
-	
-		CLAP_ASSERT(data, "Failed to load image! " + m_Path + " stb_image: " + stbi_failure_reason());
-
-        if(m_ID) glDeleteTextures(1, &m_ID);
-
-		m_LoadTexture(data, width, height, channels);
+        m_LoadTextureFromMemory(buffer);
     }
     void OpenGLTexture2D::Reload()
     {
         if(m_Path != "")
         {
-            int width, height, channels;
-            stbi_set_flip_vertically_on_load(1);
-
-            unsigned char* data = stbi_load(m_Path.c_str(), &width, &height, &channels, 0);
-        
-            CLAP_ASSERT(data, "Failed to reload image! " + m_Path + " stb_image: " + stbi_failure_reason());
-
-            if(m_ID) glDeleteTextures(1, &m_ID);
-
-            m_LoadTexture(data, width, height, channels);
+            Ref<ByteBuffer> buffer = ByteBuffer::Create(m_Path);
+            m_LoadTextureFromMemory(buffer);
         }
         else
         {
@@ -223,10 +205,31 @@ namespace Clap
         }
     }
 
+    void FlipTexture(byte* data, uint32_t width, uint32_t height, uint32_t bpp)
+    {
+        uint32_t rowsSwapCount = height / 2;
+        uint32_t maxRowIndex = height - 1;
+
+        for (uint32_t i = 0; i < rowsSwapCount; ++i) {
+            for (uint32_t j = 0; j < width; ++j) {
+                for(uint32_t k = 0; k < bpp; k++)
+                {
+                    uint32_t currentDataIndex = width * bpp * i + j + k;
+                    uint32_t swapDataIndex = width * bpp * (maxRowIndex - i) + j + k;
+                    
+                    byte temp = data[currentDataIndex];
+                    data[currentDataIndex] = data[swapDataIndex];
+                    data[swapDataIndex] = temp;
+                }
+            }
+        }
+    }
+
 	void OpenGLTexture2D::SetData(void* data, uint32_t size)
 	{
 		uint32_t bpp = TextureFormatToSize(m_Specification.Format);
 		CLAP_ASSERT(size == m_Width * m_Height * bpp, "Data must be entire texture!");
+        FlipTexture((byte*)data, m_Width, m_Height, bpp);
 
         #ifdef CLAP_OPENGL_4_5
 		    glTexSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, ToOpenGLDataFormat(m_Specification.Format), ToOpenGLDataType(m_Specification.Format), data);
@@ -239,6 +242,23 @@ namespace Clap
             glBindTexture(GL_TEXTURE_2D, 0);
         #endif
 	}
+    void OpenGLTexture2D::SetData(Ref<ByteBuffer> data)
+    {
+        uint32_t bpp = TextureFormatToSize(m_Specification.Format);
+		CLAP_ASSERT(data->GetData().size() == m_Width * m_Height * bpp, "Data must be entire texture!");
+        FlipTexture(data->GetData().data(), m_Width, m_Height, bpp);
+
+        #ifdef CLAP_OPENGL_4_5
+		    glTexSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, ToOpenGLDataFormat(m_Specification.Format), ToOpenGLDataType(m_Specification.Format), data->GetData().data());
+        #else
+            glBindTexture(GL_TEXTURE_2D, m_ID);
+            glTexImage2D(GL_TEXTURE_2D, 0, ToOpenGLInternalFormat(m_Specification.Format), 
+                        m_Width, m_Height, 0, ToOpenGLDataFormat(m_Specification.Format), 
+                        ToOpenGLDataType(m_Specification.Format), data->GetData().data());
+            CheckGPUError();
+            glBindTexture(GL_TEXTURE_2D, 0);
+        #endif
+    }
 
 	void OpenGLTexture2D::Bind(uint32_t slot) const
 	{

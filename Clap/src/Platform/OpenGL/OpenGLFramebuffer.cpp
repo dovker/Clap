@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include "Data/ByteBuffer.h"
+
 #include "Graphics/API/Shader.h"
 #include "Graphics/API/Utils.h"
 #include "OpenGLFramebuffer.h"
@@ -181,17 +184,17 @@ namespace Clap
         Invalidate();
     }
 
-    void* OpenGLFramebuffer::GetPixels(uint32_t attachment, int x, int y, int width, int height) const
+    Ref<ByteBuffer> OpenGLFramebuffer::GetPixels(uint32_t attachment, int x, int y, int width, int height) const
     {
         CLAP_ASSERT(attachment < m_ColorAttachments.size(), "Color attachment is not created");
 
         TextureFormat format = m_ColorAttachmentSpecifications[attachment].Format;
 
         glReadBuffer(GL_COLOR_ATTACHMENT0 + attachment);
+        
+        Ref<ByteBuffer> pixels = ByteBuffer::Create(TextureFormatToSize(format) * width * height);
 
-        void* pixels = malloc(TextureFormatToSize(format) * width * height);
-
-        glReadPixels(x, y, width, height, ToOpenGLDataFormat(format), ToOpenGLDataType(format), pixels);
+        glReadPixels(x, y, width, height, ToOpenGLDataFormat(format), ToOpenGLDataType(format), (void*)pixels->GetData().data());
 
         return pixels;
     }

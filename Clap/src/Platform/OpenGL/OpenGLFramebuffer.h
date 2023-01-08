@@ -22,7 +22,7 @@ namespace Clap
 
         virtual uint32_t GetColorAttachmentRendererID(uint32_t attachment = 0)  const override { return m_ColorAttachments[attachment]; }
 
-        virtual void* GetPixels(uint32_t attachment, int x, int y, int width, int height) const override;
+        virtual Ref<ByteBuffer> GetPixels(uint32_t attachment, int x, int y, int width, int height) const override;
         virtual int GetPixelInt(uint32_t attachment, int x, int y)  const override;
         virtual uint32_t GetPixelUInt(uint32_t attachment, int x, int y) const override;
 

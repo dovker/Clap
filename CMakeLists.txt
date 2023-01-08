@@ -38,6 +38,7 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/lua)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/msdf-c)
 
 
 #Folder Structure
@@ -47,16 +48,13 @@ set_target_properties (Glad PROPERTIES
 set_target_properties (SDL2-static PROPERTIES
     FOLDER Dependencies
 )
+set_target_properties (SDL2main PROPERTIES
+    FOLDER Dependencies
+)
 set_target_properties (OpenAL PROPERTIES
     FOLDER Dependencies
 )
-set_target_properties (SDL2 PROPERTIES
-    FOLDER Dependencies
-)
 set_target_properties (uninstall PROPERTIES
-    FOLDER Dependencies
-)
-set_target_properties (SDL2main PROPERTIES
     FOLDER Dependencies
 )
 set_target_properties (yaml-cpp PROPERTIES
@@ -68,6 +66,10 @@ set_target_properties (ImGui PROPERTIES
 set_target_properties (zip PROPERTIES
     FOLDER Dependencies
 )
+set_target_properties (msdf-c PROPERTIES
+    FOLDER Dependencies
+)
+
 
 set(CLAP_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL/include
@@ -76,6 +78,7 @@ set(CLAP_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui   
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/glm
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/stb/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/msdf-c
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/asio/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/json/include
@@ -89,7 +92,8 @@ set(CLAP_LINK_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/lua
-                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip)
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/msdf-c)
                    
 set(CLAP_WORKSPACE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 

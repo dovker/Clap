@@ -72,7 +72,6 @@ namespace Clap
 
     struct TextureSpecification
     {
-        //TODO: UTILIZE SAMPLERS FROM OPENGL
         TextureSpecification() = default;
         TextureSpecification(TextureFormat format, FilterType magFilter = FilterType::NEAREST, FilterType minFilter = FilterType::LINEAR, WrapType wrap = WrapType::CLAMP_TO_EDGE)
             : Format(format), MagFilter(magFilter), MinFilter(minFilter), Wrap(wrap) { }

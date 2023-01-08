@@ -10,7 +10,7 @@ include(thirdparty/cmake_precompiled_header/PrecompiledHeader.cmake)
 file(GLOB_RECURSE CLAP_SRC_FILES "src/*.cpp" 
                                  "src/*.h" 
                                  "thirdparty/stb/*.cpp"
-                                 "thirdparty/stb/*.h" 
+                                 "thirdparty/stb/*.h"
                                  "thirdparty/glm/*.hpp"
                                  "thirdparty/glm/*.inl")
 
@@ -33,6 +33,6 @@ add_compile_definitions(CLAP_DEBUG) #Add automatic checking for Opengl later
 target_link_directories(Clap PRIVATE ${CLAP_LINK_DIRS})
 # TODO: MAKE IT SO THE USER DECIDES GRAPHICS LIBRARY
 
-target_link_libraries(Clap PUBLIC SDL2main SDL2-static OpenAL ImGui Glad lua-lib yaml-cpp zip)
+target_link_libraries(Clap PUBLIC SDL2main SDL2-static OpenAL ImGui Glad lua-lib yaml-cpp zip msdf-c)
 
 

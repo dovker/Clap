@@ -17,8 +17,11 @@
 
 #include "Graphics/Mesh.h"
 #include "Graphics/Batch.h"
+#include "Graphics/Fonts/Font.h"
 
-#include "Files/ObjParser.h"
+#include "Data/ByteBuffer.h"
+#include "Data/ObjParser.h"
+#include "Data/TexturePack.h"
 
 #include "Math/Math.h"
 

@@ -11,6 +11,7 @@ namespace Clap
     {
     public:
         ByteBuffer(void *buffer, size_t size);
+        ByteBuffer(size_t size);
         ByteBuffer(std::vector<byte> buffer);
         ByteBuffer(const std::string& filepath);
 
@@ -18,6 +19,7 @@ namespace Clap
         void SetData(std::vector<byte> buffer) { m_Data = buffer; }
 
         static Ref<ByteBuffer> Create(void *buffer, size_t size);
+        static Ref<ByteBuffer> Create(size_t size);
         static Ref<ByteBuffer> Create(const std::string& filepath);
         static Ref<ByteBuffer> Create(const std::vector<byte> buffer);
     private:

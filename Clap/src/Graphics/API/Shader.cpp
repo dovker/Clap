@@ -19,4 +19,15 @@ namespace Clap
             return nullptr;
         #endif
     }
+    Ref<Shader> Shader::Create(const Ref<ByteBuffer>& buffer)
+    {
+        #ifdef CLAP_USE_OPENGL
+            return CreateRef<OpenGLShader>(buffer);
+        #elif CLAP_USE_BGFX
+            return nullptr;
+        #else
+            CLAP_ASSERT(false, "No graphics API set!");
+            return nullptr;
+        #endif
+    }
 }

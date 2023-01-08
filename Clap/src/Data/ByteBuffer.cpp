@@ -11,6 +11,10 @@ namespace Clap
         m_Data.resize(size);
         std::copy((byte*)buffer, (byte*)buffer + size, std::back_inserter(m_Data));
     }
+    ByteBuffer::ByteBuffer(size_t size)
+    {
+        m_Data.resize(size);
+    }
 
     ByteBuffer::ByteBuffer(std::vector<byte> buffer)
         : m_Data(buffer)
@@ -42,6 +46,10 @@ namespace Clap
     Ref<ByteBuffer> ByteBuffer::Create(void *buffer, size_t size)
     {
         return CreateRef<ByteBuffer>(buffer, size);
+    }
+    Ref<ByteBuffer> ByteBuffer::Create(size_t size)
+    {
+        return CreateRef<ByteBuffer>(size);
     }
 
     Ref<ByteBuffer> ByteBuffer::Create(const std::string& filepath)
