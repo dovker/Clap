@@ -22,7 +22,6 @@ namespace Clap
 
         virtual const std::string& GetPath() override { return m_Path; }
 
-        virtual void SetUniformBufferBinding(Ref<UniformBuffer> buffer, const std::string& name) override;
         virtual void Reload() override;
         virtual void Reload(const std::string& source) override;
         virtual void Reload(const Ref<ByteBuffer>& buffer) override;
@@ -40,7 +39,7 @@ namespace Clap
         
     private:
         std::string m_Path;
-        uint32_t m_ID;
+        uint32_t m_ID = 0;
         uint32_t CompileShader(unsigned int type, const std::string& source);
         uint32_t Compile(const std::string& text = "");
     };

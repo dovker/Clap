@@ -8,26 +8,6 @@
 
 namespace Clap
 {
-    void OpenGLCheckError(const char *file, int line)
-    {
-        GLenum errorCode;
-        while ((errorCode = glGetError()) != GL_NO_ERROR)
-        {
-            std::string error;
-            switch (errorCode)
-            {
-                case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
-                case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
-                case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
-                case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
-                case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
-                case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
-                case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
-            }
-            CLAP_ERROR( error, " | ", file, " (", line, ")");
-        }
-    }
-
     void OpenGLMessageCallback(
 		unsigned source,
 		unsigned type,
@@ -50,20 +30,17 @@ namespace Clap
 
     void Graphics::Init()
     {
-        #if defined(CLAP_DEBUG) && defined(CLAP_OPENGL_4_5)
+        #if defined(CLAP_DEBUG)
             glEnable(GL_DEBUG_OUTPUT);
             glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-            glDebugMessageCallback(OpenGLMessageCallback, NULL);
+            glDebugMessageCallback(OpenGLMessageCallback, nullptr);
             
             glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
         #endif
 
         glEnable(GL_DEPTH_TEST);
-        CheckGPUError();
         glEnable(GL_BLEND);
-        CheckGPUError();
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        CheckGPUError();
     }
 
     void Graphics::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
@@ -73,8 +50,7 @@ namespace Clap
 
     void Graphics::BindTexture(uint32_t textureID, uint32_t slot)
     {
-        glActiveTexture(GL_TEXTURE0 + slot);
-        glBindTexture(GL_TEXTURE_2D, textureID);
+        glBindTextureUnit(slot, textureID);
     }
 
     void Graphics::SetClearColor(const glm::vec4& color)
@@ -128,9 +104,6 @@ namespace Clap
         vertexArray->Bind();
         uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
-        CheckGPUError();
-        glBindTexture(GL_TEXTURE_2D, 0);
-        CheckGPUError();
     }
 
     void Graphics::DrawIndexedInstanced(const Ref<VertexArray>& vertexArray, uint32_t instanceCount, uint32_t indexCount)
@@ -138,9 +111,6 @@ namespace Clap
         vertexArray->Bind();
         uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
         glDrawElementsInstanced(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0, instanceCount);
-        CheckGPUError();
-        glBindTexture(GL_TEXTURE_2D, 0);
-        CheckGPUError();
     }
 
     GLenum GraphicsDataTypeToOpenGLBaseType(GraphicsDataType type)

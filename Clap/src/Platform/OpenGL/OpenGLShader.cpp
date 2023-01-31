@@ -54,6 +54,9 @@ namespace Clap
 			case GL_FRAGMENT_SHADER:
 				shaderTypeName = "fragment";
 				break;
+			case GL_COMPUTE_SHADER:
+				shaderTypeName = "compute";
+				break;
 			}
 
 			CLAP_ERROR("Failed to compile ", shaderTypeName, " Shader");
@@ -74,6 +77,8 @@ namespace Clap
 				type = ShaderType::VERTEX;
 			else if (line.find("fragment") != std::string::npos)
 				type = ShaderType::FRAGMENT;
+			else if (line.find("compute") != std::string::npos)
+				type = ShaderType::COMPUTE;
 		}
 		else
 		{
@@ -115,34 +120,37 @@ namespace Clap
 
 		const std::string vertexShader   = ss[0].str();
 		const std::string fragmentShader = ss[1].str();
+		const std::string computeShader = ss[2].str();
 		
 		uint32_t id = glCreateProgram();
-		uint32_t vs = 0, fs = 0;
+		uint32_t vs = 0, fs = 0, cs = 0;
 
 		if(vertexShader.length() > 0)
 		{
 			vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
 			glAttachShader(id, vs);
-			CheckGPUError();
 		}
 		if(fragmentShader.length() > 0)
 		{
 			fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 			glAttachShader(id, fs);
-			CheckGPUError();
+		}
+		if(computeShader.length() > 0)
+		{
+			cs = CompileShader(GL_COMPUTE_SHADER, computeShader);
+			glAttachShader(id, cs);
 		}
 
 		glLinkProgram(id);
-		CheckGPUError();
 		glValidateProgram(id);
-		CheckGPUError();
 
 		if(vs)
 			glDeleteShader(vs);
 		if(fs)
 			glDeleteShader(fs);
+		if(cs)
+			glDeleteShader(cs);
 
-		CheckGPUError();
 		return id;
 	}
     void OpenGLShader::Reload()
@@ -161,15 +169,6 @@ namespace Clap
 	{
 		m_Path = filepath;
 		m_ID = Compile();
-	}
-	void OpenGLShader::SetUniformBufferBinding(Ref<UniformBuffer> buffer, const std::string& name)
-	{
-		#ifndef CLAP_OPENGL_4_5
-			uint32_t buffer_index = glGetUniformBlockIndex(m_ID, name.c_str());   //ERROR: GL_INVALID_VALUE
-			CheckGPUError();
-			glUniformBlockBinding(m_ID, buffer_index, buffer->GetBinding());
-			CheckGPUError();
-		#endif
 	}
 
 	void OpenGLShader::Bind()

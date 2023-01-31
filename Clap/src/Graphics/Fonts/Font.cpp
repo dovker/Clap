@@ -38,7 +38,6 @@ namespace Clap
         {
             case FontType::BITMAP:  channels = 1; break;
             case FontType::SDF:     channels = 1; break;
-            case FontType::MSDF:    channels = 3; break;
             default:
                 CLAP_ASSERT(false, "Unsupported Font Type!");
             break;
@@ -141,7 +140,6 @@ namespace Clap
         {
             case FontType::BITMAP:  format = TextureFormat::R8; break;
             case FontType::SDF:     format = TextureFormat::R8; break;
-            case FontType::MSDF:    format = TextureFormat::RGB8; break;
             default:
                 CLAP_ASSERT(false, "Unsupported Font Type!");
             break;

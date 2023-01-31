@@ -38,7 +38,7 @@ namespace Clap
         std::string m_Path;
         uint32_t m_Width, m_Height;
         TextureSpecification m_Specification;
-        uint32_t m_ID;
+        uint32_t m_ID = 0;
         void m_LoadTextureFromMemory(const Ref<ByteBuffer>& buffer);
         void m_LoadTexture(unsigned char* data, int width, int height, int channels);
         void m_SetInternalSpecification(bool generateNewMipmaps = true);

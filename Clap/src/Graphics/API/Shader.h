@@ -15,8 +15,6 @@ namespace Clap
         
         virtual void Bind() = 0;
         virtual void Unbind() = 0;
-
-        virtual void SetUniformBufferBinding(Ref<UniformBuffer> buffer, const std::string& name) = 0;
         
         virtual const std::string& GetPath() = 0;
         virtual void Reload() = 0;

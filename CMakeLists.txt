@@ -23,22 +23,16 @@ set(ENABLE_LZMA OFF CACHE BOOL "Enable use of LZMA")
 set(ENABLE_ZSTD OFF CACHE BOOL "Enable use of Zstandard")
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libraries")
 
-add_compile_definitions(AL_LIBTYPE_STATIC)
-
-set(ZLIB_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zlib)
-set(ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zlib)
-
-
 add_compile_definitions(_CRT_SCURE_NO_WARNINGS)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/openal-soft)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/lua)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/utfcpp)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/assimp)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/msdf-c)
 
 
 #Folder Structure
@@ -51,7 +45,13 @@ set_target_properties (SDL2-static PROPERTIES
 set_target_properties (SDL2main PROPERTIES
     FOLDER Dependencies
 )
-set_target_properties (OpenAL PROPERTIES
+set_target_properties (wren PROPERTIES
+    FOLDER Dependencies
+)
+set_target_properties (utf8cpp PROPERTIES
+    FOLDER Dependencies
+)
+set_target_properties (assimp PROPERTIES
     FOLDER Dependencies
 )
 set_target_properties (uninstall PROPERTIES
@@ -66,35 +66,33 @@ set_target_properties (ImGui PROPERTIES
 set_target_properties (zip PROPERTIES
     FOLDER Dependencies
 )
-set_target_properties (msdf-c PROPERTIES
-    FOLDER Dependencies
-)
 
 
 set(CLAP_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/openal-soft/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/miniaudio
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui   
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/glm
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/stb/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/msdf-c
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/asio/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/json/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/sol
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/lua/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/assimp/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/utfcpp/source
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren/src/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip/src)
 
 set(CLAP_LINK_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL
-                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/openal-soft
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/assimp
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp
-                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/lua
-                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip
-                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/msdf-c)
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/utfcpp
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip)
                    
 set(CLAP_WORKSPACE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
+set(CLAP_LINK_LIBS SDL2main SDL2-static wren ImGui Glad utf8cpp assimp yaml-cpp zip)
 
 add_subdirectory(Clap)

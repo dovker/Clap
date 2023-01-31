@@ -33,7 +33,7 @@ namespace Clap
 
         virtual const FramebufferSpecification& GetSpecification() const override { return m_Specification; }
     protected:
-        uint32_t m_RendererID = 0;
+        uint32_t m_ID = 0;
         
         FramebufferSpecification m_Specification;
 

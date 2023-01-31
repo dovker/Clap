@@ -28,11 +28,10 @@ target_include_directories(Clap SYSTEM PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
 
 add_compile_definitions(_CRT_SCURE_NO_WARNINGS)
 add_compile_definitions(CLAP_DEBUG) #Add automatic checking for Opengl later
-# IF YOU CAN SUPPORT OPENGL4.5, DEFINE MC_OPENGL_4_5
 
 target_link_directories(Clap PRIVATE ${CLAP_LINK_DIRS})
 # TODO: MAKE IT SO THE USER DECIDES GRAPHICS LIBRARY
 
-target_link_libraries(Clap PUBLIC SDL2main SDL2-static OpenAL ImGui Glad lua-lib yaml-cpp zip msdf-c)
+target_link_libraries(Clap PUBLIC ${CLAP_LINK_LIBS})
 
 

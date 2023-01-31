@@ -20,11 +20,7 @@ namespace Clap
 
         static void CreateTextures(bool multisampled, uint32_t* outID, uint32_t count)
         {
-            #ifdef CLAP_OPENGL_4_5
-                glCreateTextures(TextureTarget(multisampled), count, outID);
-            #else
-                glGenTextures(count, outID);
-            #endif
+            glCreateTextures(TextureTarget(multisampled), count, outID);
         }
 
         static void BindTexture(bool multisampled, uint32_t id)
@@ -64,8 +60,7 @@ namespace Clap
             }
             else
             {
-                glTexImage2D(GL_TEXTURE_2D, 0, ToOpenGLInternalFormat(specification.Format), width, height, 0, 
-                                ToOpenGLDataFormat(specification.Format), ToOpenGLDataType(specification.Format), nullptr);
+                glTexStorage2D(GL_TEXTURE_2D, 1, ToOpenGLInternalFormat(specification.Format), width, height);
 
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, FilterTypeToOpenGLBaseType(specification.MinFilter));
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, FilterTypeToOpenGLBaseType(specification.MagFilter));
@@ -107,16 +102,16 @@ namespace Clap
 
     OpenGLFramebuffer::~OpenGLFramebuffer()
     {
-        glDeleteFramebuffers(1, &m_RendererID);
+        glDeleteFramebuffers(1, &m_ID);
         glDeleteTextures(m_ColorAttachments.size(), m_ColorAttachments.data());
         glDeleteTextures(1, &m_DepthAttachment);
     }
 
     void OpenGLFramebuffer::Invalidate()
     {
-        if (m_RendererID)
+        if (m_ID)
         {
-            glDeleteFramebuffers(1, &m_RendererID);
+            glDeleteFramebuffers(1, &m_ID);
             glDeleteTextures(m_ColorAttachments.size(), m_ColorAttachments.data());
             glDeleteTextures(1, &m_DepthAttachment);
             
@@ -124,8 +119,8 @@ namespace Clap
             m_DepthAttachment = 0;
         }
 
-        glGenFramebuffers(1, &m_RendererID);
-        glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
+        glCreateFramebuffers(1, &m_ID);
+        glBindFramebuffer(GL_FRAMEBUFFER, m_ID);
         
         bool multisample = m_Specification.Samples > 1;
 
@@ -144,7 +139,7 @@ namespace Clap
 
         if (m_DepthAttachmentSpecification.Format != TextureFormat::NONE)
         {
-            glGenTextures(1, &m_DepthAttachment);
+            Utils::CreateTextures(multisample, &m_DepthAttachment, 1);
             Utils::BindTexture(multisample, m_DepthAttachment);
             Utils::AttachDepthTexture(m_DepthAttachment, m_Specification.Samples, m_DepthAttachmentSpecification, GL_DEPTH_STENCIL_ATTACHMENT, m_Specification.Width, m_Specification.Height);
         }
@@ -167,7 +162,7 @@ namespace Clap
 
     void OpenGLFramebuffer::Bind()
     {
-        glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
+        glBindFramebuffer(GL_FRAMEBUFFER, m_ID);
         glViewport(0, 0, m_Specification.Width, m_Specification.Height);
     }
 
@@ -193,7 +188,6 @@ namespace Clap
         glReadBuffer(GL_COLOR_ATTACHMENT0 + attachment);
         
         Ref<ByteBuffer> pixels = ByteBuffer::Create(TextureFormatToSize(format) * width * height);
-
         glReadPixels(x, y, width, height, ToOpenGLDataFormat(format), ToOpenGLDataType(format), (void*)pixels->GetData().data());
 
         return pixels;
@@ -209,7 +203,6 @@ namespace Clap
         glReadBuffer(GL_COLOR_ATTACHMENT0 + attachment);
 
         int pixel;
-
         glReadPixels(x, y, 1, 1, ToOpenGLDataFormat(format), ToOpenGLDataType(format), &pixel);
 
         return pixel;
@@ -225,7 +218,6 @@ namespace Clap
         glReadBuffer(GL_COLOR_ATTACHMENT0 + attachment);
 
         uint32_t pixel;
-
         glReadPixels(x, y, 1, 1, ToOpenGLDataFormat(format), ToOpenGLDataType(format), &pixel);
 
         return pixel;
@@ -237,13 +229,7 @@ namespace Clap
 
         TextureFormat format = m_ColorAttachmentSpecifications[attachment].Format;
 
-        #ifdef CLAP_OPENGL_4_5
-		    glClearTexImage(m_ColorAttachments[attachment], 0, ToOpenGLDataFormat(format), ToOpenGLDataType(format), value);
-        #else
-            CLAP_WARN("Using ClearColorAttachment() in OpenGL 3.3 is not tested and may result in lower performance and / or glitches due to binding");
-            std::vector<GLubyte> emptyData(m_Specification.Width * m_Specification.Height * TextureFormatToSize(format), 0);
-            glBindTexture(GL_TEXTURE_2D, m_ColorAttachments[attachment]);
-            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_Specification.Width, m_Specification.Height, ToOpenGLDataFormat(format), ToOpenGLDataType(format), &emptyData[0]);
-        #endif
+		glClearTexImage(m_ColorAttachments[attachment], 0, ToOpenGLDataFormat(format), ToOpenGLDataType(format), value);
+
     }
 }

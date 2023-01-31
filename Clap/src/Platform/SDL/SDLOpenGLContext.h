@@ -13,8 +13,6 @@ namespace Clap
         virtual void SetSwapInterval(bool interval) override;
         virtual void SwapBuffers() override;
 
-        static void ForceModernOpenGL();
-
         virtual void* GetPointer() override { return m_Context; }
     private:
         void* m_Context;

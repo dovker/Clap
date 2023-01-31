@@ -83,7 +83,6 @@ namespace Clap
 
         
         s_Data.DefaultShader = Shader::Create("C:/dev/Clap/Clap/res/Default2D.glsl");
-        s_Data.DefaultShader->SetUniformBufferBinding(s_Data.CameraUniformBuffer, "Camera");
         s_Data.CurrentShader = s_Data.DefaultShader;
         
 
@@ -97,15 +96,12 @@ namespace Clap
     void Batch::SetShader(Ref<Shader> shader) //Only to be called before Batch::Begin
     {
         s_Data.CurrentShader = shader;
-        s_Data.CurrentShader->SetUniformBufferBinding(s_Data.CameraUniformBuffer, "Camera");
     }
 
     void Batch::Begin(const glm::mat4& projection, const glm::mat4& view)
     {
         glm::mat4 ViewProjection = projection * glm::inverse(view);
         s_Data.CameraUniformBuffer->SetData(&ViewProjection, sizeof(ViewProjection));
-        //GRAPHICS::SETTRANSFORM, GRAPHICS::SETVIEWPROJECTION
-
         BeginBatch();
     }
     
@@ -114,13 +110,8 @@ namespace Clap
         s_Data.IndexCount = 0;
         s_Data.QuadPointer = s_Data.QuadBuffer;
         s_Data.CurrentTexIndex = 1;
-        int Samplers[MAX_TEXTURES];
-        for (int i = 0; i<MAX_TEXTURES; i++)
-        {
-            Samplers[i] = i;
-        }
+        
         s_Data.CurrentShader->Bind();
-        s_Data.CurrentShader->SetIntPtr("uTextures", MAX_TEXTURES, Samplers);
     }
     void Batch::End()
     {

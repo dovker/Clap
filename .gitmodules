@@ -10,9 +10,15 @@
 [submodule "Clap/thirdparty/SDL"]
 	path = Clap/thirdparty/SDL
 	url = https://github.com/libsdl-org/SDL.git
-[submodule "Clap/thirdparty/openal-soft"]
-	path = Clap/thirdparty/openal-soft
-	url = https://github.com/kcat/openal-soft
 [submodule "Clap/thirdparty/zip"]
 	path = Clap/thirdparty/zip
 	url = https://github.com/kuba--/zip
+[submodule "Clap/thirdparty/wren"]
+	path = Clap/thirdparty/wren
+	url = https://github.com/wren-lang/wren
+[submodule "Clap/thirdparty/assimp"]
+	path = Clap/thirdparty/assimp
+	url = https://github.com/assimp/assimp
+[submodule "Clap/thirdparty/utfcpp"]
+	path = Clap/thirdparty/utfcpp
+	url = https://github.com/nemtrif/utfcpp

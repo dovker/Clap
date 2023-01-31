@@ -11,11 +11,7 @@ namespace Clap
 {
     OpenGLVertexArray::OpenGLVertexArray()
     {
-         #ifdef CLAP_OPENGL_4_5
-            glCreateVertexArrays(1, &m_ID);
-        #else
-            glGenVertexArrays(1, &m_ID);
-        #endif
+        glCreateVertexArrays(1, &m_ID);
     }
     OpenGLVertexArray::~OpenGLVertexArray()
     {
@@ -32,18 +28,15 @@ namespace Clap
     void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
     {
         glBindVertexArray(m_ID);
-        CheckGPUError();
         
         CLAP_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
         vertexBuffer->Bind();
-        CheckGPUError();
         
         uint32_t index = 0;
         const auto& layout = vertexBuffer->GetLayout();
         for (const auto& element : layout)
         {
             glEnableVertexAttribArray(index);
-            CheckGPUError();
             glVertexAttribPointer(index,
                 element.GetComponentCount(),
                 GraphicsDataTypeToOpenGLBaseType(element.Type),
@@ -51,7 +44,6 @@ namespace Clap
                 layout.GetStride(),
                 (const void*)element.Offset);
             index++;
-            CheckGPUError();
         }
         
         m_VertexBuffers.push_back(vertexBuffer);
@@ -60,7 +52,6 @@ namespace Clap
     void OpenGLVertexArray::AttachInstanceBuffer(const Ref<VertexBuffer>& vertexBuffer)
     {
         glBindVertexArray(m_ID);
-        CheckGPUError();
         CLAP_ASSERT(m_VertexBuffers[0], "No Vertex buffer set!");
         CLAP_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
 
@@ -71,16 +62,13 @@ namespace Clap
         for (const auto& element : layout)
         {
             glEnableVertexAttribArray(index);
-            CheckGPUError();
             glVertexAttribPointer(index,
                 element.GetComponentCount(),
                 GraphicsDataTypeToOpenGLBaseType(element.Type),
                 element.Normalized ? GL_TRUE : GL_FALSE,
                 layout.GetStride(),
                 (const void*)element.Offset);
-            CheckGPUError();
             glVertexAttribDivisor(index, 1);
-            CheckGPUError();
             index++;
         }
         
@@ -90,13 +78,10 @@ namespace Clap
     void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
     {
         glBindVertexArray(m_ID);
-        CheckGPUError();
         indexBuffer->Bind();
-        CheckGPUError();
 
         m_IndexBuffer = indexBuffer;
 
         glBindVertexArray(0);
-        CheckGPUError();
     }
 }

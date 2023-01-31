@@ -10,7 +10,7 @@ file(GLOB_RECURSE TG_SRC_FILES "src/*.cpp"
 
 add_executable(TestGround ${TG_SRC_FILES})
 
-add_compile_definitions(CLAP_USE_OPENGL CLAP_USE_OPENGL_4_5 CLAP_USE_SDL2 _CRT_SCURE_NO_WARNINGS)
+add_compile_definitions(CLAP_USE_OPENGL_3_3 CLAP_USE_OPENGL CLAP_USE_SDL2 _CRT_SCURE_NO_WARNINGS)
 
 add_subdirectory(../../ Clap)
 

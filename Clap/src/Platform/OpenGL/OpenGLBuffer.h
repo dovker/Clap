@@ -23,7 +23,7 @@ namespace Clap
         virtual void SetData(const void* data, uint32_t size) override;
     
     private:
-        uint32_t m_ID;
+        uint32_t m_ID = 0;
         BufferLayout m_Layout;
     };
     class OpenGLIndexBuffer : public IndexBuffer
@@ -38,6 +38,6 @@ namespace Clap
         virtual uint32_t GetCount() const override { return m_Count; };
         
     private:
-        uint32_t m_ID, m_Count;
+        uint32_t m_ID = 0, m_Count;
     };
 }

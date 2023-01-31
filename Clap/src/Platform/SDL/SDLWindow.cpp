@@ -32,9 +32,6 @@ namespace Clap {
         uint32_t GraphicsFlag = 0;
         #if defined(CLAP_USE_OPENGL)
             GraphicsFlag = SDL_WINDOW_OPENGL;
-            #if defined(CLAP_PLATFORM_MACOS) 
-            SDLOpenGLContext::ForceModernOpenGL();
-            #endif
         #endif
 
 
