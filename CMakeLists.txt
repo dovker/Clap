@@ -29,9 +29,7 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/utfcpp)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/assimp)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip)
 
 
@@ -48,16 +46,10 @@ set_target_properties (SDL2main PROPERTIES
 set_target_properties (wren PROPERTIES
     FOLDER Dependencies
 )
-set_target_properties (utf8cpp PROPERTIES
-    FOLDER Dependencies
-)
 set_target_properties (assimp PROPERTIES
     FOLDER Dependencies
 )
 set_target_properties (uninstall PROPERTIES
-    FOLDER Dependencies
-)
-set_target_properties (yaml-cpp PROPERTIES
     FOLDER Dependencies
 )
 set_target_properties (ImGui PROPERTIES
@@ -76,9 +68,9 @@ set(CLAP_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/glm
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/stb/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/asio/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/json
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/assimp/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/utfcpp/source
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/utf8
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren/src/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip/src)
 
@@ -86,13 +78,11 @@ set(CLAP_LINK_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/assimp
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui
-                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/yaml-cpp
-                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/utfcpp
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip)
                    
 set(CLAP_WORKSPACE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-set(CLAP_LINK_LIBS SDL2main SDL2-static wren ImGui Glad utf8cpp assimp yaml-cpp zip)
+set(CLAP_LINK_LIBS SDL2main SDL2-static wren ImGui Glad assimp zip)
 
 add_subdirectory(Clap)

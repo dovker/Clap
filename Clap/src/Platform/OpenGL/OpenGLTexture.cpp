@@ -178,7 +178,7 @@ namespace Clap
 		CLAP_ASSERT(size == m_Width * m_Height * bpp, "Data must be entire texture!");
         FlipTexture((byte*)data, m_Width, m_Height, bpp);
 
-		glTexSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, ToOpenGLDataFormat(m_Specification.Format), ToOpenGLDataType(m_Specification.Format), data);
+		glTextureSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, ToOpenGLDataFormat(m_Specification.Format), ToOpenGLDataType(m_Specification.Format), data);
 	}
     void OpenGLTexture2D::SetData(Ref<ByteBuffer> data)
     {
@@ -186,7 +186,7 @@ namespace Clap
 		CLAP_ASSERT(data->GetData().size() == m_Width * m_Height * bpp, "Data must be entire texture!");
         FlipTexture(data->GetData().data(), m_Width, m_Height, bpp);
 
-		glTexSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, ToOpenGLDataFormat(m_Specification.Format), ToOpenGLDataType(m_Specification.Format), data->GetData().data());
+		glTextureSubImage2D(m_ID, 0, 0, 0, m_Width, m_Height, ToOpenGLDataFormat(m_Specification.Format), ToOpenGLDataType(m_Specification.Format), data->GetData().data());
     }
 
 	void OpenGLTexture2D::Bind(uint32_t slot) const

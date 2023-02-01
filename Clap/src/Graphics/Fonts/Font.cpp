@@ -3,6 +3,8 @@
 #include "Data/TexturePack.h"
 
 #include "stb_truetype.h"
+#include "utf8.h"
+
 
 namespace Clap
 {
@@ -20,7 +22,27 @@ namespace Clap
     Font::Font(const Ref<Texture2D>& texture, uint32_t charWidth, uint32_t charHeight, std::string characters)
         : m_Atlas(texture)
     {
+        uint32_t cellsX = texture->GetWidth() / charWidth;
+        //uint32_t cellsY = texture->GetHeight() / charHeight;
 
+        uint32_t codepoint;
+        const char* charPointer = characters.c_str();
+
+        uint32_t j = 0;
+
+        int i = 0;
+        for(int i = 0; i < characters.length();)
+        {
+            charPointer = utf8codepoint(charPointer, (utf8_int32_t*)&codepoint);
+            i = charPointer - characters.c_str();
+            
+            GlyphData glyphData = { j % cellsX, j / cellsX, (uint32_t)charWidth, (uint32_t)charHeight, 0, 0, (float)charWidth };
+            m_Glyphs.insert({codepoint, glyphData});
+
+            j++;
+        }
+        // GlyphData glyphData = { 0, 0, (uint32_t)width, (uint32_t)height, (float)xOffset, (float)yOffset, (float)advance };
+        // m_Glyphs.insert({glyph, glyphData});
     }
 
     void Font::Generate(uint32_t fontHeight, FontType fontType, bool kerning, uint32_t codepointFrom, uint32_t codepointTo, 
@@ -130,10 +152,15 @@ namespace Clap
         
         if(m_Kerning)
         {
-            //Load font
-            //Read glyph length
-            //Load all data
-            //free font
+            for(auto &[A, value1] : m_Glyphs)
+            {
+                for(auto &[B, value2] : m_Glyphs)
+                {
+                    int ExtractedKern = stbtt_GetCodepointKernAdvance(&font, A, B);
+                    
+                    m_KerningTable[A][B] = scale * (float)ExtractedKern;
+                }
+            }
         }
         TextureFormat format = TextureFormat::R8;
         switch(m_FontType)

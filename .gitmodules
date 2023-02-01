@@ -1,9 +1,6 @@
 [submodule "Clap/thirdparty/glm"]
 	path = Clap/thirdparty/glm
 	url = https://github.com/g-truc/glm
-[submodule "Clap/thirdparty/yaml-cpp"]
-	path = Clap/thirdparty/yaml-cpp
-	url = https://github.com/jbeder/yaml-cpp
 [submodule "Clap/thirdparty/imgui"]
 	path = Clap/thirdparty/imgui
 	url = https://github.com/dovker/imgui
@@ -19,6 +16,3 @@
 [submodule "Clap/thirdparty/assimp"]
 	path = Clap/thirdparty/assimp
 	url = https://github.com/assimp/assimp
-[submodule "Clap/thirdparty/utfcpp"]
-	path = Clap/thirdparty/utfcpp
-	url = https://github.com/nemtrif/utfcpp

@@ -47,14 +47,14 @@ namespace Clap
         std::string m_Path;
         Ref<ByteBuffer> m_Data;
 
-        FontType m_FontType      = FontType::BITMAP;
+        FontType m_FontType      = FontType::SPRITEFONT;
         uint32_t m_CodepointFrom = 0; //Unicode Codepoint start
         uint32_t m_CodepointTo   = 127; //Unicode Codepoint end
         uint32_t m_Height        = 32;
         bool     m_Kerning       = false;
         float    m_Ascent, m_Descent, m_LineGap;
         std::unordered_map<uint32_t, GlyphData> m_Glyphs; //Character -> Glyph Info
-        //std::unordered_map<std::pair<uint32_t, uint32_t>, uint32_t> m_KerningTable; // Pair(Char1, Char2) -> Advance of pixels
+        std::unordered_map<uint32_t, std::unordered_map<uint32_t, float>> m_KerningTable; // Pair(Char1, Char2) -> Advance of pixels
 
         Ref<Texture2D> m_Atlas;
     };
