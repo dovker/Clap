@@ -12,7 +12,7 @@ Currently this framework is being developed to reach an Alpha ( Usable ) state, 
 * Custom ECS system
 * Custom Event system and Event pools
 * Sprite Batching
-* Text rendering
+* Text (Rasterized and SDF) rendering
 
 # Features currently being developed
 * ImGui support
