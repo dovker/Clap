@@ -70,7 +70,7 @@ void main()
 
             FragColor = color;
         }
-        else // SDF FONT RENDERING
+        else if(Input.Data.y < 2.0) // SDF FONT RENDERING
         {
             float value = texture(uTextures[int(Input.Data.x)], Input.TexCoords).r;
 
@@ -79,8 +79,16 @@ void main()
             if(color.a == 0.0) discard;
 
             FragColor = color;
+        }
+        else
+        {
+            vec4 color = texture(uTextures[int(Input.Data.x)], Input.TexCoords) * Input.Color;
+            if (color.a <= 0.0)
+            {
+                discard;
+            }
 
-            //FragColor = vec4(vec3(1.0), value);
+            FragColor = color;
         }
         
     }

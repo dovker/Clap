@@ -22,8 +22,7 @@ namespace Clap
     Font::Font(const Ref<Texture2D>& texture, uint32_t charWidth, uint32_t charHeight, std::string characters)
         : m_Atlas(texture)
     {
-        uint32_t cellsX = texture->GetWidth() / charWidth;
-        //uint32_t cellsY = texture->GetHeight() / charHeight;
+        uint32_t tW = texture->GetWidth();
 
         uint32_t codepoint;
         const char* charPointer = characters.c_str();
@@ -35,8 +34,11 @@ namespace Clap
         {
             charPointer = utf8codepoint(charPointer, (utf8_int32_t*)&codepoint);
             i = charPointer - characters.c_str();
+
+            float sY = ((uint32_t)(j * charHeight) / tW);
+            float sX = ((uint32_t)(j * charWidth) % tW) / charWidth;
             
-            GlyphData glyphData = { j % cellsX, j / cellsX, (uint32_t)charWidth, (uint32_t)charHeight, 0, 0, (float)charWidth };
+            GlyphData glyphData = { sX * charWidth, sY * charHeight, (uint32_t)charWidth, (uint32_t)charHeight, 0, 0, (float)charWidth };
             m_Glyphs.insert({codepoint, glyphData});
 
             j++;

@@ -398,8 +398,16 @@ namespace Clap
                 glm::vec3 offset = glm::rotate(quaternion, glm::vec3(scaleX * data.OffsetX, -scaleY * data.OffsetY, 0.0f));
 
                 Transform t(baseline + advanceX * right + offset - advanceY * up, transform.Rotation, glm::vec3(scaleX, scaleY, 1.0f));
+
+                float type = 0.0f;
+                switch(font->GetType())
+                {
+                    case FontType::BITMAP: type = 0.0f; break;
+                    case FontType::SDF: type = 1.0f; break;
+                    case FontType::SPRITEFONT: type = 2.0f; break;
+                }
                 
-                Batch::Submit(t.GetTransform(), font->GetAtlas(), glm::vec2(data.PosX, data.PosY), glm::vec2(data.PosX + data.Width, data.PosY + data.Height), color, true, glm::vec3(font->GetType() == FontType::SDF ? 1.0f : 0.0f));
+                Batch::Submit(t.GetTransform(), font->GetAtlas(), glm::vec2(data.PosX, data.PosY), glm::vec2(data.PosX + data.Width, data.PosY + data.Height), color, true, glm::vec3(type));
             }
 
             if(nextCodepoint != '\0')
