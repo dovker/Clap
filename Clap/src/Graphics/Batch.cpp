@@ -2,6 +2,8 @@
 #include "Batch.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include "utf8.h"
+
 
 namespace Clap
 {
@@ -36,8 +38,8 @@ namespace Clap
         glm::vec4 QuadPositions[4] = {
             glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
             glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),
-            glm::vec4(1.0f, 1.0f, 0.0f, 1.0f),
-            glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)
+            glm::vec4(1.0f, -1.0f, 0.0f, 1.0f),
+            glm::vec4(0.0f, -1.0f, 0.0f, 1.0f)
         };
     };
 
@@ -165,8 +167,8 @@ namespace Clap
         {
             pos,
             { pos.x + size.x, pos.y, pos.z},
-            { pos.x + size.x, pos.y + size.y, pos.z},
-            { pos.x, pos.y + size.y, pos.z}
+            { pos.x + size.x, pos.y - size.y, pos.z},
+            { pos.x, pos.y - size.y, pos.z}
         };
         
         for(int i = 0; i < 4; i++)
@@ -334,8 +336,8 @@ namespace Clap
         {
             pos,
             { pos.x + size.x, pos.y, pos.z},
-            { pos.x + size.x, pos.y + size.y, pos.z},
-            { pos.x, pos.y + size.y, pos.z}
+            { pos.x + size.x, pos.y - size.y, pos.z},
+            { pos.x, pos.y - size.y, pos.z}
         };
         
         for(int i = 0; i < 4; i++)
@@ -348,6 +350,68 @@ namespace Clap
         }
                         
         s_Data.IndexCount += 6;
+    }
+
+    void Batch::SubmitText(const Transform& transform, Ref<Font>& font, std::string& text, float width, float lineGap, float kerning, bool scaleRelative, const glm::vec4& color)
+    {
+        float scaleX = transform.Scale.x;
+        float scaleY = transform.Scale.y;
+
+        if(!scaleRelative)
+        {
+            scaleX /= (float)font->GetHeight();
+            scaleY /= (float)font->GetHeight();
+        }
+
+        auto quaternion = glm::quat(transform.Rotation);
+
+        glm::vec3 forward = glm::rotate(quaternion, glm::vec3(0.0f, 0.0f, 1.0f));
+        glm::vec3 right =   glm::rotate(quaternion, glm::vec3(1.0f, 0.0f, 0.0f));
+        glm::vec3 up =      glm::rotate(quaternion, glm::vec3(0.0f, 1.0f, 0.0f));
+
+        glm::vec3 baseline = transform.Position - up * font->GetAscent() * scaleY;
+        float advanceX = 0.0f;
+        float advanceY = 0.0f;
+
+        //TODO: WRAP
+        //std::vector<std::string> split = text.split(' ');
+
+        uint32_t codepoint;
+        uint32_t nextCodepoint;
+        const char* charPointer = text.c_str();
+
+        for(int i = 0; i < text.length();)
+        {
+            charPointer = utf8codepoint(charPointer, (utf8_int32_t*)&codepoint);
+            utf8codepoint(charPointer, (utf8_int32_t*)&nextCodepoint);
+            i = charPointer - text.c_str();
+
+            if(codepoint == ' ' && advanceX == 0.0f) continue;
+
+            GlyphData data = font->GetGlyph(codepoint);
+            GlyphData nextData = font->GetGlyph(nextCodepoint);
+
+            if(codepoint != ' ' || codepoint != '\t' || codepoint != '\n')
+            {
+                glm::vec3 offset = glm::rotate(quaternion, glm::vec3(scaleX * data.OffsetX, -scaleY * data.OffsetY, 0.0f));
+
+                Transform t(baseline + advanceX * right + offset - advanceY * up, transform.Rotation, glm::vec3(scaleX, scaleY, 1.0f));
+                
+                Batch::Submit(t.GetTransform(), font->GetAtlas(), glm::vec2(data.PosX, data.PosY), glm::vec2(data.PosX + data.Width, data.PosY + data.Height), color, true);
+            }
+
+            if(nextCodepoint != '\0')
+            {
+                advanceX += (data.Advance + font->GetKerning(codepoint, nextCodepoint)) * scaleX + kerning;
+                if((advanceX + nextData.Advance > width && width != 0.0f) || nextCodepoint == '\n')
+                {
+                    advanceX = 0.0f;
+                    advanceY += (font->GetDescent() + font->GetLineGap()) * scaleY + lineGap;
+                }
+            }
+            else break;
+        }
+
     }
 
     // void Submit(const glm::vec3& pos, const glm::vec2& size, Ref<Texture2D>& texture, const glm::vec4& color, float radius = 0.0f, float outlineRadius = 0.0f)

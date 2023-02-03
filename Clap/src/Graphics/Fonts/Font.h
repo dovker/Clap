@@ -36,7 +36,18 @@ namespace Clap
         void Generate(uint32_t fontHeight, FontType fontType, bool kerning, uint32_t codepointFrom = 0, uint32_t codepointTo = 127, 
                  FilterType filterType = FilterType::LINEAR, uint32_t atlasWidth = TEXTURE_PACK_SIZE, uint32_t atlasHeight = TEXTURE_PACK_SIZE);
 
-        Ref<Texture2D> GetTexture() { return m_Atlas; }
+        Ref<Texture2D> GetAtlas() { return m_Atlas; }
+        uint32_t GetHeight() { return m_Height; }
+        float GetKerning(uint32_t A, uint32_t B) { if( m_Kerning ) { return m_KerningTable[A][B]; } else return 0.0f;}
+        float GetAscent() { return m_Ascent; }
+        float GetDescent() { return m_Descent; }
+        float GetLineGap() { return m_LineGap; }
+
+        GlyphData GetGlyph(uint32_t glyph) { return m_Glyphs[glyph]; }
+        FontType GetType() { return m_FontType; }
+
+        float GetWidthPixels(std::string& text, float kerning = 0.0f, float scaleX = 1.0f);
+
 
         //TODO: RELOAD
 

@@ -3,6 +3,7 @@
 #include "Graphics/API/Texture.h"
 #include "Graphics/API/Shader.h"
 #include "Math/Math.h"
+#include "Graphics/Fonts/Font.h"
 #include <glm/glm.hpp>
 
 namespace Clap
@@ -36,6 +37,8 @@ namespace Clap
 
         static void SubmitTile(const glm::vec3& pos, const glm::vec2& size, Ref<Texture2D>& texture, const glm::vec2& tileSize, uint32_t tile, const glm::vec4& color = {1.0f, 1.0f, 1.0f, 1.0f});
         //static void SubmitGlyph(const glm::mat4& transform, Ref<Font> font, uint32_t codePoint, const glm::vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}); //TODO: IMPLEMENT
+
+        static void SubmitText(const Transform& transform, Ref<Font>& font, std::string& text, float width = 0.0f, float lineGap = 0.0f, float kerning = 0.0f, bool scaleRelative = true, const glm::vec4& color = {1.0f, 1.0f, 1.0f, 1.0f});
         
         
         //UI Rendering, Requires a separate shader to handle outlines and such

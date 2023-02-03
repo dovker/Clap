@@ -41,8 +41,9 @@ namespace Clap
 
             j++;
         }
-        // GlyphData glyphData = { 0, 0, (uint32_t)width, (uint32_t)height, (float)xOffset, (float)yOffset, (float)advance };
-        // m_Glyphs.insert({glyph, glyphData});
+        m_Ascent = charHeight;
+        m_Descent = 0.0f;
+        m_LineGap = 0.0f;
     }
 
     void Font::Generate(uint32_t fontHeight, FontType fontType, bool kerning, uint32_t codepointFrom, uint32_t codepointTo, 
@@ -175,6 +176,33 @@ namespace Clap
         TextureSpecification texSpec = TextureSpecification(format, filterType, filterType);
         m_Atlas = Texture2D::Create(atlasWidth, atlasHeight, texSpec);
         m_Atlas->SetData(texData);
+    }
+    float Font::GetWidthPixels(std::string& text, float kerning, float scaleX)
+    {
+        float advanceX = 0.0f;
+
+        uint32_t codepoint;
+        uint32_t nextCodepoint;
+        const char* charPointer = text.c_str();
+
+        int i = 0;
+        for(int i = 0; i < text.length();)
+        {
+            charPointer = utf8codepoint(charPointer, (utf8_int32_t*)&codepoint);
+            utf8codepoint(charPointer, (utf8_int32_t*)&nextCodepoint);
+            i = charPointer - text.c_str();
+
+            if(codepoint == ' ' && advanceX == 0.0f) continue;
+
+            GlyphData data = GetGlyph(codepoint);
+            if(nextCodepoint != '\0')
+            {
+                GlyphData nextData = GetGlyph(nextCodepoint);
+                advanceX += (data.Advance + GetKerning(codepoint, nextCodepoint)) * scaleX + kerning;
+            }
+        }
+
+        return advanceX;
     }
 
     Ref<Font> Font::Create(const Ref<ByteBuffer>& file)
