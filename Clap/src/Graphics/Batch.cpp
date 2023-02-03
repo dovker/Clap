@@ -185,7 +185,7 @@ namespace Clap
         s_Data.IndexCount += 6;
     }
 
-    void Batch::Submit(const glm::mat4& transform, Ref<Texture2D>& texture, const glm::vec4& color, bool scaleByTexture, const glm::vec4& uv)
+    void Batch::Submit(const glm::mat4& transform, Ref<Texture2D>& texture, const glm::vec4& color, bool scaleByTexture, const glm::vec4& uv, const glm::vec3& extraData)
     {
         if (s_Data.IndexCount >= MAX_INDICES)
         {
@@ -229,16 +229,16 @@ namespace Clap
             s_Data.QuadPointer->Position = newTransform * s_Data.QuadPositions[i];
             s_Data.QuadPointer->Color = color;
             s_Data.QuadPointer->TexCoords = uvs[i];
-            s_Data.QuadPointer->Data.x = textureIndex; //TexIndex
+            s_Data.QuadPointer->Data = glm::vec4(textureIndex, extraData);
             s_Data.QuadPointer++;
         }
 
         s_Data.IndexCount += 6;
     }
 
-    void Batch::Submit(const glm::mat4& transform, Ref<Texture2D>& texture, const glm::vec2& from, const glm::vec2& to, const glm::vec4& color, bool scaleByTexture)
+    void Batch::Submit(const glm::mat4& transform, Ref<Texture2D>& texture, const glm::vec2& from, const glm::vec2& to, const glm::vec4& color, bool scaleByTexture, const glm::vec3& extraData)
     {
-        Submit(transform, texture, color, scaleByTexture, {from.x / texture->GetWidth(), 1.0f - to.y / texture->GetHeight(), to.x / texture->GetWidth(), 1.0f - from.y / texture->GetHeight()});
+        Submit(transform, texture, color, scaleByTexture, {from.x / texture->GetWidth(), 1.0f - to.y / texture->GetHeight(), to.x / texture->GetWidth(), 1.0f - from.y / texture->GetHeight()}, extraData);
     }
 
     void Batch::Submit(const glm::vec3& pos, const glm::vec2& size, Ref<Texture2D>& texture, const glm::vec2& from, const glm::vec2& to, const glm::vec4& color)
@@ -285,6 +285,8 @@ namespace Clap
 
         s_Data.IndexCount += 6;
     }
+
+
 
     void Batch::SubmitTile(const glm::vec3& pos, const glm::vec2& size, Ref<Texture2D>& texture, const glm::vec2& tileSize, uint32_t tile, const glm::vec4& color)
     {
@@ -386,7 +388,7 @@ namespace Clap
             utf8codepoint(charPointer, (utf8_int32_t*)&nextCodepoint);
             i = charPointer - text.c_str();
 
-            if(codepoint == ' ' && advanceX == 0.0f) continue;
+            if((codepoint == ' ' || codepoint == ' ') && advanceX == 0.0f) continue;
 
             GlyphData data = font->GetGlyph(codepoint);
             GlyphData nextData = font->GetGlyph(nextCodepoint);
@@ -397,17 +399,25 @@ namespace Clap
 
                 Transform t(baseline + advanceX * right + offset - advanceY * up, transform.Rotation, glm::vec3(scaleX, scaleY, 1.0f));
                 
-                Batch::Submit(t.GetTransform(), font->GetAtlas(), glm::vec2(data.PosX, data.PosY), glm::vec2(data.PosX + data.Width, data.PosY + data.Height), color, true);
+                Batch::Submit(t.GetTransform(), font->GetAtlas(), glm::vec2(data.PosX, data.PosY), glm::vec2(data.PosX + data.Width, data.PosY + data.Height), color, true, glm::vec3(font->GetType() == FontType::SDF ? 1.0f : 0.0f));
             }
 
             if(nextCodepoint != '\0')
             {
-                advanceX += (data.Advance + font->GetKerning(codepoint, nextCodepoint)) * scaleX + kerning;
                 if((advanceX + nextData.Advance > width && width != 0.0f) || nextCodepoint == '\n')
                 {
                     advanceX = 0.0f;
-                    advanceY += (font->GetDescent() + font->GetLineGap()) * scaleY + lineGap;
+                    advanceY += (-font->GetDescent() + font->GetLineGap()) * scaleY + lineGap;
+
+                    if(nextCodepoint == '\n')
+                    {
+                        charPointer = utf8codepoint(charPointer, (utf8_int32_t*)&codepoint);
+                    }
+
+                    continue;
                 }
+
+                advanceX += (data.Advance + font->GetKerning(codepoint, nextCodepoint)) * scaleX + kerning;
             }
             else break;
         }

@@ -50,6 +50,9 @@ layout(location = 0) out vec4 FragColor;
 
 layout (binding = 0) uniform sampler2D uTextures[16];
 
+float threshold = 0.5;
+float smoothness = 0.005;
+
 void main()
 {
     
@@ -59,12 +62,26 @@ void main()
     } 
     else
     {
-        vec4 color = texture(uTextures[int(Input.Data.x)], Input.TexCoords) * Input.Color;
-        if (color.a <= 0.0)
+        if(Input.Data.y < 1.0) //REGULAR FONT RENDERING
         {
-            discard;
-        }
+            vec4 color = vec4(vec3(1.0), texture(uTextures[int(Input.Data.x)], Input.TexCoords).r) * Input.Color;
 
-        FragColor = color;
+            if(color.a == 0.0) discard;
+
+            FragColor = color;
+        }
+        else // SDF FONT RENDERING
+        {
+            float value = texture(uTextures[int(Input.Data.x)], Input.TexCoords).r;
+
+            vec4 color = vec4(vec3(1.0), smoothstep(threshold - smoothness, threshold + smoothness, value));
+
+            if(color.a == 0.0) discard;
+
+            FragColor = color;
+
+            //FragColor = vec4(vec3(1.0), value);
+        }
+        
     }
 }

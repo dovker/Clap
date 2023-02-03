@@ -31,8 +31,8 @@ namespace Clap
         static void Submit(const glm::vec3& pos, const glm::vec2& size, Ref<Texture2D>& texture, const glm::vec2& from, const glm::vec2& to, const glm::vec4& color = {1.0f, 1.0f, 1.0f, 1.0f});
         static void Submit(const glm::vec3& pos, const glm::vec2& size, const glm::vec4& color, float radius = 0.0f, float outlineRadius = 0.0f);
         static void Submit(const glm::mat4& transform, const glm::vec4& color);
-        static void Submit(const glm::mat4& transform, Ref<Texture2D>& texture, const glm::vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, bool scaleByTexture = true, const glm::vec4& uv = {0.0f, 0.0f, 1.0f, 1.0f});
-        static void Submit(const glm::mat4& transform, Ref<Texture2D>& texture, const glm::vec2& from, const glm::vec2& to, const glm::vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, bool scaleByTexture = true);
+        static void Submit(const glm::mat4& transform, Ref<Texture2D>& texture, const glm::vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, bool scaleByTexture = true, const glm::vec4& uv = {0.0f, 0.0f, 1.0f, 1.0f}, const glm::vec3& extraData = {0.0f, 0.0f, 0.0f});
+        static void Submit(const glm::mat4& transform, Ref<Texture2D>& texture, const glm::vec2& from, const glm::vec2& to, const glm::vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, bool scaleByTexture = true, const glm::vec3& extraData = {0.0f, 0.0f, 0.0f});
         static void Submit(const glm::mat4& transform, Ref<Texture2D>& texture, glm::vec3 positions[4], glm::vec2 uv[4], const glm::vec4& color = {1.0f, 1.0f, 1.0f, 1.0f});
 
         static void SubmitTile(const glm::vec3& pos, const glm::vec2& size, Ref<Texture2D>& texture, const glm::vec2& tileSize, uint32_t tile, const glm::vec4& color = {1.0f, 1.0f, 1.0f, 1.0f});
