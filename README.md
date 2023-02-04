@@ -25,3 +25,5 @@ Currently this framework is being developed to reach an Alpha ( Usable ) state, 
 * 3D Rendering functionalities
 * Bindings to a scripting language
 * Multithreading
+* Profiling Tools
+* Documentation
