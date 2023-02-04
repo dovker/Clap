@@ -6,11 +6,15 @@
 #include "Events/Event.h"
 #include "Events/EventSystem.h"
 
+#include "Graphics/API/API.h"
+
 #define SDL_MAIN_HANDLED
-#include "SDL.h"
+#include "SDL3/SDL.h"
 
 #include "SDLWindow.h"
 #include "SDLOpenGLContext.h"
+
+#include "Graphics/ImGui/ImGuiRenderer.h"
 
 namespace Clap {
 
@@ -26,7 +30,7 @@ namespace Clap {
         m_Data.Height = properties.Height;
 
         if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-            CLAP_ERROR("SDL2 video subsystem couldn't be initialized. Error: ", SDL_GetError());
+            CLAP_ERROR("SDL3 video subsystem couldn't be initialized. Error: ", SDL_GetError());
             exit(1);
         }
         uint32_t GraphicsFlag = 0;
@@ -35,7 +39,7 @@ namespace Clap {
         #endif
 
 
-        auto flags = SDL_WINDOW_SHOWN | GraphicsFlag;
+        auto flags = SDL_WINDOW_RESIZABLE | GraphicsFlag;
 
         m_Window = SDL_CreateWindow(properties.Title.c_str(),
                                             SDL_WINDOWPOS_CENTERED,
@@ -66,65 +70,71 @@ namespace Clap {
         {
             Event e;
             e.Immediate = false;
+            e.Handled   = ImGuiRenderer::HandleSDLEvent(&event);
             switch(event.type) {
-                case SDL_QUIT:
+                case SDL_EVENT_QUIT:
                     e.Type = EventType::WindowClose;
-                    break;
-                case SDL_WINDOWEVENT:
-                    switch(event.window.type)
-                    {
-                        case SDL_WINDOWEVENT_RESIZED:
-                            m_Data.Width = event.window.data1;
-                            m_Data.Height = event.window.data2;
+                    e.Handled = false;
+                break;
+                
+                case SDL_EVENT_WINDOW_RESIZED:
+                    m_Data.Width = event.window.data1;
+                    m_Data.Height = event.window.data2;
 
-                            e.Type = EventType::WindowResize;
-                            e.Data.WindowResizeEvent = { event.window.data1, event.window.data2 };
+                    e.Type = EventType::WindowResize;
+                    e.Data.WindowResizeEvent = { event.window.data1, event.window.data2 };
 
-                            //TODO: Graphics::SetViewport(0, 0, m_Data.Width, m_Data.Height);
-                        break;
-                        case SDL_WINDOWEVENT_CLOSE:
-                            e.Type = EventType::WindowClose;
-                        break;
-                        case SDL_WINDOWEVENT_FOCUS_GAINED:
-                            e.Type = EventType::WindowFocus;
-                        break;
-                        case SDL_WINDOWEVENT_FOCUS_LOST:
-                            e.Type = EventType::WindowLostFocus;
-                        break;
-                    }
+                    //e.Handled = false;
                 break;
 
-                case SDL_MOUSEMOTION:
+                case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
+                    e.Type = EventType::WindowClose;
+                    e.Handled = false;
+                break;
+
+                case SDL_EVENT_WINDOW_FOCUS_GAINED:
+                    e.Type = EventType::WindowFocus;
+                    e.Handled = false;
+                break;
+
+                case SDL_EVENT_WINDOW_FOCUS_LOST:
+                    e.Type = EventType::WindowLostFocus;
+                    e.Handled = false;
+                break;
+
+                case SDL_EVENT_MOUSE_MOTION:
                     e.Type = EventType::MouseMoved;
                     e.Data.MouseEvent = { (float)event.motion.x, (float)event.motion.y };
                 break;
 
-                case SDL_MOUSEWHEEL:
+                case SDL_EVENT_MOUSE_WHEEL:
                     e.Type = EventType::MouseScrolled;
                     e.Data.MouseEvent = { (float)event.wheel.x, (float)event.wheel.y };
                 break;
 
-                case SDL_MOUSEBUTTONDOWN:
+                case SDL_EVENT_MOUSE_BUTTON_DOWN:
                     e.Type = EventType::MouseButtonPressed;
                     e.Data.MouseButtonEvent = { event.button.button };
                 break;
 
-                case SDL_MOUSEBUTTONUP:
+                case SDL_EVENT_MOUSE_BUTTON_UP:
                     e.Type = EventType::MouseButtonReleased;
                     e.Data.MouseButtonEvent = { event.button.button };
+                    e.Handled = false;
                 break;
 
-                case SDL_KEYDOWN:
+                case SDL_EVENT_KEY_DOWN:
                     e.Type = EventType::KeyPressed;
                     e.Data.KeyEvent = { event.key.keysym.scancode, event.key.repeat };
                 break;
 
-                case SDL_KEYUP:
+                case SDL_EVENT_KEY_UP:
                     e.Type = EventType::KeyReleased;
                     e.Data.KeyEvent = { event.key.keysym.scancode, event.key.repeat };
+                    e.Handled = false;
                 break;
 
-                case SDL_TEXTINPUT:
+                case SDL_EVENT_TEXT_INPUT:
                     e.Type = EventType::KeyTyped;
                     e.Data.KeyTypedEvent = { event.text.text[0] };
                 break;
@@ -136,15 +146,14 @@ namespace Clap {
 
 	void SDLWindow::SetFullscreen(bool enabled) 
 	{ 
-		if(m_Data.Fullscreen != enabled)
-        {
-            m_Data.Fullscreen = enabled;
-            SDL_SetWindowFullscreen(m_Window, enabled);
-        }
+        m_Data.Fullscreen = enabled;
+        SDL_SetWindowFullscreen(m_Window, (SDL_bool)enabled);
 	} 
     void SDLWindow::SetCursorVisible(bool enabled)
     {
-        SDL_ShowCursor(enabled ? SDL_ENABLE : SDL_DISABLE);
+        if(enabled)
+            SDL_ShowCursor();
+        else SDL_HideCursor();
     }
     void SDLWindow::SetCursorLock(bool enabled) 
 	{ 
@@ -185,6 +194,26 @@ namespace Clap {
 	{
 		return (double)SDL_GetPerformanceFrequency();
 	}
+
+    uint32_t SDLWindow::GetWidthPixels() const
+    {
+        int w, h;
+        SDL_GetWindowSizeInPixels(m_Window, &w, &h);
+        return w;
+    }
+
+    uint32_t SDLWindow::GetHeightPixels() const
+    {
+        int w, h;
+        SDL_GetWindowSizeInPixels(m_Window, &w, &h);
+        return h;
+    }
+
+    double SDLWindow::GetDPIScale() const
+    {
+        return (double)GetHeightPixels() / (double)GetHeight();
+    }
+
 
 	bool SDLWindow::IsVSync() const
 	{

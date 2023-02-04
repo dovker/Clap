@@ -3,7 +3,7 @@
 #include "Input/Input.h"
 #include "Core/Window.h"
 
-#include "SDL.h"
+#include "SDL3/SDL.h"
 
 namespace Clap
 {
@@ -16,29 +16,29 @@ namespace Clap
 
     bool Input::IsMouseButtonPressed(int button)
     {
-        int x, y;
+        float x, y;
         uint32_t buttons = SDL_GetMouseState(&x, &y);
         return buttons & SDL_BUTTON(button);
     }
 
     float Input::GetMouseX()
     {
-        int x, y;
+        float x, y;
         SDL_GetMouseState(&x, &y);
-        return (float)x;
+        return x;
     }
 
     std::pair<float, float> Input::GetMousePos()
     {
-        int x, y;
+        float x, y;
         SDL_GetMouseState(&x, &y);
-        return {(float)x, (float)y };
+        return {x, y };
     }
 
     float Input::GetMouseY()
     {
-        int x, y;
+        float x, y;
         SDL_GetMouseState(&x, &y);
-        return (float)y;
+        return y;
     }
 }

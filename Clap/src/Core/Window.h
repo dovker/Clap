@@ -23,8 +23,11 @@ namespace Clap
 
 		virtual void OnUpdate() = 0;
 
-		virtual unsigned int GetWidth() const = 0;
-		virtual unsigned int GetHeight() const = 0;
+		virtual uint32_t GetWidth() const = 0;
+		virtual uint32_t GetHeight() const = 0;
+		virtual uint32_t GetWidthPixels() const = 0;
+		virtual uint32_t GetHeightPixels() const = 0;
+		virtual double GetDPIScale() const = 0;
 		virtual double GetTime() = 0;
 		virtual double GetFrequency() = 0;
 
@@ -42,6 +45,7 @@ namespace Clap
         
 		virtual bool IsVSync() const = 0;
 		virtual void* GetWindowPtr() = 0;
+		virtual void* GetContextPtr() = 0;
 
 		static Window* Create(const WindowSpecification& props = WindowSpecification());
 	};

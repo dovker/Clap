@@ -24,12 +24,12 @@ set(ENABLE_ZSTD OFF CACHE BOOL "Enable use of Zstandard")
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libraries")
 
 add_compile_definitions(_CRT_SCURE_NO_WARNINGS)
+add_compile_definitions(CLAP_USE_SDL3)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/assimp)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip)
 
 
@@ -37,16 +37,10 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip)
 set_target_properties (Glad PROPERTIES
     FOLDER Dependencies
 )
-set_target_properties (SDL2-static PROPERTIES
-    FOLDER Dependencies
-)
-set_target_properties (SDL2main PROPERTIES
+set_target_properties (SDL3-static PROPERTIES
     FOLDER Dependencies
 )
 set_target_properties (wren PROPERTIES
-    FOLDER Dependencies
-)
-set_target_properties (assimp PROPERTIES
     FOLDER Dependencies
 )
 set_target_properties (uninstall PROPERTIES
@@ -69,13 +63,11 @@ set(CLAP_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/stb/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/asio/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/json
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/assimp/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/utf8
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren/src/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip/src)
 
 set(CLAP_LINK_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL
-                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/assimp
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren
@@ -83,6 +75,6 @@ set(CLAP_LINK_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL
                    
 set(CLAP_WORKSPACE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-set(CLAP_LINK_LIBS SDL2main SDL2-static wren ImGui Glad assimp zip)
+set(CLAP_LINK_LIBS SDL3::SDL3 wren ImGui Glad zip)
 
 add_subdirectory(Clap)

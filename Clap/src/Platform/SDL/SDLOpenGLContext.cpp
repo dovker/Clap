@@ -5,7 +5,7 @@
 #include "SDLOpenGLContext.h"
 
 #define SDL_MAIN_HANDLED
-#include "SDL.h"
+#include "SDL3/SDL.h"
 
 #include "glad/glad.h"
 

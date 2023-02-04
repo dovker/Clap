@@ -13,6 +13,3 @@
 [submodule "Clap/thirdparty/wren"]
 	path = Clap/thirdparty/wren
 	url = https://github.com/wren-lang/wren
-[submodule "Clap/thirdparty/assimp"]
-	path = Clap/thirdparty/assimp
-	url = https://github.com/assimp/assimp

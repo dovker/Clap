@@ -15,8 +15,11 @@ namespace Clap {
 
 		void OnUpdate() override;
 
-		inline unsigned int GetWidth() const override { return m_Data.Width; }
-		inline unsigned int GetHeight() const override { return m_Data.Height; }
+		virtual uint32_t GetWidth() const override { return m_Data.Width; }
+		virtual uint32_t GetHeight() const override { return m_Data.Height; }
+		virtual uint32_t GetWidthPixels() const override;
+		virtual uint32_t GetHeightPixels() const override;
+		virtual double GetDPIScale() const override;
 		inline double GetTime() override;
 		inline double GetFrequency() override;
 
@@ -33,6 +36,7 @@ namespace Clap {
 
 		bool IsVSync() const override;
 		void* GetWindowPtr() override { return m_Window; }
+		void* GetContextPtr() override { return m_Context->GetPointer(); }
 	private:
 		SDL_Window* m_Window;
         
@@ -41,7 +45,7 @@ namespace Clap {
 		struct WindowData
 		{
 			std::string Title;
-			unsigned int Width, Height;
+			uint32_t Width, Height;
 			bool VSync, Fullscreen = false;
 		};
 

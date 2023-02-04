@@ -19,6 +19,8 @@
 #include "Graphics/Batch.h"
 #include "Graphics/Fonts/Font.h"
 
+#include "Graphics/ImGui/ImGuiRenderer.h"
+
 #include "Data/ByteBuffer.h"
 #include "Data/ObjParser.h"
 #include "Data/TexturePack.h"
