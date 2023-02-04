@@ -13,9 +13,9 @@ Currently this framework is being developed to reach an Alpha ( Usable ) state, 
 * Custom Event system and Event pools
 * Sprite Batching
 * Text (Rasterized, Sprite and SDF) rendering
+* ImGui support
 
 # Features currently being developed
-* ImGui support
 * Asset management and File system
 * Project structuring and packaging
 * Audio Support
