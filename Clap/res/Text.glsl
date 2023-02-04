@@ -80,7 +80,7 @@ void main()
 
             FragColor = color;
         }
-        else
+        else // SPRITEFONT RENDERING
         {
             vec4 color = texture(uTextures[int(Input.Data.x)], Input.TexCoords) * Input.Color;
             if (color.a <= 0.0)

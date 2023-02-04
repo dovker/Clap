@@ -132,17 +132,23 @@ namespace Clap
 
         void OnEvent(Event& e)
         {
-            for(auto& sys : m_Systems)
+            if(!e.Handled)
             {
-                sys->OnEvent(e);
+                for(auto& sys : m_Systems)
+                {
+                    sys->OnEvent(e);
+                }
             }
         }
 
         void OnImmediateEvent(Event& e)
         {
-            for(auto& sys : m_Systems)
+            if(!e.Handled)
             {
-                sys->OnImmediateEvent(e);
+                for(auto& sys : m_Systems)
+                {
+                    sys->OnImmediateEvent(e);
+                }
             }
         }
 
