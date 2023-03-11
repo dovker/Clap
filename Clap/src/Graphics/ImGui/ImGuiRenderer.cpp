@@ -3,9 +3,7 @@
 #include "ImGuiRenderer.h"
 #include "ImGui.h"
 
-#if CLAP_USE_OPENGL
 #include "backends/imgui_impl_opengl3.h"
-#endif
 
 #if CLAP_USE_SDL3
 #include "backends/imgui_impl_sdl3.h"
@@ -56,7 +54,7 @@ namespace Clap
     void ImGuiRenderer::Begin()
     {
         ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplSDL3_NewFrame(SDL_GL_GetCurrentWindow());
+		ImGui_ImplSDL3_NewFrame();
 		ImGui::NewFrame();
     }
 
