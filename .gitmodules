@@ -1,9 +1,6 @@
 [submodule "Clap/thirdparty/glm"]
 	path = Clap/thirdparty/glm
 	url = https://github.com/g-truc/glm
-[submodule "Clap/thirdparty/imgui"]
-	path = Clap/thirdparty/imgui
-	url = https://github.com/dovker/imgui
 [submodule "Clap/thirdparty/SDL"]
 	path = Clap/thirdparty/SDL
 	url = https://github.com/libsdl-org/SDL.git

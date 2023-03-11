@@ -3,10 +3,12 @@
 #include "ImGuiRenderer.h"
 #include "ImGui.h"
 
+#if CLAP_USE_OPENGL
 #include "backends/imgui_impl_opengl3.h"
+#endif
 
 #if CLAP_USE_SDL3
-#include "Platform/SDL/imgui_impl_sdl3.h"
+#include "backends/imgui_impl_sdl3.h"
 #include "SDL3/SDL.h"
 #endif
 
