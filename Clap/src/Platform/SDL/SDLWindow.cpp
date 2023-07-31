@@ -42,8 +42,6 @@ namespace Clap {
         auto flags = SDL_WINDOW_RESIZABLE | GraphicsFlag;
 
         m_Window = SDL_CreateWindow(properties.Title.c_str(),
-                                            SDL_WINDOWPOS_CENTERED,
-                                            SDL_WINDOWPOS_CENTERED,
                                             properties.Width, properties.Height, flags);
 
 
@@ -70,7 +68,11 @@ namespace Clap {
         {
             Event e;
             e.Immediate = false;
-            e.Handled   = ImGuiRenderer::HandleSDLEvent(&event);
+            if(ImGuiRenderer::IsInitialized())
+            {
+                e.Handled = ImGuiRenderer::HandleSDLEvent(&event);
+            }
+
             switch(event.type) {
                 case SDL_EVENT_QUIT:
                     e.Type = EventType::WindowClose;

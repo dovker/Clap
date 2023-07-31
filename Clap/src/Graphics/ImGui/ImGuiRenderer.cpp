@@ -3,6 +3,8 @@
 #include "ImGuiRenderer.h"
 #include "ImGui.h"
 
+#include "Graphics/API/API.h"
+
 #include "backends/imgui_impl_opengl3.h"
 
 #if CLAP_USE_SDL3
@@ -13,7 +15,9 @@
 namespace Clap
 {
     bool ImGuiRenderer::m_BlockEvents = true;
+    bool ImGuiRenderer::m_Initialized = false;
     void ImGuiRenderer::SetEventBlocking(bool blocking) { m_BlockEvents = blocking; }
+    bool ImGuiRenderer::IsInitialized() { return m_Initialized; }
 
     void ImGuiRenderer::Init(Window* window)
     {
@@ -41,6 +45,7 @@ namespace Clap
 
 		ImGui_ImplSDL3_InitForOpenGL(win, window->GetContextPtr());
 		ImGui_ImplOpenGL3_Init("#version 450");
+        m_Initialized = true;
     }
 
     bool ImGuiRenderer::HandleSDLEvent(SDL_Event* e)
@@ -63,6 +68,9 @@ namespace Clap
         ImGuiIO& io = ImGui::GetIO();
 
 		ImGui::Render();
+        // Graphics::SetViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+        // Graphics::SetClearColor({0.45f, 0.55f, 0.60f, 1.0f});
+        // Graphics::Clear();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -80,6 +88,7 @@ namespace Clap
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplSDL3_Shutdown();
         ImGui::DestroyContext();
+        m_Initialized = false;
     }
 
 }

@@ -19,8 +19,10 @@ namespace Clap {
 
         static void SetEventBlocking(bool blocking);
 		static bool HandleSDLEvent(SDL_Event* e);
+		static bool IsInitialized();
 	private:
 		static bool m_BlockEvents;
+		static bool m_Initialized;
 	};
 
 }

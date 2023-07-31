@@ -61,7 +61,6 @@ set(CLAP_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui   
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/glm
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/stb/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/asio/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/json
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/utf8
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren/src/include
