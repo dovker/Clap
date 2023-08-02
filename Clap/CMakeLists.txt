@@ -28,6 +28,7 @@ target_include_directories(Clap SYSTEM PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
 
 add_compile_definitions(_CRT_SCURE_NO_WARNINGS)
 add_compile_definitions(CLAP_DEBUG) #Add automatic checking for Opengl later
+add_compile_definitions(CLAP_ENGINE_DIR="${PROJECT_SOURCE_DIR}")
 
 target_link_directories(Clap PRIVATE ${CLAP_LINK_DIRS})
 # TODO: MAKE IT SO THE USER DECIDES GRAPHICS LIBRARY

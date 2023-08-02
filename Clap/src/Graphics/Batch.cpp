@@ -84,7 +84,7 @@ namespace Clap
         delete[] indices;
 
         
-        s_Data.DefaultShader = Shader::Create("C:/dev/Clap/Clap/res/Default2D.glsl");
+        s_Data.DefaultShader = Shader::Create(CLAP_ENGINE_PATH("/res/Default2D.glsl"));
         s_Data.CurrentShader = s_Data.DefaultShader;
         
 

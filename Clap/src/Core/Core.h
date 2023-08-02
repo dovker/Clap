@@ -77,3 +77,5 @@ namespace Clap
 }
 
 #define CLAP_BIT(x) (1 << x)
+#define CLAP_ENGINE_PATH(x) (std::string(CLAP_ENGINE_DIR) + x)
+#define CLAP_PATH(x) (std::string(CLAP_PROJECT_DIR) + x)
