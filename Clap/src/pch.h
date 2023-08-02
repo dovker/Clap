@@ -19,6 +19,7 @@
 #include <fstream>
 #include <sstream>
 #include <ostream>
+#include <iterator>
 #include <array>
 #include <vector>
 #include <deque>

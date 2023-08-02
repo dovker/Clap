@@ -60,5 +60,6 @@ dotfx
 **/.vscode/
 Build/compile_commands.json.tmp11097
 Build/
+build/
 
 imgui.ini

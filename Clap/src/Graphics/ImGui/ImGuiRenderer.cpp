@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "ImGuiRenderer.h"
-#include "ImGui.h"
+#include "imgui.h"
 
 #include "Graphics/API/API.h"
 

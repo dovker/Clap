@@ -25,11 +25,11 @@ namespace Clap
 		bool Handled = false;
         union EventData
         {
-            WindowResizeEvent WindowResizeEvent;
-            MouseEvent MouseEvent;
-            MouseButtonEvent MouseButtonEvent;
-            KeyEvent KeyEvent;
-			KeyTypedEvent KeyTypedEvent;
+            Clap::WindowResizeEvent WindowResizeEvent;
+            Clap::MouseEvent MouseEvent;
+            Clap::MouseButtonEvent MouseButtonEvent;
+            Clap::KeyEvent KeyEvent;
+			Clap::KeyTypedEvent KeyTypedEvent;
         } Data;
     };
 }

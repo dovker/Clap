@@ -7,9 +7,6 @@
 [submodule "Clap/thirdparty/zip"]
 	path = Clap/thirdparty/zip
 	url = https://github.com/kuba--/zip
-[submodule "Clap/thirdparty/wren"]
-	path = Clap/thirdparty/wren
-	url = https://github.com/wren-lang/wren
 [submodule "Clap/thirdparty/imgui"]
 	path = Clap/thirdparty/imgui
 	url = https://github.com/ocornut/imgui

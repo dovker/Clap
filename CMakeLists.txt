@@ -29,7 +29,7 @@ add_compile_definitions(CLAP_USE_SDL3)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren)
+#add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip)
 
 
@@ -40,9 +40,9 @@ set_target_properties (Glad PROPERTIES
 set_target_properties (SDL3-static PROPERTIES
     FOLDER Dependencies
 )
-set_target_properties (wren PROPERTIES
-    FOLDER Dependencies
-)
+#set_target_properties (wren PROPERTIES
+#    FOLDER Dependencies
+#)
 set_target_properties (uninstall PROPERTIES
     FOLDER Dependencies
 )
@@ -63,17 +63,17 @@ set(CLAP_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/stb/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/json
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/utf8
-    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren/src/include
+    # ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren/src/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip/src)
 
 set(CLAP_LINK_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui
-                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren
+                   # ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/wren
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip)
                    
 set(CLAP_WORKSPACE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-set(CLAP_LINK_LIBS SDL3::SDL3 wren ImGui Glad zip)
+set(CLAP_LINK_LIBS SDL3::SDL3 ImGui Glad zip) #wren
 
 add_subdirectory(Clap)
