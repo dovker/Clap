@@ -23,7 +23,6 @@ To be described.
 * Asset management and File system
 * Project structuring and packaging
 * Audio Support
-* Bindings to a scripting language ([Wren](https://wren.io))
 
 # Future
 
@@ -36,3 +35,7 @@ The future vision is for **Clap** is a MonoGame-esque framework that exceeds in 
 * Multithreading
 * Profiling Tools
 * Documentation
+
+## Platform Support
+* Windows
+* Linux
