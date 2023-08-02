@@ -13,3 +13,6 @@
 [submodule "Clap/thirdparty/imgui"]
 	path = Clap/thirdparty/imgui
 	url = https://github.com/ocornut/imgui
+[submodule "Clap/thirdparty/GameNetworkingSockets"]
+	path = Clap/thirdparty/GameNetworkingSockets
+	url = https://github.com/ValveSoftware/GameNetworkingSockets.git
