@@ -2,13 +2,6 @@
 
 namespace Clap
 {
-    struct MeshVertex
-    {
-        glm::vec3 Position;
-        glm::vec2 TexCoords;
-        glm::vec3 Normals;
-        glm::vec3 Tangents;
-    };
 
     Ref<Mesh> ObjParser::Parse(const std::string& filename, bool precalculateTangents) //Keeps space for tangents regardless. If you want to import in some obscure manner, write a parser yourself, I am too lazy at this instance.
     {
@@ -29,7 +22,7 @@ namespace Clap
         std::vector<glm::vec3> normals;
 
         std::vector<uint32_t> indices;
-        std::vector<MeshVertex> vertices;
+        std::vector<Vertex> vertices;
 
         while(std::getline(file, tmp))
         {
@@ -125,20 +118,20 @@ namespace Clap
                 for(int i = 0; i < 3; i++)
                 {
                     indices.push_back(indices.size());
-                    MeshVertex v;
+                    Vertex v;
 
                     v.Position = positions[currentFace[i].vertex];
 
                     if(hasTexCoords)
-                        v.TexCoords = texCoords[currentFace[i].texCoord];
+                        v.TexCoord = texCoords[currentFace[i].texCoord];
 
                     if(generateNormal)
                     {
-                        v.Normals = precalcNormal;
+                        v.Normal = precalcNormal;
                     }
                     else
                     {
-                        v.Normals = normals[currentFace[i].normal];
+                        v.Normal = normals[currentFace[i].normal];
                     }
 
                     if(precalculateTangents)
@@ -148,14 +141,15 @@ namespace Clap
 
                         //float w = (glm::dot(glm::cross(normal, tangent), bitangent) < 0.0f) ? -1.0f : 1.0f;
 
-                        v.Tangents = orthogonalizedTangent;
+                        v.Tangent = orthogonalizedTangent;
+                        v.Bitangent = bitangent;
                     }
                     vertices.push_back(v);
                 }
             break;
             }
         }
-        return Mesh::Create(std::vector<float>((float*)vertices.data(), (float*)vertices.data() + vertices.size() * 11), indices, true);
+        return Mesh::Create(std::vector<Vertex>((Vertex*)vertices.data(), (Vertex*)vertices.data() + vertices.size() * 11), indices);
     }
     Ref<Mesh> ObjParser::ParseString(const std::string& string)
     {

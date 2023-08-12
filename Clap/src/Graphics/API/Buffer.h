@@ -2,6 +2,7 @@
 #include <pch.h>
 
 #include "Types.h"
+#include "Utils.h"
 
 #include "Core/Core.h"
 #include "Core/Log.h"
@@ -10,26 +11,6 @@
 
 namespace Clap
 {
-    static uint32_t GraphicsDataTypeSize(GraphicsDataType type)
-    {
-        switch (type) {
-            case GraphicsDataType::FLOAT:     return 4;
-            case GraphicsDataType::FLOAT2:    return 4 * 2;
-            case GraphicsDataType::FLOAT3:    return 4 * 3;
-            case GraphicsDataType::FLOAT4:    return 4 * 4;
-            case GraphicsDataType::MAT3:      return 4 * 3 * 3;
-            case GraphicsDataType::MAT4:      return 4 * 4 * 4;
-            case GraphicsDataType::INT:       return 4;
-            case GraphicsDataType::INT2:      return 4 * 2;
-            case GraphicsDataType::INT3:      return 4 * 3;
-            case GraphicsDataType::INT4:      return 4 * 4;
-            case GraphicsDataType::BOOL:      return 1;
-            default: break;
-        }
-        CLAP_ASSERT(false, "Unknown Graphics data type");
-        return 0;
-    }
-
     enum class Attribute
     {
         POSITION,

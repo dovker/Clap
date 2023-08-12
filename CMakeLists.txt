@@ -30,10 +30,14 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/assimp)
 
 
 #Folder Structure
 set_target_properties (Glad PROPERTIES
+    FOLDER Dependencies
+)
+set_target_properties (assimp PROPERTIES
     FOLDER Dependencies
 )
 set_target_properties (SDL3-static PROPERTIES
@@ -56,6 +60,7 @@ set(CLAP_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui   
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/glm
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/assimp/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/stb/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/json
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/utf8
@@ -63,11 +68,12 @@ set(CLAP_INCLUDE_DIRS
 
 set(CLAP_LINK_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/Glad
+                   ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/assimp
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui
                    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/zip)
                    
 set(CLAP_WORKSPACE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-set(CLAP_LINK_LIBS SDL3::SDL3 ImGui Glad zip)
+set(CLAP_LINK_LIBS SDL3::SDL3 ImGui Glad zip assimp)
 
 add_subdirectory(Clap)

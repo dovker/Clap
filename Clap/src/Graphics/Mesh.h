@@ -5,35 +5,71 @@
 
 namespace Clap
 {
+    #define CLAP_MAX_BONE_INFLUENCE 4
+
+    struct Vertex {
+        glm::vec3 Position;
+        glm::vec3 Normal;
+        glm::vec2 TexCoord;
+        
+        glm::vec3 Tangent;
+        glm::vec3 Bitangent;
+
+        uint32_t m_BoneIDs[CLAP_MAX_BONE_INFLUENCE];
+        float m_Weights[CLAP_MAX_BONE_INFLUENCE];
+    };
+
+    struct SimpleVertex
+    {
+        glm::vec3 Position;
+        glm::vec3 Normal;
+        glm::vec2 TexCoord;
+    };
+
     class Mesh
     {
     public:
-        Mesh(const std::vector<float>& vertices, const std::vector<uint32_t>& indices, bool tangents = false);
-        Mesh(float* vertices, size_t bufferSize, uint32_t* indices, uint32_t indexCount, bool tangents = false);
-        Mesh(const Ref<VertexArray>& vertexArray, bool tangents = false);
+        Mesh(std::vector<SimpleVertex> vertices, const std::vector<uint32_t>& indices);
+        Mesh(SimpleVertex* vertices, size_t bufferSize, uint32_t* indices, uint32_t indexCount);
+        
+        Mesh(std::vector<Vertex> vertices, const std::vector<uint32_t>& indices);
+        Mesh(Vertex* vertices, size_t bufferSize, uint32_t* indices, uint32_t indexCount);
 
-        void SetTangents(bool tan);
-        bool GetTangents() const; //Check if mesh contains precalculated tangents.
+        Mesh(float* vertices, size_t bufferSize, uint32_t* indices, uint32_t indexCount, bool simple = false);
+
+        Mesh(const Ref<VertexArray>& vertexArray, bool simple = false);
+        Mesh(const Ref<VertexBuffer>& vertexBuffer, const std::vector<uint32_t>& indices, bool simple = false);
+        Mesh(const Ref<VertexBuffer>& vertexBuffer, uint32_t* indices, uint32_t indexCount, bool simple = false);
         
-        
-        //void CalculateTangents();
         //Flip Faces, so on
         void FreeData();
         void SetInstanceData(const Ref<VertexBuffer>& vertexBuffer);
         void Draw() const; //Raw draw call
         void DrawInstanced(uint32_t count) const; //Raw draw call
 
-        static Ref<Mesh> Create(const std::vector<float>& vertices, const std::vector<uint32_t>&, bool tangents = false);
-        static Ref<Mesh> Create(float* vertices, uint32_t bufferSize, uint32_t* indices, uint32_t indexCount, bool tangents = false);
-        static Ref<Mesh> Create(const Ref<VertexArray>& vertexArray, bool tangents = false);
+        static Ref<Mesh> Create(std::vector<SimpleVertex> vertices, const std::vector<uint32_t>&);
+        static Ref<Mesh> Create(SimpleVertex* vertices, uint32_t bufferSize, uint32_t* indices, uint32_t indexCount);
+
+        static Ref<Mesh> Create(std::vector<Vertex> vertices, const std::vector<uint32_t>&);
+        static Ref<Mesh> Create(Vertex* vertices, uint32_t bufferSize, uint32_t* indices, uint32_t indexCount);
+        
+        static Ref<Mesh> Create(float* vertices, uint32_t bufferSize, uint32_t* indices, uint32_t indexCount, bool simple = false);
+   
+        static Ref<Mesh> Create(const Ref<VertexArray>& vertexArray, bool simple = false);
+        static Ref<Mesh> Create(const Ref<VertexBuffer>& vertexBuffer, const std::vector<uint32_t>& indices, bool simple = false);
+        static Ref<Mesh> Create(const Ref<VertexBuffer>& vertexBuffer, uint32_t* indices, uint32_t indexCount, bool simple = false);
     private:
         std::vector<float> m_Vertices;
         std::vector<uint32_t> m_Indices;
         uint32_t m_Count;
-        bool m_Tangents;
         Ref<VertexArray> m_VertexArray;
+
+        bool m_Simple = false;
     
     private:
         void m_GenerateVertexArray();
+        void m_GenerateSimpleVertexArray();
+        void m_GenerateVertexArrayFromVB(const Ref<VertexBuffer>& vertexBuffer);
+        void m_GenerateSimpleVertexArrayFromVB(const Ref<VertexBuffer>& vertexBuffer);
     };
 } 

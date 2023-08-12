@@ -51,7 +51,7 @@ namespace Clap
 
         s_Data.QuadVertexBuffer = VertexBuffer::Create(MAX_VERTICES * sizeof(QuadVertex));
 
-        s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(CameraBuffer), 0);
+        s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(CameraBuffer));
         
         s_Data.QuadVertexBuffer->SetLayout({
             { GraphicsDataType::FLOAT3, Attribute::POSITION },
@@ -103,6 +103,7 @@ namespace Clap
     void Batch::Begin(const glm::mat4& projection, const glm::mat4& view)
     {
         glm::mat4 ViewProjection = projection * glm::inverse(view);
+        s_Data.CameraUniformBuffer->Bind(0);
         s_Data.CameraUniformBuffer->SetData(&ViewProjection, sizeof(ViewProjection));
         BeginBatch();
     }
