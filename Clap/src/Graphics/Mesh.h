@@ -2,6 +2,7 @@
 
 #include "Graphics/API/VertexArray.h"
 #include "Core/Core.h"
+#include "Math/Math.h"
 
 namespace Clap
 {
@@ -15,8 +16,8 @@ namespace Clap
         glm::vec3 Tangent;
         glm::vec3 Bitangent;
 
-        uint32_t m_BoneIDs[CLAP_MAX_BONE_INFLUENCE];
-        float m_Weights[CLAP_MAX_BONE_INFLUENCE];
+        uint32_t BoneIDs[CLAP_MAX_BONE_INFLUENCE];
+        float Weights[CLAP_MAX_BONE_INFLUENCE];
     };
 
     struct SimpleVertex
@@ -37,7 +38,7 @@ namespace Clap
 
         Mesh(float* vertices, size_t bufferSize, uint32_t* indices, uint32_t indexCount, bool simple = false);
 
-        Mesh(const Ref<VertexArray>& vertexArray, bool simple = false);
+        Mesh(const Ref<VertexArray>& vertexArray, uint32_t count = 0, uint32_t offset = 0, bool simple = false);
         Mesh(const Ref<VertexBuffer>& vertexBuffer, const std::vector<uint32_t>& indices, bool simple = false);
         Mesh(const Ref<VertexBuffer>& vertexBuffer, uint32_t* indices, uint32_t indexCount, bool simple = false);
         
@@ -47,6 +48,9 @@ namespace Clap
         void Draw() const; //Raw draw call
         void DrawInstanced(uint32_t count) const; //Raw draw call
 
+        bool IsCulled() { return m_Culled; }
+        AABB GetAABB() { return m_AABB; }
+
         static Ref<Mesh> Create(std::vector<SimpleVertex> vertices, const std::vector<uint32_t>&);
         static Ref<Mesh> Create(SimpleVertex* vertices, uint32_t bufferSize, uint32_t* indices, uint32_t indexCount);
 
@@ -55,19 +59,25 @@ namespace Clap
         
         static Ref<Mesh> Create(float* vertices, uint32_t bufferSize, uint32_t* indices, uint32_t indexCount, bool simple = false);
    
-        static Ref<Mesh> Create(const Ref<VertexArray>& vertexArray, bool simple = false);
+        static Ref<Mesh> Create(const Ref<VertexArray>& vertexArray, uint32_t count = 0, uint32_t offset = 0, bool simple = false);
         static Ref<Mesh> Create(const Ref<VertexBuffer>& vertexBuffer, const std::vector<uint32_t>& indices, bool simple = false);
         static Ref<Mesh> Create(const Ref<VertexBuffer>& vertexBuffer, uint32_t* indices, uint32_t indexCount, bool simple = false);
+        
     private:
         std::vector<float> m_Vertices;
         std::vector<uint32_t> m_Indices;
-        uint32_t m_Count;
+        uint32_t m_Offset = 0;
+        uint32_t m_Count = 0;
         Ref<VertexArray> m_VertexArray;
+        AABB m_AABB;
+
+        bool m_Culled = true;
 
         bool m_Simple = false;
     
     private:
         void m_GenerateVertexArray();
+        void m_GenerateAABB();
         void m_GenerateSimpleVertexArray();
         void m_GenerateVertexArrayFromVB(const Ref<VertexBuffer>& vertexBuffer);
         void m_GenerateSimpleVertexArrayFromVB(const Ref<VertexBuffer>& vertexBuffer);

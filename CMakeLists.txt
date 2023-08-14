@@ -23,6 +23,15 @@ set(ENABLE_LZMA OFF CACHE BOOL "Enable use of LZMA")
 set(ENABLE_ZSTD OFF CACHE BOOL "Enable use of Zstandard")
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libraries")
 
+set(ASSIMP_BUILD_STATIC_LIB ON)
+set(BUILD_SHARED_LIBS OFF)
+set(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
+set(ASSIMP_BUILD_TESTS OFF)
+set(ASSIMP_BUILD_SAMPLES OFF)
+set(ASSIMP_NO_BOOST_WORKAROUND ON CACHE BOOL "Disable Boost workarounds")
+set(ASSIMP_BUILD_BOOST_WORKAROUND OFF CACHE BOOL "Do not build Boost workarounds")
+
+
 add_compile_definitions(_CRT_SCURE_NO_WARNINGS)
 add_compile_definitions(CLAP_USE_SDL3)
 
@@ -61,6 +70,7 @@ set(CLAP_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/imgui   
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/glm
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/assimp/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/assimp/build/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/stb/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/json
     ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/utf8
@@ -74,6 +84,6 @@ set(CLAP_LINK_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/Clap/thirdparty/SDL
                    
 set(CLAP_WORKSPACE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-set(CLAP_LINK_LIBS SDL3::SDL3 ImGui Glad zip assimp)
+set(CLAP_LINK_LIBS SDL3::SDL3 ImGui Glad zip assimp zlibstatic)
 
 add_subdirectory(Clap)

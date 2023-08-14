@@ -25,7 +25,7 @@ namespace Clap
 
     struct PBRMaterialUniform
     {
-        glm::vec4 Color = {1.0f, 1.0f, 1.0f, 1.0f};
+        glm::vec4 Albedo = {1.0f, 1.0f, 1.0f, 1.0f};
         float Emissive = 0.0f;
         float Metallic = 0.0f;
         float Roughness = 1.0f;
@@ -34,7 +34,7 @@ namespace Clap
         {
             std::vector<UniformValue> layout 
             {
-                {GraphicsDataType::FLOAT4, "Color"},
+                {GraphicsDataType::FLOAT4, "Albedo"},
                 {GraphicsDataType::FLOAT,  "Emissive"}, 
                 {GraphicsDataType::FLOAT,  "Metallic"}, 
                 {GraphicsDataType::FLOAT,  "Roughness"} 
@@ -49,9 +49,9 @@ namespace Clap
     class Material
     {
     public:
-        Material(const Ref<Shader>& shader, std::vector<UniformValue> layout);
-        Material(const Ref<Shader>& shader, PBRMaterialUniform data);
-        Material(const Ref<Shader>& shader, void* data, std::vector<UniformValue> layout);
+        Material(std::vector<UniformValue> layout, Ref<Shader> shader = nullptr);
+        Material(PBRMaterialUniform data, Ref<Shader> shader = nullptr);
+        Material(void* data, std::vector<UniformValue> layout, Ref<Shader> shader = nullptr);
 
         ~Material();
 
@@ -85,7 +85,12 @@ namespace Clap
 
         std::vector<UniformValue> GetLayout() { return m_Layout; }
         void* GetData() { return m_Data; }
+        void SetData(void* data);
         size_t GetSize() { return m_Size; }
+
+        static Ref<Material> Create(std::vector<UniformValue> layout, Ref<Shader> shader = nullptr);
+        static Ref<Material> Create(PBRMaterialUniform data, Ref<Shader> shader = nullptr);
+        static Ref<Material> Create(void* data, std::vector<UniformValue> layout, Ref<Shader> shader = nullptr);
 
     private:
         Ref<Shader> m_Shader;

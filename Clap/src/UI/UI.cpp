@@ -131,7 +131,7 @@ namespace Clap
 
     void UI::Init()
     {
-        m_Beginning = Element::Create(AABB({0.0f, 0.0f}, {m_Window->GetWidth(), m_Window->GetHeight()}));
+        m_Beginning = Element::Create(AABB2D({0.0f, 0.0f}, {m_Window->GetWidth(), m_Window->GetHeight()}));
         m_Beginning->SetVisible(false);
     }
 } 

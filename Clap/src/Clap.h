@@ -16,6 +16,9 @@
 #include "Graphics/API/VertexArray.h"
 
 #include "Graphics/Mesh.h"
+#include "Graphics/Model.h"
+#include "Graphics/Material.h"
+#include "Graphics/PBRRenderer.h"
 #include "Graphics/Batch.h"
 #include "Graphics/Fonts/Font.h"
 

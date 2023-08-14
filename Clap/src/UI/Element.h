@@ -17,7 +17,7 @@ namespace Clap
     public:
         glm::vec4 TEMP_COLOR;
         Element() {}
-        Element(AABB box) : m_AABB(box) 
+        Element(AABB2D box) : m_AABB(box) 
         {
             GEN_TEMP_COLOR();
         }
@@ -62,7 +62,7 @@ namespace Clap
 
         std::vector<Ref<Element>>& GetChildren() { return m_Children; }
         Ref<Element> GetParent() { return m_Parent; }
-        AABB GetAABB() { return m_AABB; }
+        AABB2D GetAABB() { return m_AABB; }
         bool IsCollidable() { return m_Collidable; }
         bool IsAbsolute() { return m_Absolute; }
         bool IsVisible() { return m_Visible; }
@@ -71,7 +71,7 @@ namespace Clap
         {
             return CreateRef<Element>();
         }
-        static Ref<Element> Create(AABB box)
+        static Ref<Element> Create(AABB2D box)
         {
             return CreateRef<Element>(box);
         }
@@ -79,7 +79,7 @@ namespace Clap
         // TODO: IMPLEMENT THIS: std::string m_Name;
         Ref<Element> m_Parent;
         std::vector<Ref<Element>> m_Children;
-        AABB m_AABB;
+        AABB2D m_AABB;
         bool m_Collidable = true;
         bool m_Visible = true;
         bool m_Absolute = false; //TODO: Support collisions for these

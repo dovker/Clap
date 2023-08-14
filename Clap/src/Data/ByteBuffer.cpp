@@ -8,8 +8,7 @@ namespace Clap
 {
     ByteBuffer::ByteBuffer(void *buffer, size_t size)
     {
-        m_Data.resize(size);
-        std::copy((byte*)buffer, (byte*)buffer + size, std::back_inserter(m_Data));
+        m_Data = std::vector<byte>((byte*)buffer, (byte*)buffer + size);
     }
     ByteBuffer::ByteBuffer(size_t size)
     {

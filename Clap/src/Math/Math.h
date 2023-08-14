@@ -28,9 +28,32 @@ namespace Clap
 
     struct AABB
     {
+        glm::vec3 Min, Max;
+
+        AABB() { Min = Max = glm::vec3(0.0f); }
+
+        AABB(glm::vec3 minPos, glm::vec3 maxPos)
+            : Min(minPos), Max(maxPos)
+        {}
+
+        AABB Transform(glm::mat4 matrix)
+        {
+            glm::vec4 minPoint = matrix * glm::vec4(Min, 1.0f);
+            minPoint /= minPoint.w;
+            glm::vec4 maxPoint = matrix * glm::vec4(Max, 1.0f);
+            maxPoint /= maxPoint.w;
+            return { glm::vec3(minPoint), glm::vec3(maxPoint) };
+        }
+
+        bool Collides(const glm::mat4& matrix);
+    };
+
+
+    struct AABB2D
+    {
         glm::vec2 Position, Size, Origin;
 
-        AABB(glm::vec2 pos = glm::vec2(0.0f), glm::vec2 size = glm::vec2(0.0f), glm::vec2 origin = glm::vec2(0.0f))
+        AABB2D(glm::vec2 pos = glm::vec2(0.0f), glm::vec2 size = glm::vec2(0.0f), glm::vec2 origin = glm::vec2(0.0f))
             : Position(pos), Size(size), Origin(origin)
         {}
 
@@ -67,7 +90,7 @@ namespace Clap
                    Top()    > point.y; 
         }
 
-        bool Collides(const AABB& parent, const glm::vec2& point) const
+        bool Collides(const AABB2D& parent, const glm::vec2& point) const
         {
             return parent.RealPosition().x + Left()   < point.x &&
                    parent.RealPosition().x + Right()  > point.x &&
@@ -75,7 +98,7 @@ namespace Clap
                    parent.RealPosition().y + Top()    > point.y; 
         }
 
-        bool Collides(const AABB& other) const
+        bool Collides(const AABB2D& other) const
         {
             return Left()   < other.Right() &&
                    Right()  > other.Left()  &&
