@@ -18,10 +18,12 @@ To be described.
 * Sprite Batching
 * Text (Rasterized, Sprite and SDF) rendering
 * ImGui support
+* 3D Model, Material and Mesh loading using Assimp
 
 # Features currently being developed
+* PBR Renderer
+* Skeletal Animations
 * Asset management and File system
-* Project structuring and packaging
 * Audio Support
 
 # Future
@@ -31,7 +33,6 @@ The future vision is for **Clap** is a MonoGame-esque framework that exceeds in 
 ## Future Features
 * Vulkan and MoltenVK support
 * Shader Cross-Compilation
-* 3D Rendering functionalities
 * Multithreading
 * Profiling Tools
 * Documentation
