@@ -11,8 +11,8 @@ namespace Clap
 
         vertexBuffer->SetLayout({ {GraphicsDataType::FLOAT3, Attribute::POSITION}, {GraphicsDataType::FLOAT3, Attribute::NORMAL}, 
                                   {GraphicsDataType::FLOAT2, Attribute::TEXCOORD0}, {GraphicsDataType::FLOAT3, Attribute::TANGENT},
-                                  {GraphicsDataType::FLOAT3, Attribute::BITANGENT}, {GraphicsDataType::INT4, Attribute::INDICES},
-                                  {GraphicsDataType::INT4, Attribute::WEIGHT}});
+                                  //{GraphicsDataType::INT4, Attribute::INDICES}, {GraphicsDataType::INT4, Attribute::WEIGHT}
+                                  });
 
         m_VertexArray->AddVertexBuffer(vertexBuffer);
         m_VertexArray->SetIndexBuffer(indexBuffer);
@@ -153,6 +153,196 @@ namespace Clap
     {
         Graphics::DrawIndexedInstanced(m_VertexArray, count);
     }
+
+    void CalculateTangents(std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices)
+    {
+        std::vector<glm::vec3> tan1(vertices.size(), glm::vec3(0.0f));
+        std::vector<glm::vec3> tan2(vertices.size(), glm::vec3(0.0f));
+
+        for (size_t i = 0; i < indices.size(); i += 3)
+        {
+            uint32_t i1 = indices[i];
+            uint32_t i2 = indices[i + 1];
+            uint32_t i3 = indices[i + 2];
+
+            const glm::vec3& v1 = vertices[i1].Position;
+            const glm::vec3& v2 = vertices[i2].Position;
+            const glm::vec3& v3 = vertices[i3].Position;
+
+            const glm::vec2& w1 = vertices[i1].TexCoord;
+            const glm::vec2& w2 = vertices[i2].TexCoord;
+            const glm::vec2& w3 = vertices[i3].TexCoord;
+
+            glm::vec3 deltaPos1 = v2 - v1;
+            glm::vec3 deltaPos2 = v3 - v1;
+
+            glm::vec2 deltaUV1 = w2 - w1;
+            glm::vec2 deltaUV2 = w3 - w1;
+
+            float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+            glm::vec3 sdir = glm::vec3((deltaUV2.y * deltaPos1.x - deltaUV1.y * deltaPos2.x) * r,
+                                    (deltaUV2.y * deltaPos1.y - deltaUV1.y * deltaPos2.y) * r,
+                                    (deltaUV2.y * deltaPos1.z - deltaUV1.y * deltaPos2.z) * r);
+            glm::vec3 tdir = glm::vec3((deltaUV1.x * deltaPos2.x - deltaUV2.x * deltaPos1.x) * r,
+                                    (deltaUV1.x * deltaPos2.y - deltaUV2.x * deltaPos1.y) * r,
+                                    (deltaUV1.x * deltaPos2.z - deltaUV2.x * deltaPos1.z) * r);
+
+            tan1[i1] += sdir;
+            tan1[i2] += sdir;
+            tan1[i3] += sdir;
+
+            tan2[i1] += tdir;
+            tan2[i2] += tdir;
+            tan2[i3] += tdir;
+        }
+
+        for (size_t a = 0; a < vertices.size(); ++a)
+        {
+            const glm::vec3& n = vertices[a].Normal;
+            const glm::vec3& t = tan1[a];
+
+            glm::vec3 tangent = glm::normalize(t - n * glm::dot(n, t));
+            vertices[a].Tangent = glm::vec4(tangent, (glm::dot(glm::cross(n, t), tan2[a]) < 0.0f) ? -1.0f : 1.0f);
+        }
+    }
+
+    Ref<Mesh> Mesh::Sphere(uint32_t subdivisions, float radius)
+    {
+        std::vector<Vertex> vertices;
+        std::vector<uint32_t> indices;
+
+        // Generate vertices
+        for (uint32_t face = 0; face < 6; ++face) {
+            for (uint32_t lat = 0; lat <= subdivisions; ++lat) {
+                for (uint32_t lon = 0; lon <= subdivisions; ++lon) {
+                    float u = static_cast<float>(lon) / subdivisions;
+                    float v = static_cast<float>(lat) / subdivisions;
+
+                    glm::vec3 position, normal;
+
+                    // Generate positions and normals based on face
+                    switch (face) {
+                        case 0: // +X face
+                            position = glm::normalize(glm::vec3(1.0f, v * 2.0f - 1.0f, u * 2.0f - 1.0f));
+                            normal = glm::vec3(1.0f, 0.0f, 0.0f);
+                            break;
+                        case 1: // -X face
+                            position = glm::normalize(glm::vec3(-1.0f, v * 2.0f - 1.0f, -(u * 2.0f - 1.0f)));
+                            normal = glm::vec3(-1.0f, 0.0f, 0.0f);
+                            break;
+                        case 2: // +Y face
+                            position = glm::normalize(glm::vec3(u * 2.0f - 1.0f, 1.0f, v * 2.0f - 1.0f));
+                            normal = glm::vec3(0.0f, 1.0f, 0.0f);
+                            break;
+                        case 3: // -Y face
+                            position = glm::normalize(glm::vec3(u * 2.0f - 1.0f, -1.0f, -(v * 2.0f - 1.0f)));
+                            normal = glm::vec3(0.0f, -1.0f, 0.0f);
+                            break;
+                        case 4: // +Z face
+                            position = glm::normalize(glm::vec3(u * 2.0f - 1.0f, v * 2.0f - 1.0f, 1.0f));
+                            normal = glm::vec3(0.0f, 0.0f, 1.0f);
+                            break;
+                        case 5: // -Z face
+                            position = glm::normalize(glm::vec3(u * 2.0f - 1.0f, v * 2.0f - 1.0f, -1.0f));
+                            normal = glm::vec3(0.0f, 0.0f, -1.0f);
+                            break;
+                    }
+
+                    glm::vec3 spherifiedPosition = glm::normalize(position) * radius;
+                    glm::vec3 spherifiedNormal = glm::normalize(spherifiedPosition);
+
+                    // Calculate texture coordinates
+                    glm::vec2 texCoord(u, v);
+
+                    vertices.push_back({
+                        spherifiedPosition,
+                        spherifiedNormal,
+                        texCoord,
+                        glm::vec3(0.0f),  // Tangent (will be computed later)
+                    });
+                }
+            }
+        }
+
+        // Generate indices
+        for (uint32_t face = 0; face < 6; ++face) {
+            bool flip = (face == 4); // Check if it's the front face
+
+            for (uint32_t lat = 0; lat < subdivisions; ++lat) {
+                for (uint32_t lon = 0; lon < subdivisions; ++lon) {
+                    uint32_t current = face * (subdivisions + 1) * (subdivisions + 1) + lat * (subdivisions + 1) + lon;
+                    uint32_t next = current + (subdivisions + 1);
+
+                    if (flip) {
+                        indices.push_back(current);
+                        indices.push_back(next + 1);
+                        indices.push_back(next);
+                        indices.push_back(current);
+                        indices.push_back(current + 1);
+                        indices.push_back(next + 1);
+                    } else {
+                        indices.push_back(current);
+                        indices.push_back(next);
+                        indices.push_back(next + 1);
+                        indices.push_back(current);
+                        indices.push_back(next + 1);
+                        indices.push_back(current + 1);
+                    }
+                }
+            }
+        }
+
+        // Calculate tangents and bitangents
+        CalculateTangents(vertices, indices);
+
+        return Mesh::Create(vertices, indices);
+    }
+
+    Ref<Mesh> Mesh::Cube(uint32_t subdivisions, float size)
+    {
+        CLAP_ASSERT(false, "Cube Generation Unimplemented");
+        return nullptr;
+    }
+
+    Ref<Mesh> Mesh::Plane(float width, float height, uint32_t segmentsX, uint32_t segmentsY)
+    {
+        std::vector<Vertex> vertices;        
+        std::vector<uint32_t> indices;
+
+        float deltaX = width / static_cast<float>(segmentsX);
+        float deltaY = height / static_cast<float>(segmentsY);
+        
+        for (uint32_t y = 0; y <= segmentsY; ++y) {
+            for (uint32_t x = 0; x <= segmentsX; ++x) {
+                Vertex vertex;
+                vertex.Position = glm::vec3(x * deltaX - width * 0.5f, 0.0f, y * deltaY - height * 0.5f);
+                vertex.TexCoord = glm::vec2(static_cast<float>(x) / segmentsX, static_cast<float>(y) / segmentsY);
+                vertex.Normal = glm::vec3(0.0f, 1.0f, 0.0f);
+                vertex.Tangent = glm::vec3(1.0f, 0.0f, 0.0f);
+                vertices.push_back(vertex);
+            }
+        }
+        
+        for (uint32_t y = 0; y < segmentsY; ++y) {
+            for (uint32_t x = 0; x < segmentsX; ++x) {
+                uint32_t i0 = y * (segmentsX + 1) + x;
+                uint32_t i1 = i0 + 1;
+                uint32_t i2 = (y + 1) * (segmentsX + 1) + x;
+                uint32_t i3 = i2 + 1;
+                
+                indices.push_back(i0);
+                indices.push_back(i2);
+                indices.push_back(i1);
+                
+                indices.push_back(i2);
+                indices.push_back(i3);
+                indices.push_back(i1);
+            }
+        }
+
+        return Mesh::Create(vertices, indices);
+    }
+
 
     Ref<Mesh> Mesh::Create(std::vector<Vertex> vertices, const std::vector<uint32_t>& indices)
     {

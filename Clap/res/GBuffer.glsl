@@ -4,9 +4,8 @@ layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoord;
 layout (location = 3) in vec3 aTangent;
-layout (location = 4) in vec3 aBitangent;
-layout (location = 5) in ivec4 aBoneIDs;
-layout (location = 6) in vec4 aWeights;
+// layout (location = 5) in ivec4 aBoneIDs;
+// layout (location = 6) in vec4 aWeights;
 
 out VertexOutput
 {
@@ -30,7 +29,8 @@ void main()
     Output.Normal = aNormal;
     
     vec3 T = normalize(vec3(Model * vec4(aTangent, 0.0)));
-    vec3 B = normalize(vec3(Model * vec4(aBitangent, 0.0)));
+    vec3 bitangent = normalize(cross(aNormal, aTangent));
+    vec3 B = normalize(vec3(Model * vec4(bitangent, 0.0)));
     vec3 N = normalize(vec3(Model * vec4(aNormal, 0.0)));
     
     Output.TBN = mat3(T, B, N);
@@ -82,10 +82,14 @@ void main()
     gPosition = vec4(Input.FragPos, 1.0);
 
     vec3 normal = texture(uNormalTex, Input.TexCoord).rgb;
+    vec3 sampledNormal;
     if(normal == vec3(1.0))
-        normal = vec3(0.0, 0.0, 1.0); //Default normal
-    normal = normal * 2.0 - 1.0;   
-    vec3 sampledNormal = normalize(Input.TBN * normal);
+        sampledNormal = Input.TBN[2];
+    else
+    {
+        normal = normal * 2.0 - 1.0;   
+        sampledNormal = normalize(Input.TBN * normal);
+    }
     gNormal = vec4(sampledNormal, 1.0);
 
     vec4 albedo = texture(uAlbedoTex, Input.TexCoord);

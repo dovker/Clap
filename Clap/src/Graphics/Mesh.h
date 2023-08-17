@@ -9,15 +9,19 @@ namespace Clap
     #define CLAP_MAX_BONE_INFLUENCE 4
 
     struct Vertex {
-        glm::vec3 Position;
-        glm::vec3 Normal;
-        glm::vec2 TexCoord;
-        
-        glm::vec3 Tangent;
-        glm::vec3 Bitangent;
+        glm::vec3 Position = {0.0f, 0.0f, 0.0f};
+        glm::vec3 Normal = {0.0f, 0.0f, 0.0f};
+        glm::vec2 TexCoord = {0.0f, 0.0f};
+        glm::vec3 Tangent = {0.0f, 0.0f, 0.0f};
 
-        uint32_t BoneIDs[CLAP_MAX_BONE_INFLUENCE];
-        float Weights[CLAP_MAX_BONE_INFLUENCE];
+        Vertex() {}
+
+        Vertex(glm::vec3 pos, glm::vec3 norm, glm::vec2 tex, glm::vec3 tan)
+            : Position(pos), Normal(norm), TexCoord(tex), Tangent(tan)
+        {}
+
+        //uint32_t BoneIDs[CLAP_MAX_BONE_INFLUENCE];
+        //float Weights[CLAP_MAX_BONE_INFLUENCE];
     };
 
     struct SimpleVertex
@@ -63,6 +67,9 @@ namespace Clap
         static Ref<Mesh> Create(const Ref<VertexBuffer>& vertexBuffer, const std::vector<uint32_t>& indices, bool simple = false);
         static Ref<Mesh> Create(const Ref<VertexBuffer>& vertexBuffer, uint32_t* indices, uint32_t indexCount, bool simple = false);
         
+        static Ref<Mesh> Sphere(uint32_t subdivisions = 20, float radius = 1.0f);
+        static Ref<Mesh> Cube(uint32_t subdivisions = 1, float size = 1.0f);
+        static Ref<Mesh> Plane(float width = 1.0f, float height = 1.0f, uint32_t segmentsX = 1, uint32_t segmentsY = 1);
     private:
         std::vector<float> m_Vertices;
         std::vector<uint32_t> m_Indices;

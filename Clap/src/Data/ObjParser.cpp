@@ -77,7 +77,6 @@ namespace Clap
                     generateNormal = currentFace[i].normal + 1 == 0;
                 }
                 glm::vec3 tangent;
-                glm::vec3 bitangent;
                 glm::vec3 precalcNormal;
                 //Calculating tangent space
                 if(precalculateTangents)
@@ -104,10 +103,6 @@ namespace Clap
                     tangent.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x); //summate these when doing actuall calcualtions
                     tangent.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
                     tangent.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
-
-                    bitangent.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
-                    bitangent.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
-                    bitangent.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
                 }
                 if(generateNormal)
                 {
@@ -142,7 +137,6 @@ namespace Clap
                         //float w = (glm::dot(glm::cross(normal, tangent), bitangent) < 0.0f) ? -1.0f : 1.0f;
 
                         v.Tangent = orthogonalizedTangent;
-                        v.Bitangent = bitangent;
                     }
                     vertices.push_back(v);
                 }

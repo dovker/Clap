@@ -91,9 +91,6 @@ namespace Clap
                 vertex.Tangent.x   = (aiMesh->mTangents[i].x);
                 vertex.Tangent.y   = (aiMesh->mTangents[i].y);
                 vertex.Tangent.z   = (aiMesh->mTangents[i].z);
-                vertex.Bitangent.x = (aiMesh->mBitangents[i].x);
-                vertex.Bitangent.y = (aiMesh->mBitangents[i].y);
-                vertex.Bitangent.z = (aiMesh->mBitangents[i].z);
 
                 vertices.push_back(vertex);
             }
