@@ -4,11 +4,14 @@ layout (location = 0) in vec2 aPos;
 layout (location = 1) in vec2 aTexCoords;
 
 
-out vec2 TexCoords;
+out VertexOutput
+{
+    vec2 TexCoord;
+} Output;
 
 void main()
 {
-    TexCoords = aTexCoords;
+    Output.TexCoord = aTexCoords;
     gl_Position = vec4(aPos, 0.0, 1.0);
 }
 
@@ -17,9 +20,12 @@ void main()
 
 out vec4 FragColor;
 
-in vec2 TexCoords;
+in VertexOutput
+{
+    vec2 TexCoord;
+} Input;
 
-uniform sampler2D gColor_0;
+layout (binding = 0) uniform sampler2D uColor;
 
 layout(std140, binding = 0) uniform PostProcess
 {
@@ -35,10 +41,7 @@ layout(std140, binding = 0) uniform PostProcess
 
 void main()
 {
-    vec4 Sample = texture(gColor_0, TexCoords);
-    vec3 Albedo = Sample.rgb;
-    vec3 Color = vec3(Albedo);
+    vec3 Sample = texture(uColor, Input.TexCoord).rgb;
     
-    FragColor = vec4(Color, Sample.a);
-    //FragColor = vec4(Albedo, Sample.a);
+    FragColor = vec4(Sample, 1.0);
 }

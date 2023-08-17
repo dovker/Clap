@@ -141,10 +141,12 @@ namespace Clap
         {
             case TextureFormat::RGBA8:           return GL_RGBA8;
             case TextureFormat::RGB8:            return GL_RGB8;
+            case TextureFormat::RG8:             return GL_RG8;
             case TextureFormat::R8:              return GL_R8;
             case TextureFormat::RGBA16F:         return GL_RGBA16F;
-            case TextureFormat::RGB16F:          return GL_RGB16F;
-            case TextureFormat::INT32:          return GL_R32I;
+            case TextureFormat::RG16F:           return GL_RG16F;
+            case TextureFormat::R16F:            return GL_R16F;
+            case TextureFormat::INT32:           return GL_R32I;
             case TextureFormat::UINT32:          return GL_R32UI;
             case TextureFormat::DEPTH24STENCIL8: return GL_DEPTH24_STENCIL8;
             default: break;
@@ -160,9 +162,11 @@ namespace Clap
         {
             case TextureFormat::RGBA8:           return GL_RGBA;
             case TextureFormat::RGB8:            return GL_RGB;
+            case TextureFormat::RG8:             return GL_RG;
             case TextureFormat::R8:              return GL_RED;
             case TextureFormat::RGBA16F:         return GL_RGBA;
-            case TextureFormat::RGB16F:          return GL_RGB;
+            case TextureFormat::RG16F:           return GL_RG;
+            case TextureFormat::R16F:            return GL_RED;
             case TextureFormat::INT32:           return GL_RED_INTEGER;
             case TextureFormat::UINT32:          return GL_RED_INTEGER;
             case TextureFormat::DEPTH24STENCIL8: return GL_DEPTH_STENCIL;
@@ -178,10 +182,12 @@ namespace Clap
         switch (type)
         {
             case TextureFormat::RGBA8:           return GL_UNSIGNED_BYTE;
-            case TextureFormat::RGB8:            return GL_UNSIGNED_BYTE;
+            case TextureFormat::RGB8:             return GL_UNSIGNED_BYTE;
+            case TextureFormat::RG8:             return GL_UNSIGNED_BYTE;
             case TextureFormat::R8:              return GL_UNSIGNED_BYTE;
             case TextureFormat::RGBA16F:         return GL_FLOAT;
-            case TextureFormat::RGB16F:          return GL_FLOAT;
+            case TextureFormat::RG16F:           return GL_FLOAT;
+            case TextureFormat::R16F:            return GL_FLOAT;
             case TextureFormat::INT32:           return GL_INT;
             case TextureFormat::UINT32:          return GL_UNSIGNED_INT;
             case TextureFormat::DEPTH24STENCIL8: return GL_UNSIGNED_INT_24_8;

@@ -9,9 +9,11 @@ namespace Clap
         // Color
         RGBA8,
         RGB8,
+        RG8,
         R8,
         RGBA16F,
-        RGB16F,
+        RG16F,
+        R16F,
         // Depth/stencil
         DEPTH24STENCIL8,
 
