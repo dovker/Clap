@@ -48,5 +48,5 @@ void main()
 
     float Depth = texture(gDepth, Input.TexCoord).r;
     
-    FragColor = vec4(Metallic, Roughness, AO, 1.0);
+    FragColor = vec4(Albedo);
 }

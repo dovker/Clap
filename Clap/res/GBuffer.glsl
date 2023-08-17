@@ -56,13 +56,13 @@ in VertexOutput
 	mat3 TBN;
 } Input;
 
-layout(std140) uniform CameraModelUniform
+layout(std140, binding = 0) uniform CameraModelUniform
 {
 	mat4 ViewProjection;
     mat4 Model;
 };
 
-layout(std140) uniform MaterialUniform
+layout(std140, binding = 1) uniform MaterialUniform
 {
     vec4 Albedo;
     float Emissive;
