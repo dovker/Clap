@@ -60,13 +60,13 @@ namespace Clap
             }
             else
             {
-                glTexStorage2D(GL_TEXTURE_2D, 1, ToOpenGLInternalFormat(specification.Format), width, height);
+                glTextureStorage2D(id, 1, ToOpenGLInternalFormat(specification.Format), width, height);
 
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, FilterTypeToOpenGLBaseType(specification.MinFilter));
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, FilterTypeToOpenGLBaseType(specification.MagFilter));
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, WrapTypeToOpenGLBaseType(specification.Wrap));
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, WrapTypeToOpenGLBaseType(specification.Wrap));
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, WrapTypeToOpenGLBaseType(specification.Wrap));
+                glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, FilterTypeToOpenGLBaseType(specification.MinFilter));
+                glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, FilterTypeToOpenGLBaseType(specification.MagFilter));
+                glTextureParameteri(id, GL_TEXTURE_WRAP_R, WrapTypeToOpenGLBaseType(specification.Wrap));
+                glTextureParameteri(id, GL_TEXTURE_WRAP_S, WrapTypeToOpenGLBaseType(specification.Wrap));
+                glTextureParameteri(id, GL_TEXTURE_WRAP_T, WrapTypeToOpenGLBaseType(specification.Wrap));
             }
 
             glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, TextureTarget(multisampled), id, 0);

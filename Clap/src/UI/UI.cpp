@@ -66,7 +66,7 @@ namespace Clap
     {
         Graphics::ToggleDepthTest(false);
         Graphics::ToggleBlending(true);
-        Graphics::ToggleBackfaceCulling(false);
+        Graphics::SetCulling(CullingType::None);
         //Graphics::SetClearColor({0.0f, 0.0f, 0.0f, 0.0f});
 
         //Graphics::Clear();

@@ -22,6 +22,15 @@ in VertexOutput
     vec2 TexCoord;
 } Input;
 
+layout(std140, binding = 0) uniform CameraModelUniform
+{
+	mat4 ViewProjection;
+    mat4 Model;
+    vec3 CameraPos;
+    vec3 CameraDir;
+};
+
+
 layout (binding = 0) uniform sampler2D gPosition;
 layout (binding = 1) uniform sampler2D gNormal;
 layout (binding = 2) uniform sampler2D gAlbedo;
@@ -31,6 +40,15 @@ layout (binding = 5) uniform sampler2D gDepth;
 
 layout (location = 0) out vec4 FragColor;
 
+float near = 0.01;
+float far = 10000.0;
+
+float LinearizeDepth(float depth)
+{
+    depth = depth * 2.0 - 1.0;
+    
+    return (2.0 * near * far) / (far + near - depth * (far - near));	
+}
 
 void main()
 {
@@ -48,5 +66,5 @@ void main()
 
     float Depth = texture(gDepth, Input.TexCoord).r;
     
-    FragColor = vec4(Normal, 1.0);
+    FragColor = vec4(vec3(LinearizeDepth(Depth) / far), 1.0);
 }

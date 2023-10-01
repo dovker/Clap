@@ -20,11 +20,13 @@ namespace Clap
         static void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height);
         static void SetClearColor(const glm::vec4& color);
         static void SetBlendingMode(BlendingMode mode);
+        static void SetCulling(CullingType type);
         static void Clear();
+        static void ClearDepthStencil();
         
         static void ToggleDepthTest(bool toggle);
         static void ToggleBlending(bool toggle);
-        static void ToggleBackfaceCulling(bool toggle);
+        static void ToggleDepthMask(bool toggle);
 
         static void BindTexture(uint32_t textureID, uint32_t slot);
 

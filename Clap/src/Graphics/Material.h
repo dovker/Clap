@@ -29,6 +29,7 @@ namespace Clap
         float Emissive = 0.0f;
         float Metallic = 0.0f;
         float Roughness = 1.0f;
+        float Translucent = 0.0f;
 
         std::vector<UniformValue> GetUniformLayout()
         {
@@ -37,7 +38,8 @@ namespace Clap
                 {GraphicsDataType::FLOAT4, "Albedo"},
                 {GraphicsDataType::FLOAT,  "Emissive"}, 
                 {GraphicsDataType::FLOAT,  "Metallic"}, 
-                {GraphicsDataType::FLOAT,  "Roughness"} 
+                {GraphicsDataType::FLOAT,  "Roughness"}, 
+                {GraphicsDataType::FLOAT,  "Translucent"} 
             };
 
             return layout;
@@ -67,20 +69,20 @@ namespace Clap
         {
             CLAP_ASSERT(m_Offsets.find(name) != m_Offsets.end(), "Such member of material does not exist");
 
-            return *(T*)(data+m_Offsets[name]);
+            return *(T*)((byte*)m_Data+m_Offsets[name]);
         } 
         template<typename T>
         void SetValue(const std::string name, T value)
         {
             CLAP_ASSERT(m_Offsets.find(name) != m_Offsets.end(), "Such member of material does not exist");
 
-            *(T*)(data+m_Offsets[name]) = value;
+            *(T*)((byte*)m_Data+m_Offsets[name]) = value;
         } 
         template<typename T>
         T GetData()
         {
             CLAP_ASSERT(sizeof(T) == m_Size, "Material Size is not equal to the size of presented type");
-            return *(T*)(data);
+            return *(T*)(m_Data);
         }
 
         std::vector<UniformValue> GetLayout() { return m_Layout; }

@@ -81,9 +81,19 @@ namespace Clap
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
+    void Graphics::ClearDepthStencil()
+    {
+        glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    }
+
     void Graphics::ToggleDepthTest(bool toggle)
     {
         toggle ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+    }
+
+    void Graphics::ToggleDepthMask(bool toggle)
+    {
+        toggle ? glDepthMask(GL_TRUE) : glDepthMask(GL_FALSE);
     }
 
     void Graphics::ToggleBlending(bool toggle)
@@ -91,12 +101,25 @@ namespace Clap
         toggle ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
     }
 
-    void Graphics::ToggleBackfaceCulling(bool toggle)
+    void Graphics::SetCulling(CullingType type)
     {
-        toggle ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
-
         glFrontFace(GL_CCW);
-        glCullFace(GL_BACK);
+        switch(type)
+        {
+            case CullingType::None:
+                glDisable(GL_CULL_FACE);
+            break;
+
+            case CullingType::BackFace:
+                glEnable(GL_CULL_FACE);
+                glCullFace(GL_BACK);
+            break;
+
+            case CullingType::FrontFace:
+                glEnable(GL_CULL_FACE);
+                glCullFace(GL_FRONT);
+            break;
+        }
     }
 
     void Graphics::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
@@ -146,6 +169,7 @@ namespace Clap
             case TextureFormat::RGBA16F:         return GL_RGBA16F;
             case TextureFormat::RG16F:           return GL_RG16F;
             case TextureFormat::R16F:            return GL_R16F;
+            case TextureFormat::R32F:            return GL_R32F;
             case TextureFormat::INT32:           return GL_R32I;
             case TextureFormat::UINT32:          return GL_R32UI;
             case TextureFormat::DEPTH24STENCIL8: return GL_DEPTH24_STENCIL8;
@@ -167,6 +191,7 @@ namespace Clap
             case TextureFormat::RGBA16F:         return GL_RGBA;
             case TextureFormat::RG16F:           return GL_RG;
             case TextureFormat::R16F:            return GL_RED;
+            case TextureFormat::R32F:            return GL_RED;
             case TextureFormat::INT32:           return GL_RED_INTEGER;
             case TextureFormat::UINT32:          return GL_RED_INTEGER;
             case TextureFormat::DEPTH24STENCIL8: return GL_DEPTH_STENCIL;
@@ -188,6 +213,7 @@ namespace Clap
             case TextureFormat::RGBA16F:         return GL_FLOAT;
             case TextureFormat::RG16F:           return GL_FLOAT;
             case TextureFormat::R16F:            return GL_FLOAT;
+            case TextureFormat::R32F:            return GL_FLOAT;
             case TextureFormat::INT32:           return GL_INT;
             case TextureFormat::UINT32:          return GL_UNSIGNED_INT;
             case TextureFormat::DEPTH24STENCIL8: return GL_UNSIGNED_INT_24_8;

@@ -9,12 +9,27 @@ namespace Clap
     {
         glm::mat4 ViewProjection;
         glm::mat4 Model;
+        glm::vec3 CameraPos;
+        glm::vec3 CameraDir;
+    };
+
+    struct RenderItem
+    {
+        Ref<Mesh> RenderMesh;
+        Ref<Material> RenderMaterial;
+        Transform RenderTransform;
+
+        RenderItem() {}
+        RenderItem(Ref<Mesh> mesh, Ref<Material> material, Transform transform)
+            : RenderMesh(mesh), RenderMaterial(material), RenderTransform(transform)
+        {}
     };
 
     struct PBRBuffer
     {
         Ref<Framebuffer> GBuffer;
         Ref<Framebuffer> Frame;
+        Ref<Framebuffer> BackFaceDepth;
         uint32_t Width, Height;
         PostProcessingUniform PostProcess;
 
@@ -28,16 +43,20 @@ namespace Clap
 
         Ref<Shader> GBufferShader;
         Ref<Shader> PBRLightShader;
+        Ref<Shader> ForwardPBRShader;
+        Ref<Shader> ForwardDepthShader;
         Ref<Shader> PostProcessShader;
         
         Ref<VertexArray> QuadVA;
         
-        std::vector<Model> RenderQueue;
+        std::deque<RenderItem> RenderQueue;
+        std::deque<RenderItem> TransparentRenderQueue;
 
         glm::mat4 Camera;
     };
 
     static PBRBuffer s_Buffer;
+    static Ref<Framebuffer> TestBuffer;
 
     void PBRRenderer::Init(uint32_t width, uint32_t height)
     {
@@ -73,6 +92,8 @@ namespace Clap
         s_Buffer.GBufferShader = Shader::Create(CLAP_ENGINE_PATH("/res/GBuffer.glsl"));
         s_Buffer.PBRLightShader = Shader::Create(CLAP_ENGINE_PATH("/res/PBRShader.glsl"));
         s_Buffer.PostProcessShader = Shader::Create(CLAP_ENGINE_PATH("/res/PostProcess.glsl"));
+        s_Buffer.ForwardPBRShader = Shader::Create(CLAP_ENGINE_PATH("/res/ForwardPBR.glsl"));
+        s_Buffer.ForwardDepthShader = Shader::Create(CLAP_ENGINE_PATH("/res/ForwardDepth.glsl"));
 
         //TODO: Entity ID Encoding
         s_Buffer.GBuffer = Framebuffer::Create({s_Buffer.Width, s_Buffer.Height, {{TextureFormat::RGBA16F, FilterType::NEAREST, FilterType::NEAREST}, //Position
@@ -82,6 +103,7 @@ namespace Clap
                                                                                   {TextureFormat::RGBA8, FilterType::NEAREST, FilterType::NEAREST}, //Metallic, rough, AO, Material ID
                                                                                   TextureFormat::DEPTH24STENCIL8}, 1, false}); //TODO: More TExture slots, monochromatic R8 maps
         s_Buffer.Frame = Framebuffer::Create({s_Buffer.Width, s_Buffer.Height, {{TextureFormat::RGBA16F, FilterType::NEAREST, FilterType::NEAREST}, TextureFormat::DEPTH24STENCIL8}, 1, false});
+        s_Buffer.BackFaceDepth = Framebuffer::Create({s_Buffer.Width, s_Buffer.Height, {TextureFormat::DEPTH24STENCIL8}, 1, false});
     
         uint32_t white = 0xFFFFFFFF;
         s_Buffer.EmptyTexture = Texture2D::Create(1, 1, {TextureFormat::RGBA8, FilterType::NEAREST, FilterType::NEAREST});
@@ -94,25 +116,49 @@ namespace Clap
         s_Buffer.Camera = ViewProjection;
         s_Buffer.CameraModelUniformBuffer->Bind(0);
         s_Buffer.MaterialUniformBuffer->Bind(1);
-        s_Buffer.CameraModelUniformBuffer->SetData(&ViewProjection, sizeof(ViewProjection));
-        
-        s_Buffer.GBuffer->Bind();
 
-        Graphics::ToggleDepthTest(true);
-        Graphics::ToggleBackfaceCulling(true);
-        Graphics::SetClearColor({0.0f, 0.0f, 0.0f, 0.0f});
-        Graphics::SetViewport(0, 0, s_Buffer.Width, s_Buffer.Height);
-        Graphics::Clear();
+        CameraModelBuffer buffer;
+        buffer.ViewProjection = ViewProjection;
+        buffer.CameraPos = view[3];
+        buffer.CameraDir = glm::normalize(-view[2]);
+        s_Buffer.CameraModelUniformBuffer->SetData(&buffer, sizeof(buffer));
     }
 
     void PBRRenderer::Submit(const Ref<Model>& model, Transform transform)
     {
-        glm::mat4 modelMatrix = transform.GetTransform();
-        s_Buffer.CameraModelUniformBuffer->SetData(&modelMatrix, sizeof(modelMatrix), sizeof(glm::mat4));
-
         for(auto mesh : model->GetMeshes())
         {
             Ref<Material> material = model->GetMeshMaterial(mesh.first);
+            if (material->GetValue<float>("Translucent") <= 0.0f)
+                s_Buffer.RenderQueue.push_back({mesh.second, material, transform});
+            else
+                s_Buffer.TransparentRenderQueue.push_back({mesh.second, material, transform});
+        }
+    }
+    //LIGHT CULLING SHOULD CREATE AABB ITSELF with radius
+    void PBRRenderer::End()
+    {
+        //GBuffer Rendering
+
+        s_Buffer.GBuffer->Bind();
+
+        Graphics::ToggleDepthTest(true);
+        Graphics::SetCulling(CullingType::BackFace);
+        Graphics::SetClearColor({0.0f, 0.0f, 0.0f, 0.0f});
+        Graphics::SetViewport(0, 0, s_Buffer.Width, s_Buffer.Height);
+        Graphics::Clear();
+
+        while(!s_Buffer.RenderQueue.empty())
+        {
+            RenderItem item = s_Buffer.RenderQueue.front();
+            s_Buffer.RenderQueue.pop_front();
+            auto transform = item.RenderTransform;
+            auto material = item.RenderMaterial;
+            auto mesh = item.RenderMesh;
+
+            glm::mat4 modelMatrix = transform.GetTransform();
+            s_Buffer.CameraModelUniformBuffer->SetData(&modelMatrix, sizeof(modelMatrix), sizeof(glm::mat4));
+            
             if (!material->GetShader()) //TODO: Shaders for materials
                 s_Buffer.GBufferShader->Bind(); //TODO Optimize by checking wether the last shader was the same
             else material->GetShader()->Bind();
@@ -143,12 +189,9 @@ namespace Clap
             if(currentTexture) Graphics::BindTexture(currentTexture->GetID(), 5);
             else Graphics::BindTexture(s_Buffer.EmptyTexture->GetID(), 5);
 
-            mesh.second->Draw();
+            mesh->Draw();
         }
-    }
-    //LIGHT CULLING SHOULD CREATE AABB ITSELF with radius
-    void PBRRenderer::End()
-    {
+
         s_Buffer.GBufferShader->Unbind();
         s_Buffer.GBuffer->Unbind();
 
@@ -166,17 +209,89 @@ namespace Clap
                 i++;
             }
         }
+        //CLAP_INFO(s_Buffer.GBuffer->GetDepthAttachmentRendererID());
         Graphics::BindTexture(s_Buffer.GBuffer->GetDepthAttachmentRendererID(), i);
 
         Graphics::SetViewport(0, 0, s_Buffer.Width, s_Buffer.Height);
         Graphics::SetClearColor({0.0f, 0.0f, 0.0f, 0.0f});
         Graphics::Clear();
+        Graphics::ToggleDepthTest(false);
         //Point, area, spot lights
 
         //Directional lightd and IBL
         Graphics::DrawIndexed(s_Buffer.QuadVertexArray);
 
         s_Buffer.PBRLightShader->Unbind();
+
+        Graphics::ToggleDepthTest(true);
+        //Graphics::ToggleDepthMask(true);
+
+        //Transparent Pass
+
+        while(!s_Buffer.TransparentRenderQueue.empty())
+        {
+            RenderItem item = s_Buffer.TransparentRenderQueue.front();
+            s_Buffer.TransparentRenderQueue.pop_front();
+            auto transform = item.RenderTransform;
+            auto material = item.RenderMaterial;
+            auto mesh = item.RenderMesh;
+
+            glm::mat4 modelMatrix = transform.GetTransform();
+            s_Buffer.CameraModelUniformBuffer->SetData(&modelMatrix, sizeof(modelMatrix), sizeof(glm::mat4));
+
+            Graphics::SetCulling(CullingType::FrontFace); //TODO: Fix Depth
+            //DepthPass
+
+            s_Buffer.Frame->Unbind();
+            s_Buffer.BackFaceDepth->Bind();
+            Graphics::Clear();
+
+            s_Buffer.ForwardDepthShader->Bind();
+
+            mesh->Draw();
+
+            s_Buffer.ForwardDepthShader->Unbind();
+
+            s_Buffer.BackFaceDepth->Unbind();
+            s_Buffer.Frame->Bind();
+
+            Graphics::SetCulling(CullingType::BackFace);
+            
+            if (!material->GetShader()) //TODO: Shaders for materials
+                s_Buffer.ForwardPBRShader->Bind(); //TODO Optimize by checking wether the last shader was the same
+            else material->GetShader()->Bind();
+            s_Buffer.MaterialUniformBuffer->SetData(material->GetData(), material->GetSize());
+
+            Ref<Texture2D> currentTexture;
+            currentTexture = material->GetTexture("Albedo");
+            if(currentTexture) Graphics::BindTexture(currentTexture->GetID(), 0);
+            else Graphics::BindTexture(s_Buffer.EmptyTexture->GetID(), 0);
+            
+            currentTexture = material->GetTexture("Normals");
+            if(currentTexture) Graphics::BindTexture(currentTexture->GetID(), 1);
+            else Graphics::BindTexture(s_Buffer.EmptyTexture->GetID(), 1);
+
+            currentTexture = material->GetTexture("Metallic");
+            if(currentTexture) Graphics::BindTexture(currentTexture->GetID(), 2);
+            else Graphics::BindTexture(s_Buffer.EmptyTexture->GetID(), 2);
+
+            currentTexture = material->GetTexture("Roughness");
+            if(currentTexture) Graphics::BindTexture(currentTexture->GetID(), 3);
+            else Graphics::BindTexture(s_Buffer.EmptyTexture->GetID(), 3);
+
+            currentTexture = material->GetTexture("AO");
+            if(currentTexture) Graphics::BindTexture(currentTexture->GetID(), 4);
+            else Graphics::BindTexture(s_Buffer.EmptyTexture->GetID(), 4);
+
+            currentTexture = material->GetTexture("Emission");
+            if(currentTexture) Graphics::BindTexture(currentTexture->GetID(), 5);
+            else Graphics::BindTexture(s_Buffer.EmptyTexture->GetID(), 5);
+
+            Graphics::BindTexture(s_Buffer.BackFaceDepth->GetDepthAttachmentRendererID(), 6);
+
+            mesh->Draw();
+        }
+
         s_Buffer.Frame->Unbind();
         
         //POST-PROCESS PASS

@@ -2,6 +2,13 @@
 
 namespace Clap
 {
+    enum class CullingType
+    {
+        None = 0,
+        BackFace,
+        FrontFace
+    };
+
     enum class TextureFormat
     {
         NONE = 0,
@@ -14,6 +21,7 @@ namespace Clap
         RGBA16F,
         RG16F,
         R16F,
+        R32F,
         // Depth/stencil
         DEPTH24STENCIL8,
 
