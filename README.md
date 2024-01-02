@@ -14,26 +14,26 @@ To be described.
 * Custom ECS system
 * Custom Event system and Event pools
 * Sprite Batching
-* Text (Rasterized, Sprite and SDF) rendering
+* Text (Rasterized, Sprite Font and SDF) rendering
 * ImGui support
 * 3D Model, Material and Mesh loading using Assimp
 
 # Features currently being developed
-* PBR Renderer
-* Skeletal Animations
 * Asset management and File system
 * Audio Support
+* Testing environment
 
 # Future
 
 The future vision for **Clap** is a MonoGame-esque framework that exceeds in performance and simplicity while being cross-platform among Desktop Platforms, Mobile devices, Consoles.
 
 ## Future Features
-* Vulkan and MoltenVK support
-* Shader Cross-Compilation
-* Multithreading
 * Profiling Tools
 * Documentation
+* PBR Renderer
+* Shader Cross-Compilation
+* Vulkan and MoltenVK support
+* Multithreading
 
 ## Current Platform Support
 * Windows
